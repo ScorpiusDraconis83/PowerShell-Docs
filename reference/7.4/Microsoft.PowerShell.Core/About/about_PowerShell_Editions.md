@@ -4,11 +4,12 @@ Locale: en-US
 ms.date: 11/14/2023
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_powershell_editions?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about PowerShell Editions
+title: about_PowerShell_Editions
 ---
 # about_PowerShell_Editions
 
 ## Short description
+
 Different editions of PowerShell run on different underlying runtimes.
 
 ## Long description
@@ -110,7 +111,12 @@ behavior based on the `CompatiblePSEditions` field, but does expose it on the
 `PSModuleInfo` object (returned by `Get-Module`) for your own logic:
 
 ```powershell
-New-ModuleManifest -Path .\TestModuleWithEdition.psd1 -CompatiblePSEditions Desktop,Core -PowerShellVersion '5.1'
+$newModuleManifestSplat = @{
+    Path = '.\TestModuleWithEdition.psd1'
+    CompatiblePSEditions = 'Desktop', 'Core'
+    PowerShellVersion = '5.1'
+}
+New-ModuleManifest @newModuleManifestSplat
 $ModuleInfo = Test-ModuleManifest -Path .\TestModuleWithEdition.psd1
 $ModuleInfo.CompatiblePSEditions
 ```

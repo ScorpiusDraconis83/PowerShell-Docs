@@ -17,33 +17,33 @@ Modifies a CIM instance on a CIM server by calling the ModifyInstance method of 
 ### CimInstanceComputerSet (Default)
 
 ```
-Set-CimInstance [-ComputerName <String[]>] [-ResourceUri <Uri>] [-OperationTimeoutSec <UInt32>]
- [-InputObject] <CimInstance> [-Property <IDictionary>] [-PassThru] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Set-CimInstance [-ComputerName <String[]>] [-ResourceUri <Uri>]
+ [-OperationTimeoutSec <UInt32>] [-InputObject] <CimInstance> [-Property <IDictionary>]
+ [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### CimInstanceSessionSet
 
 ```
-Set-CimInstance -CimSession <CimSession[]> [-ResourceUri <Uri>] [-OperationTimeoutSec <UInt32>]
- [-InputObject] <CimInstance> [-Property <IDictionary>] [-PassThru] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Set-CimInstance -CimSession <CimSession[]> [-ResourceUri <Uri>]
+ [-OperationTimeoutSec <UInt32>] [-InputObject] <CimInstance> [-Property <IDictionary>]
+ [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### QuerySessionSet
 
 ```
-Set-CimInstance -CimSession <CimSession[]> [-Namespace <String>] [-OperationTimeoutSec <UInt32>]
- [-Query] <String> [-QueryDialect <String>] -Property <IDictionary> [-PassThru] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Set-CimInstance -CimSession <CimSession[]> [-Namespace <String>]
+ [-OperationTimeoutSec <UInt32>] [-Query] <String> [-QueryDialect <String>]
+ -Property <IDictionary> [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### QueryComputerSet
 
 ```
-Set-CimInstance [-ComputerName <String[]>] [-Namespace <String>] [-OperationTimeoutSec <UInt32>]
- [-Query] <String> [-QueryDialect <String>] -Property <IDictionary> [-PassThru] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Set-CimInstance [-ComputerName <String[]>] [-Namespace <String>]
+ [-OperationTimeoutSec <UInt32>] [-Query] <String> [-QueryDialect <String>]
+ -Property <IDictionary> [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -78,7 +78,11 @@ parameter. You can modify instances matching a Windows Management Instrumentatio
 (WQL) query.
 
 ```powershell
-Set-CimInstance -Query 'Select * from Win32_Environment where name LIKE "testvar%"' -Property @{VariableValue="abcd"}
+$instance = @ {
+    Query = 'Select * from Win32_Environment where name LIKE "testvar%"'
+    Property = @{VariableValue="abcd"}
+}
+Set-CimInstance @instance
 ```
 
 ### Example 2: Set the CIM instance property using pipeline
@@ -102,14 +106,14 @@ Set-CimInstance -InputObject $x -Property @{VariableValue="somevalue"} -PassThru
 This example retrieves the CIM instance objects filtered by the Query parameter in to a variable
 `$x` using `Get-CimInstance`, and then passes the contents of the variable to the `Set-CimInstance`
 cmdlet. `Set-CimInstance` then modifies the **VariableValue** property to **somevalue**. Because the
-**Passthru** parameter is used, This example returns a modified CIM instance object.
+**PassThru** parameter is used, This example returns a modified CIM instance object.
 
 ### Example 4: Set the CIM instance property
 
 This example retrieves the CIM instance object that is specified in the **Query** parameter into a
 variable `$x` using the `Get-CimInstance` cmdlet, and changes the **VariableValue** property value
 of the object to change. The CIM instance object is then saved using the `Set-CimInstance` cmdlet.
-Because the **Passthru** parameter is used, This example returns a modified CIM instance object.
+Because the **PassThru** parameter is used, This example returns a modified CIM instance object.
 
 ```powershell
 $x = Get-CimInstance -Query 'Select * from Win32_Environment where name="testvar"'
@@ -123,7 +127,12 @@ This example uses the common parameter **WhatIf** to specify that the modificati
 done, but only output what would happen if it were done.
 
 ```powershell
-Set-CimInstance -Query 'Select * from Win32_Environment where name LIKE "testvar%"' -Property @{VariableValue="abcd"} -WhatIf
+$instance = @{
+    Query = 'Select * from Win32_Environment where name LIKE "testvar%"'
+    Property = @{VariableValue="abcd"}
+    WhatIf = $true
+}
+Set-CimInstance @instance
 ```
 
 ### Example 6: Set the CIM instance after confirmation from the user
@@ -132,7 +141,12 @@ This example uses the common parameter **Confirm** to specify that the modificat
 only after confirmation from the user.
 
 ```powershell
-Set-CimInstance -Query 'Select * from Win32_Environment where name LIKE "testvar%"' -Property @{VariableValue="abcd"} -Confirm
+$instance = @{
+    Query = 'Select * from Win32_Environment where name LIKE "testvar%"'
+    Property = @{VariableValue="abcd"}
+    Confirm = $true
+}
+Set-CimInstance @instance
 ```
 
 ### Example 7: Set the created CIM instance
@@ -140,10 +154,19 @@ Set-CimInstance -Query 'Select * from Win32_Environment where name LIKE "testvar
 This example creates a CIM instance with the specified properties using the `New-CimInstance`
 cmdlet, and retrieves its contents in to a variable `$x`. The variable is then passed to the
 `Set-CimInstance` cmdlet, which modifies the value of **VariableValue** property to **somevalue**.
-Because the **Passthru** parameter is used, This example returns a modified CIM instance object.
+Because the **PassThru** parameter is used, This example returns a modified CIM instance object.
 
 ```powershell
-$x = New-CimInstance -ClassName Win32_Environment -Property @{Name="testvar";UserName="domain\user"} -Key Name,UserName -ClientOnly
+$instance = @{
+    ClassName = 'Win32_Environment'
+    Property = @{
+        Name="testvar"
+        UserName="domain\user"
+    }
+    Key = 'Name', 'UserName'
+    ClientOnly = $true
+}
+$x = New-CimInstance @instance
 Set-CimInstance -CimInstance $x -Property @{VariableValue="somevalue"} -PassThru
 ```
 
@@ -397,7 +420,7 @@ Accept wildcard characters: False
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
 -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose,
 -WarningAction, and -WarningVariable. For more information, see
-[about_CommonParameters](../Microsoft.PowerShell.Core/About/about_CommonParameters.md).
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -411,7 +434,7 @@ By default, this cmdlet returns no output.
 
 ### Microsoft.Management.Infrastructure.CimInstance
 
-When you use the **Passthru** parameter, this cmdlet returns the modified CIM instance object.
+When you use the **PassThru** parameter, this cmdlet returns the modified CIM instance object.
 
 ## NOTES
 
@@ -424,8 +447,8 @@ This cmdlet is only available on Windows platforms.
 
 ## RELATED LINKS
 
-[Get-CimInstance](get-ciminstance.md)
+[Get-CimInstance](Get-CimInstance.md)
 
 [New-CimInstance](New-CimInstance.md)
 
-[Remove-CimInstance](remove-ciminstance.md)
+[Remove-CimInstance](Remove-CimInstance.md)

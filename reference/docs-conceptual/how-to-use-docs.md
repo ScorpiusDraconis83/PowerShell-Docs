@@ -1,6 +1,6 @@
 ---
 description: This articles explains how to use the features of this site including search filtering and version selection.
-ms.date: 05/12/2023
+ms.date: 01/17/2025
 ms.topic: how-to
 title: How to use the PowerShell documentation
 ---
@@ -9,9 +9,9 @@ title: How to use the PowerShell documentation
 Welcome to the PowerShell online documentation. This site contains cmdlet reference for the
 following versions of PowerShell:
 
-- PowerShell 7.4 (LTS-current)
-- PowerShell 7.3
-- PowerShell 7.2 (LTS-current)
+- PowerShell 7.6 (preview)
+- PowerShell 7.5 (RC)
+- PowerShell 7.4 (LTS)
 - PowerShell 5.1
 
 ## Navigating the documentation
@@ -98,16 +98,18 @@ can choose **Previous Versions** from the version selector.
 
 ![Screenshot of the Previous Versions option.](media/how-to-use-docs/previous-versions.gif)
 
-This site contains documentation for the following topics:
+The previous versions site contains documentation for the following topics:
 
-- PowerShell 3.0
-- PowerShell 4.0
-- PowerShell 5.0
-- PowerShell 6
-- PowerShell 7.0
+- PowerShell 7.3
+- PowerShell 7.2
 - PowerShell 7.1
-- PowerShell Workflows
-- PowerShell Web Access
+- PowerShell 7.0
+- PowerShell 6
+- PowerShell 5.0
+  - PowerShell Workflows
+  - PowerShell Web Access
+- PowerShell 4.0
+- PowerShell 3.0
 
 <!-- link references -->
 [01]: https://aka.ms/PSLegacyDocs

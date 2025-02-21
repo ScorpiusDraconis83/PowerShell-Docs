@@ -1,7 +1,6 @@
 ---
 description: This article is an overview of how to get started as a contributor to the PowerShell documentation.
-ms.date: 07/26/2022
-ms.topic: conceptual
+ms.date: 01/17/2025
 title: Get started contributing to PowerShell documentation
 ---
 # Get started contributing to PowerShell documentation
@@ -10,15 +9,18 @@ This article is an overview of how to get started as a contributor to the PowerS
 
 ## PowerShell-Docs structure
 
-The [PowerShell-Docs repository][1] is divided into two groups of content: reference and
-conceptual.
+There are three categories of content in the [PowerShell-Docs][1] repository:
+
+- reference content
+- conceptual content
+- metadata and configuration files
 
 ### Reference content
 
 The reference content is the PowerShell cmdlet reference for the cmdlets that ship in PowerShell.
-The cmdlet [reference][2] is collected in versioned folders (like 5.1, 7.0, and 7.2), which contain
-reference for the modules that ship with PowerShell. This content is also used to create the help
-information displayed by the `Get-Help` cmdlet.
+The cmdlet [reference][2] is collected in versioned folders (like 5.1, 7.4, 7.5, and 7.6), which
+contain the reference for the modules that ship with PowerShell. This content is also used to create
+the help information displayed by the `Get-Help` cmdlet.
 
 ### Conceptual content
 
@@ -28,6 +30,36 @@ version of PowerShell.
 > [!NOTE]
 > Anytime a conceptual article is added, removed, or renamed, the TOC must be updated and deleted or
 > renamed files must be redirected.
+
+### Metadata files
+
+This project contains several types of metadata files. The metadata files control the behavior of
+our build tools and the publishing system. Only PowerShell-Docs maintainers and approved
+contributors are allowed to change these files. If you think that a meta file should be changed,
+open an issue to discuss the needed changes.
+
+Meta files in the root of the repository
+
+- `.*` - configuration files in the root of the repository
+- `*.md` - Project documentation in the root of the repository
+- `*.yml` - Project documentation in the root of the repository
+- `.devcontainer/*` - devcontainer configuration files
+- `.github/**/*` - GitHub templates, actions, and other meta files
+- `.vscode/**/*` - VS Code extension configurations
+- `assets/*` - contains downloadable files linked in the documentation
+- `redir/*` - contain redirection mapping files
+- `tests/*` - test tools used by the build system
+- `tools/*` - other tools used by the build system
+
+Meta files in the documentation set
+
+- `reference/**/*.json` - docset configuration files
+- `reference/**/*.yml` - TOC and other structured content files
+- `reference/bread/*` - breadcrumb navigation configuration
+- `reference/includes/*` - markdown include files
+- `reference/mapping/*` - version mapping configuration
+- `reference/**/media/**` - image files used in documentation
+- `reference/module/*` - Module Browser page configuration
 
 ## Creating new articles
 
@@ -96,7 +128,7 @@ more information and best practices.
 [2]: https://github.com/MicrosoftDocs/PowerShell-Docs/tree/main/reference
 [3]: https://github.com/MicrosoftDocs/PowerShell-Docs/tree/main/reference/docs-conceptual
 [4]: https://github.com/PowerShell/powershell-rfc/blob/master/RFC0000-RFC-Process.md
-[5]: /contribute/#quick-edits-to-existing-documents
+[5]: /contribute/content/how-to-write-quick-edits
 [6]: /contribute/how-to-write-workflows-major#making-your-changes
 [7]: /contribute/get-started-setup-local#fork-the-repository
 [8]: pull-requests.md

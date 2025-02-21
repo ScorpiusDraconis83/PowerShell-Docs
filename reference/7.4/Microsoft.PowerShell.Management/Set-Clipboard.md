@@ -2,7 +2,7 @@
 external help file: Microsoft.PowerShell.Commands.Management.dll-Help.xml
 Locale: en-US
 Module Name: Microsoft.PowerShell.Management
-ms.date: 09/11/2023
+ms.date: 08/30/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.management/set-clipboard?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
 title: Set-Clipboard
@@ -25,7 +25,8 @@ Set-Clipboard [-Value] <string[]> [-Append] [-PassThru] [-AsOSC52] [-WhatIf] [-C
 The `Set-Clipboard` cmdlet sets the contents of the clipboard.
 
 > [!NOTE]
-> On Linux, this cmdlet requires the `xclip` utility to be in the path.
+> On Linux, this cmdlet requires the `xclip` utility to be in the path. On macOS, this cmdlet uses
+> the `pbcopy` utility.
 
 ## EXAMPLES
 
@@ -92,7 +93,7 @@ Accept wildcard characters: False
 ### -AsOSC52
 
 When connected to a remote session over SSH, `Set-Clipboard` sets the clipboard of the remote
-machine, not the local host. When you use this parameter, `Set-Clipboard` the OSC52 ANSI escape
+machine, not the local host. When you use this parameter, `Set-Clipboard` uses the OSC52 ANSI escape
 sequence to set the clipboard of the local machine.
 
 For this feature to work, your terminal application must support the OSC52 ANSI escape sequence. The
@@ -108,7 +109,7 @@ Aliases: ToLocalhost
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: ByValue (False), ByName (False)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -202,6 +203,8 @@ PowerShell includes the following aliases for `Set-Clipboard`:
 
 - All platforms:
   - `scb`
+
+Support for this cmdlet on macOS was added in the PowerShell 7.0.0 release.
 
 ## RELATED LINKS
 

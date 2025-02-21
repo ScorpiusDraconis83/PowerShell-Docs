@@ -18,15 +18,15 @@ Extracts files from a specified archive (zipped) file.
 ### Path (Default)
 
 ```
-Expand-Archive [-Path] <String> [[-DestinationPath] <String>] [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Expand-Archive [-Path] <String> [[-DestinationPath] <String>] [-Force] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### LiteralPath
 
 ```
-Expand-Archive -LiteralPath <String> [[-DestinationPath] <String>] [-Force] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Expand-Archive -LiteralPath <String> [[-DestinationPath] <String>] [-Force] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -187,4 +187,4 @@ different than the source filename stored in the archive.
 
 ## RELATED LINKS
 
-[Compress-Archive](compress-archive.md)
+[Compress-Archive](Compress-Archive.md)

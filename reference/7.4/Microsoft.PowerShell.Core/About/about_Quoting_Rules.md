@@ -1,17 +1,25 @@
 ---
 description: Describes rules for using single and double quotation marks in PowerShell.
 Locale: en-US
-ms.date: 09/25/2023
+ms.date: 09/09/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_quoting_rules?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Quoting Rules
+title: about_Quoting_Rules
 ---
 # about_Quoting_Rules
 
 ## Short description
+
 Describes rules for using single and double quotation marks in PowerShell.
 
 ## Long description
+
+When parsing, PowerShell first looks to interpret input as an expression. But
+when a command invocation is encountered, parsing continues in argument mode.
+Non-numeric arguments without quotes are treated as strings. If you have
+arguments that contain spaces, such as paths, then you must enclose those
+argument values in quotes. For more information about argument parsing, see the
+**Argument mode** section of [about_Parsing][02].
 
 Quotation marks are used to specify a literal string. You can enclose a string
 in single quotation marks (`'`) or double quotation marks (`"`).
@@ -26,6 +34,15 @@ In commands to remote computers, quotation marks define the parts of the
 command that are run on the remote computer. In a remote session, quotation
 marks also determine whether the variables in a command are interpreted first
 on the local computer or on the remote computer.
+
+> [!NOTE]
+> PowerShell treats smart quotation marks, also called typographic or curly
+> quotes, as normal quotation marks for strings. Don't use smart quotation
+> marks to enclose strings. When writing strings that contain smart quotation
+> marks, follow the guidance in the
+> [Including quote characters in a string][01] section of this document. For
+> more information about smart quotation marks, see the _Smart Quotes_ section
+> in the Wikipedia article [Quotation marks in English][06].
 
 ## Double-quoted strings
 
@@ -68,14 +85,14 @@ enclosed in a subexpression. For example:
 ```
 
 ```Output
-PS version: 7.2.0
+PS version: 7.4.5
 ```
 
-To separate a variable name from subsequent characters in the string,
-enclose it in braces (`{}`). This is especially important if the variable name
-is followed by a colon (`:`). PowerShell considers everything between the `$`
-and the `:` a scope specifier, typically causing the interpretation to fail.
-For example, `"$HOME: where the heart is."` throws an error, but
+To separate a variable name from subsequent characters in the string, enclose
+it in braces (`{}`). This is especially important if the variable name is
+followed by a colon (`:`). PowerShell considers everything between the `$` and
+the `:` a scope specifier, typically causing the interpretation to fail. For
+example, `"$HOME: where the heart is."` throws an error, but
 `"${HOME}: where the heart is."` works as intended.
 
 To prevent the substitution of a variable value in a double-quoted string, use
@@ -195,6 +212,20 @@ output.
 ```Output
 Use a quotation mark (") to begin a string.
 Use a quotation mark (`") to begin a string.
+```
+
+Because PowerShell interprets smart quotation marks, like `‘`, `’`, `“`, and
+`”`, as normal quotation marks, smart quotation marks also need to be escaped.
+For example:
+
+```powershell
+"Double ““smart quotation marks`” must be escaped in a double-quoted string."
+'Single ‘‘smart quotation marks’’ must be escaped in a single-quoted string.'
+```
+
+```Output
+Double “smart quotation marks” must be escaped in a double-quoted string.
+Single ‘smart quotation marks’ must be escaped in a single-quoted string.
 ```
 
 ## Here-strings
@@ -353,7 +384,7 @@ see in the console.
 Collections, including arrays, are converted to strings by placing a single
 space between the string representations of the elements. A different separator
 can be specified by setting preference variable `$OFS`. For more information,
-see the [`$OFS` preference variable](about_preference_variables.md#ofs).
+see the [`$OFS` preference variable][04].
 
 Instances of any other type are converted to strings by calling the
 `ToString()` method, which may not give a meaningful representation. For
@@ -382,18 +413,59 @@ Name                           Value
 key                            value
 ```
 
+## Culture settings affect string interpretation
+
+The `ToString()` methods uses the current configured culture settings to
+convert values to strings. For example, the culture of the following PowerShell
+session is set to `de-DE`. When the `ToString()` method converts the value of
+`$x` to a string it uses a comma (`,`) for the decimal separator. Also, the
+`ToString()` method converts the date to a string using the appropriate format
+for the German locale settings.
+
+```powershell
+PS> Get-Culture
+
+LCID             Name             DisplayName
+----             ----             -----------
+1031             de-DE            German (Germany)
+
+PS> $x = 1.2
+PS> $x.ToString()
+1,2
+
+PS> (Get-Date 2024-03-19).ToString()
+19.03.2024 00:00:00
+```
+
+However, PowerShell uses the invariant culture when interpreting expandable
+string expressions.
+
+```powershell
+PS? "$x"
+1.2
+
+PS> "$(Get-Date 2024-03-19)"
+03/19/2024 00:00:00
+```
+
 ## Passing quoted strings to external commands
 
 Some native commands expect arguments that contain quote characters. PowerShell
 interprets the quoted string before passing it to the external command. This
 interpretation removes the outer quote characters.
 
-For more information about this behavior, see the
-[about_Parsing](about_Parsing.md#passing-arguments-that-contain-quote-characters)
-article.
+For more information about this behavior, see the [about_Parsing][03] article.
 
 ## See also
 
-- [about_Parsing](about_Parsing.md)
-- [about_Special_Characters](about_Special_Characters.md)
-- [ConvertFrom-StringData](xref:Microsoft.PowerShell.Utility.ConvertFrom-StringData)
+- [about_Special_Characters][05]
+- [ConvertFrom-StringData][07]
+
+<!-- link references -->
+[01]: #including-quote-characters-in-a-string
+[02]: about_Parsing.md#argument-mode
+[03]: about_Parsing.md#passing-arguments-that-contain-quote-characters
+[04]: about_Preference_Variables.md#ofs
+[05]: about_Special_Characters.md
+[06]: https://en.wikipedia.org/wiki/Quotation_marks_in_English#Smart_quotes
+[07]: xref:Microsoft.PowerShell.Utility.ConvertFrom-StringData

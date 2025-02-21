@@ -18,8 +18,8 @@ Specifies advanced options for the New-CimSession cmdlet.
 ### ProtocolTypeSet (Default)
 
 ```
-New-CimSessionOption [-Protocol] <ProtocolType> [-UICulture <CultureInfo>] [-Culture <CultureInfo>]
- [<CommonParameters>]
+New-CimSessionOption [-Protocol] <ProtocolType> [-UICulture <CultureInfo>]
+ [-Culture <CultureInfo>] [<CommonParameters>]
 ```
 
 ### WSManParameterSet
@@ -28,15 +28,16 @@ New-CimSessionOption [-Protocol] <ProtocolType> [-UICulture <CultureInfo>] [-Cul
 New-CimSessionOption [-NoEncryption] [-SkipCACheck] [-SkipCNCheck] [-SkipRevocationCheck]
  [-EncodePortInServicePrincipalName] [-Encoding <PacketEncoding>] [-HttpPrefix <Uri>]
  [-MaxEnvelopeSizeKB <UInt32>] [-ProxyAuthentication <PasswordAuthenticationMechanism>]
- [-ProxyCertificateThumbprint <String>] [-ProxyCredential <PSCredential>] [-ProxyType <ProxyType>]
- [-UseSsl] [-UICulture <CultureInfo>] [-Culture <CultureInfo>] [<CommonParameters>]
+ [-ProxyCertificateThumbprint <String>] [-ProxyCredential <PSCredential>]
+ [-ProxyType <ProxyType>] [-UseSsl] [-UICulture <CultureInfo>] [-Culture <CultureInfo>]
+ [<CommonParameters>]
 ```
 
 ### DcomParameterSet
 
 ```
-New-CimSessionOption [-Impersonation <ImpersonationType>] [-PacketIntegrity] [-PacketPrivacy]
- [-UICulture <CultureInfo>] [-Culture <CultureInfo>] [<CommonParameters>]
+New-CimSessionOption [-Impersonation <ImpersonationType>] [-PacketIntegrity]
+ [-PacketPrivacy] [-UICulture <CultureInfo>] [-Culture <CultureInfo>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -73,7 +74,14 @@ parameter, the credentials specified by the **ProxyCredential** parameter, and s
 command is to skip the CA check, skip the CN check, and use SSL.
 
 ```powershell
-New-CimSessionOption -ProxyAuthentication Kerberos -ProxyCredential $cred -SkipCACheck -SkipCNCheck -UseSsl
+$option = @{
+    ProxyAuthentication = 'Kerberos'
+    ProxyCredential = $cred
+    SkipCACheck = $true
+    SkipCNCheck = $true
+    UseSsl = $true
+}
+New-CimSessionOption @option
 ```
 
 ### Example 3: Create a CIM session options object with the culture specified
@@ -95,7 +103,8 @@ parameter using one of the following formats:
 
 - A culture name in `<languagecode2>-<country/regioncode2>` format such as "EN-US".
 - A variable that contains a **CultureInfo** object.
-- A command that gets a **CultureInfo** object, such as [Get-Culture](../Microsoft.PowerShell.Utility/Get-Culture.md)
+- A command that gets a **CultureInfo** object, such as
+  [Get-Culture](../Microsoft.PowerShell.Utility/Get-Culture.md)
 
 ```yaml
 Type: System.Globalization.CultureInfo
@@ -488,12 +497,12 @@ This cmdlet is only available on Windows platforms.
 
 ## RELATED LINKS
 
-[Get-ChildItem](../microsoft.powershell.management/get-childitem.md)
+[Get-ChildItem](../Microsoft.Powershell.Management/Get-ChildItem.md)
 
-[Get-Credential](../microsoft.powershell.security/get-credential.md)
+[Get-Credential](../Microsoft.Powershell.Security/Get-Credential.md)
 
-[Get-Culture](../microsoft.powershell.utility/get-culture.md)
+[Get-Culture](../Microsoft.Powershell.Utility/Get-Culture.md)
 
-[Get-Item](../microsoft.powershell.management/get-item.md)
+[Get-Item](../Microsoft.Powershell.Management/Get-Item.md)
 
 [New-CimSession](New-CimSession.md)

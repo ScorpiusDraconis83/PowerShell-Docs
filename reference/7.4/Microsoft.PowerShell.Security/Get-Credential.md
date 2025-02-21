@@ -2,7 +2,7 @@
 external help file: Microsoft.PowerShell.Security.dll-Help.xml
 Locale: en-US
 Module Name: Microsoft.PowerShell.Security
-ms.date: 12/12/2022
+ms.date: 05/15/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.security/get-credential?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
 title: Get-Credential
@@ -33,7 +33,10 @@ The `Get-Credential` cmdlet creates a credential object for a specified user nam
 can use the credential object in security operations.
 
 The `Get-Credential` cmdlet prompts the user for a password or a user name and password. You can use
-the **Message** parameter to specify a customized message in the command line prompt.
+the **Message** parameter to specify a customized message for the prompt.
+
+In Windows PowerShell 5.1 and earlier, Windows presents a dialog box to prompt for a user name and
+password. In PowerShell 6.0 and later, the prompt is presented in the console for all platforms.
 
 ## EXAMPLES
 
@@ -86,25 +89,24 @@ documentation in the SDK.
 
 ### Example 4
 
-This example shows how to create a credential object that is identical to the object that
-`Get-Credential` returns without prompting the user. This method requires a plain text password,
-which might violate the security standards in some enterprises.
+This example demonstrates how to create a credential object identical to the one returned by
+`Get-Credential`.
 
 ```powershell
 $User = "Domain01\User01"
-$PWord = ConvertTo-SecureString -String "P@sSwOrd" -AsPlainText -Force
+$PWord = Read-Host -Prompt 'Enter a Password' -AsSecureString
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $User, $PWord
 ```
 
-The first command saves the user account name in the `$User` parameter. The value must have the
-"Domain\User" or "ComputerName\User" format.
+The first command assigns the username to the `$User` variable. Ensure the value follows
+the "Domain\User" or "ComputerName\User" format.
 
-The second command uses the `ConvertTo-SecureString` cmdlet to create a secure string from a plain
-text password. The command uses the **AsPlainText** parameter to indicate that the string is plain
-text and the **Force** parameter to confirm that you understand the risks of using plain text.
+The second command uses the `Read-Host` cmdlet to create a secure string from user input. The
+**Prompt** parameter requests user input, and the **AsSecureString** parameter masks the input and
+converts it to a secure string.
 
 The third command uses the `New-Object` cmdlet to create a **PSCredential** object from the values
-in the `$User` and `$PWord` variables.
+stored in the `$User` and `$PWord` variables.
 
 ### Example 5
 
@@ -130,8 +132,8 @@ Invoke-Command -ComputerName Server01 {Get-Credential Domain01\User02}
 
 ```Output
 PowerShell Credential Request : PowerShell Credential Request
-Warning: This credential is being requested by a script or application on the SERVER01 remote computer. Enter your credentials only if you
- trust the remote computer and the application or script requesting it.
+Warning: This credential is being requested by a script or application on the SERVER01 remote computer.
+Enter your credentials only if you trust the remote computer and the application or script requesting it.
 
 Enter your credentials.
 Password for user Domain01\User02: ***************

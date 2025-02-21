@@ -1,6 +1,6 @@
 ---
 description: This article lists the modules and cmdlets that are included in various versions of PowerShell.
-ms.date: 01/10/2023
+ms.date: 01/17/2025
 title: Release history of modules and cmdlets
 ---
 # Release history of modules and cmdlets
@@ -9,6 +9,7 @@ This article lists the modules and cmdlets that are included in various versions
 is a summary of information found in the release notes. More detailed information can be found in
 the release notes:
 
+- [What's new in PowerShell 7.5][32]
 - [What's new in PowerShell 7.4][31]
 - [What's new in PowerShell 7.3][30]
 - [What's new in PowerShell 7.2][29]
@@ -19,7 +20,7 @@ This is a work in progress. Please help us keep this information fresh.
 
 ## Module release history
 
-|             ModuleName / PSVersion              |       5.1       |       7.2       |       7.3       |       7.4       |                    Note                     |
+|             ModuleName / PSVersion              |       5.1       |       7.4       |       7.5       |       7.6       |                    Note                     |
 | ----------------------------------------------- | --------------- | --------------- | --------------- | --------------- | ------------------------------------------- |
 | [CimCmdlets][05]                                | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] | Windows only                                |
 | [ISE (introduced in 2.0)][06]                   | ![Included][01] |                 |                 |                 | Windows only                                |
@@ -31,18 +32,18 @@ This is a work in progress. Please help us keep this information fresh.
 | [Microsoft.PowerShell.Management][12]           | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                             |
 | [Microsoft.PowerShell.ODataUtils][13]           | ![Included][01] |                 |                 |                 | Windows only                                |
 | [Microsoft.PowerShell.Operation.Validation][14] | ![Included][01] |                 |                 |                 | Windows only                                |
-| [Microsoft.PowerShell.Security][15]             | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                             |
-| [Microsoft.PowerShell.Utility][16]              | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                             |
-| [Microsoft.WsMan.Management][17]                | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] | Windows only                                |
-| [PackageManagement][18]                         | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                             |
-| [PowershellGet 1.1][19]                         | ![Included][01] |                 |                 |                 | Must upgrade to v2.x                        |
-| [PowershellGet 2.x][19]                         |                 | ![Included][01] | ![Included][01] | ![Included][01] | New versions available from the Gallery     |
-| [PowershellGet 3.x][20]                         |                 |                 |                 |                 | Available from the Gallery                  |
+| [Microsoft.PowerShell.PSResourceGet][15]        |                 | ![Included][01] | ![Included][01] | ![Included][01] | New versions available from the Gallery     |
+| [Microsoft.PowerShell.Security][16]             | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                             |
+| [Microsoft.PowerShell.Utility][17]              | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                             |
+| [Microsoft.WsMan.Management][18]                | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] | Windows only                                |
+| [PackageManagement][19]                         | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                             |
+| [PowershellGet 1.1][20]                         | ![Included][01] |                 |                 |                 | Must upgrade to v2.x                        |
+| [PowershellGet 2.x][20]                         |                 | ![Included][01] | ![Included][01] | ![Included][01] | New versions available from the Gallery     |
 | [PSDesiredStateConfiguration 1.1][21]           | ![Included][01] |                 |                 |                 | Removed in 7.2 - available from the Gallery |
-| [PSDesiredStateConfiguration 2.x][22]           |                 | ![Removed][02]  |                 |                 | Removed in 7.2 - available from the Gallery |
+| [PSDesiredStateConfiguration 2.x][22]           |                 |                 |                 |                 | Removed in 7.2 - available from the Gallery |
 | [PSDesiredStateConfiguration 3.x][23]           |                 |                 |                 |                 | Preview available from the Gallery          |
 | [PSDiagnostics][24]                             | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] | Windows only                                |
-| [PSReadLine][25]                                | v1.x            | v2.1            | v2.1            | v2.1            | New versions available from the Gallery     |
+| [PSReadLine][25]                                | v1.x            | v2.3.4          | v2.3.4          | v2.3.6          | New versions available from the Gallery     |
 | [PSScheduledJob][26]                            | ![Included][01] |                 |                 |                 | Windows only                                |
 | [PSWorkflow][27]                                | ![Included][01] |                 |                 |                 | Windows only                                |
 | [PSWorkflowUtility][27]                         | ![Included][01] |                 |                 |                 | Windows only                                |
@@ -52,7 +53,7 @@ This is a work in progress. Please help us keep this information fresh.
 
 ### CimCmdlets
 
-|         Cmdlet name         |       5.1       |       7.2       |       7.3       |       7.4       |     Note     |
+|         Cmdlet name         |       5.1       |       7.4       |       7.5       |       7.6       |     Note     |
 | --------------------------- | --------------- | --------------- | --------------- | --------------- | ------------ |
 | Export-BinaryMiLog          | ![Included][01] |                 |                 |                 | Windows only |
 | Get-CimAssociatedInstance   | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] | Windows only |
@@ -81,14 +82,14 @@ This modules is only available in Windows PowerShell.
 
 ### Microsoft.PowerShell.Archive
 
-|   Cmdlet name    |       5.1       |       7.2       |       7.3       |       7.4       | Note |
+|   Cmdlet name    |       5.1       |       7.4       |       7.5       |       7.6       | Note |
 | ---------------- | --------------- | --------------- | --------------- | --------------- | ---- |
 | Compress-Archive | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |      |
 | Expand-Archive   | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |      |
 
 ### Microsoft.PowerShell.Core
 
-|            Cmdlet name            |       5.1       |       7.2       |       7.3       |       7.4       |                    Note                    |
+|            Cmdlet name            |       5.1       |       7.4       |       7.5       |       7.6       |                    Note                    |
 | --------------------------------- | --------------- | --------------- | --------------- | --------------- | ------------------------------------------ |
 | Add-History                       | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                            |
 | Add-PSSnapin                      | ![Included][01] |                 |                 |                 | Windows only                               |
@@ -161,7 +162,7 @@ This modules is only available in Windows PowerShell.
 
 ### Microsoft.PowerShell.Diagnostics
 
-|  Cmdlet name   |       5.1       |       7.2       |       7.3       |       7.4       |     Note     |
+|  Cmdlet name   |       5.1       |       7.4       |       7.5       |       7.6       |     Note     |
 | -------------- | --------------- | --------------- | --------------- | --------------- | ------------ |
 | Export-Counter | ![Included][01] |                 |                 |                 | Windows only |
 | Get-Counter    | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] | Windows only |
@@ -171,7 +172,7 @@ This modules is only available in Windows PowerShell.
 
 ### Microsoft.PowerShell.Host
 
-|   Cmdlet name    |       5.1       |       7.2       |       7.3       |       7.4       | Note |
+|   Cmdlet name    |       5.1       |       7.4       |       7.5       |       7.6       | Note |
 | ---------------- | --------------- | --------------- | --------------- | --------------- | ---- |
 | Start-Transcript | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |      |
 | Stop-Transcript  | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |      |
@@ -200,7 +201,7 @@ This modules is only available in Windows PowerShell.
 
 ### Microsoft.PowerShell.Management
 
-|          Cmdlet name          |       5.1       |       7.2       |       7.3       |       7.4       |               Note               |
+|          Cmdlet name          |       5.1       |       7.4       |       7.5       |       7.6       |               Note               |
 | ----------------------------- | --------------- | --------------- | --------------- | --------------- | -------------------------------- |
 | Add-Computer                  | ![Included][01] |                 |                 |                 | Windows only                     |
 | Add-Content                   | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                  |
@@ -218,7 +219,7 @@ This modules is only available in Windows PowerShell.
 | Disable-ComputerRestore       | ![Included][01] |                 |                 |                 | Windows only                     |
 | Enable-ComputerRestore        | ![Included][01] |                 |                 |                 | Windows only                     |
 | Get-ChildItem                 | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                  |
-| Get-Clipboard                 | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] | NotsupportedonmacOS              |
+| Get-Clipboard                 | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                  |
 | Get-ComputerInfo              | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] | Windows only                     |
 | Get-ComputerRestorePoint      | ![Included][01] |                 |                 |                 | Windows only                     |
 | Get-Content                   | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                  |
@@ -311,9 +312,33 @@ This modules is only available in Windows PowerShell.
 | Get-OperationValidation    | ![Included][01] |      |
 | Invoke-OperationValidation | ![Included][01] |      |
 
+### Microsoft.PowerShell.PSResourceGet
+
+|           Cmdlet name           |       7.4       |       7.5       |       7.6       |             Note              |
+| ------------------------------- | --------------- | --------------- | --------------- | ----------------------------- |
+| Compress-PSResource             |                 | ![Included][01] | ![Included][01] | Added in v1.1.0 of the module |
+| Find-PSResource                 | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Get-InstalledPSResource         | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Get-PSResource                  | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Get-PSResourceRepository        | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Get-PSScriptFileInfo            | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Import-PSGetRepository          | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Install-PSResource              | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| New-PSScriptFileInfo            | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Publish-PSResource              | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Register-PSResourceRepository   | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Save-PSResource                 | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Set-PSResourceRepository        | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Test-PSScriptFileInfo           | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Uninstall-PSResource            | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Unregister-PSResourceRepository | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Update-PSModuleManifest         | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Update-PSResource               | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+| Update-PSScriptFileInfo         | ![Included][01] | ![Included][01] | ![Included][01] |                               |
+
 ### Microsoft.PowerShell.Security
 
-|        Cmdlet name        |       5.1       |       7.2       |       7.3       |       7.4       |                  Note                   |
+|        Cmdlet name        |       5.1       |       7.4       |       7.5       |       7.6       |                  Note                   |
 | ------------------------- | --------------- | --------------- | --------------- | --------------- | --------------------------------------- |
 | ConvertFrom-SecureString  | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                         |
 | ConvertTo-SecureString    | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                         |
@@ -333,19 +358,21 @@ This modules is only available in Windows PowerShell.
 
 ### Microsoft.PowerShell.Utility
 
-|        Cmdlet name        |       5.1       |       7.2       |       7.3       |       7.4       |                   Note                    |
+|        Cmdlet name        |       5.1       |       7.4       |       7.5       |       7.6       |                   Note                    |
 | ------------------------- | --------------- | --------------- | --------------- | --------------- | ----------------------------------------- |
 | Add-Member                | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
 | Add-Type                  | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
 | Clear-Variable            | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
 | Compare-Object            | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
+| Convert-String            | ![Included][01] |                 |                 |                 |                                           |
+| ConvertFrom-CliXml        |                 |                 | ![Included][01] | ![Included][01] | Added in 7.5                              |
 | ConvertFrom-Csv           | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
 | ConvertFrom-Json          | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
 | ConvertFrom-Markdown      |                 | ![Included][01] | ![Included][01] | ![Included][01] | Added in 6.1                              |
 | ConvertFrom-SddlString    | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] | Windows only                              |
 | ConvertFrom-String        | ![Included][01] |                 |                 |                 |                                           |
 | ConvertFrom-StringData    | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
-| Convert-String            | ![Included][01] |                 |                 |                 |                                           |
+| ConvertTo-CliXml          |                 |                 | ![Included][01] | ![Included][01] | Added in 7.5                              |
 | ConvertTo-Csv             | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
 | ConvertTo-Html            | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
 | ConvertTo-Json            | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
@@ -381,7 +408,7 @@ This modules is only available in Windows PowerShell.
 | Get-Random                | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
 | Get-Runspace              | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
 | Get-RunspaceDebug         | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
-| Get-SecureRandom          |                 |                 |                 | ![Included][01] | Added in 7.4                              |
+| Get-SecureRandom          |                 | ![Included][01] | ![Included][01] | ![Included][01] | Added in 7.4                              |
 | Get-TraceSource           | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
 | Get-TypeData              | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
 | Get-UICulture             | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |                                           |
@@ -456,7 +483,7 @@ This modules is only available in Windows PowerShell.
 
 ### Microsoft.WsMan.Management
 
-|      Cmdlet name       |       5.1       |       7.2       |       7.3       |       7.4       |     Note     |
+|      Cmdlet name       |       5.1       |       7.4       |       7.5       |       7.6       |     Note     |
 | ---------------------- | --------------- | --------------- | --------------- | --------------- | ------------ |
 | Connect-WSMan          | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] | Windows only |
 | Disable-WSManCredSSP   | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] | Windows only |
@@ -474,7 +501,7 @@ This modules is only available in Windows PowerShell.
 
 ### PackageManagement
 
-|       Cmdlet name        |       5.1       |       7.2       |       7.3       |       7.4       | Note |
+|       Cmdlet name        |       5.1       |       7.4       |       7.5       |       7.6       | Note |
 | ------------------------ | --------------- | --------------- | --------------- | --------------- | ---- |
 | Find-Package             | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |      |
 | Find-PackageProvider     | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |      |
@@ -492,7 +519,7 @@ This modules is only available in Windows PowerShell.
 
 ### PowershellGet 2.x
 
-|           Cmdlet name           |       5.1       |       7.2       |       7.3       |       7.4       | Note |
+|           Cmdlet name           |       5.1       |       7.4       |       7.5       |       7.6       | Note |
 | ------------------------------- | --------------- | --------------- | --------------- | --------------- | ---- |
 | Find-Command                    | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |      |
 | Find-DscResource                | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |      |
@@ -520,24 +547,6 @@ This modules is only available in Windows PowerShell.
 | Update-ModuleManifest           | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |      |
 | Update-Script                   | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |      |
 | Update-ScriptFileInfo           | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |      |
-
-### PowershellGet 3.x - Preview
-
-This modules is only available from the PowerShell Gallery.
-
-|              Name               | Note |
-| ------------------------------- | ---- |
-| Find-PSResource                 |      |
-| Get-InstalledPSResource         |      |
-| Get-PSResourceRepository        |      |
-| Install-PSResource              |      |
-| Publish-PSResource              |      |
-| Register-PSResourceRepository   |      |
-| Save-PSResource                 |      |
-| Set-PSResourceRepository        |      |
-| Uninstall-PSResource            |      |
-| Unregister-PSResourceRepository |      |
-| Update-PSResource               |      |
 
 ### PSDesiredStateConfiguration v1.1
 
@@ -583,12 +592,12 @@ This modules is only available from the PowerShell Gallery.
 | Configuration           | ![Included][01] |              |
 | ConvertTo-DscJsonSchema | ![Included][01] |              |
 | Get-DscResource         | ![Included][01] |              |
-| Invoke-DscResource      | ![Included][01] | Experimental |
+| Invoke-DscResource      | ![Included][01] |              |
 | New-DscChecksum         | ![Included][01] |              |
 
 ### PSDiagnostics
 
-|         Cmdlet name          |       5.1       |       7.2       |       7.3       |       7.4       |     Note     |
+|         Cmdlet name          |       5.1       |       7.4       |       7.5       |       7.6       |     Note     |
 | ---------------------------- | --------------- | --------------- | --------------- | --------------- | ------------ |
 | Disable-PSTrace              | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] | Windows only |
 | Disable-PSWSManCombinedTrace | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] | Windows only |
@@ -603,7 +612,7 @@ This modules is only available from the PowerShell Gallery.
 
 ### PSReadLine
 
-|         Cmdlet name         |       5.1       |       7.2       |       7.3       |       7.4       | Note |
+|         Cmdlet name         |       5.1       |       7.4       |       7.5       |       7.6       | Note |
 | --------------------------- | --------------- | --------------- | --------------- | --------------- | ---- |
 | Get-PSReadLineKeyHandler    | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |      |
 | Get-PSReadLineOption        | ![Included][01] | ![Included][01] | ![Included][01] | ![Included][01] |      |
@@ -647,7 +656,7 @@ This modules is only available in Windows PowerShell.
 
 ### ThreadJob
 
-|   Cmdlet name   | 5.1 |       7.2       |       7.3       |       7.4       |                Note                |
+|   Cmdlet name   | 5.1 |       7.4       |       7.5       |       7.6       |                Note                |
 | --------------- | --- | --------------- | --------------- | --------------- | ---------------------------------- |
 | Start-ThreadJob |     | ![Included][01] | ![Included][01] | ![Included][01] | Can be installed in PowerShell 5.1 |
 
@@ -666,12 +675,12 @@ This modules is only available in Windows PowerShell.
 [12]: #microsoftpowershellmanagement
 [13]: #microsoftpowershellodatautils
 [14]: #microsoftpowershelloperationvalidation
-[15]: #microsoftpowershellsecurity
-[16]: #microsoftpowershellutility
-[17]: #microsoftwsmanmanagement
-[18]: #packagemanagement
-[19]: #powershellget-2x
-[20]: #powershellget-3x---preview
+[15]: #microsoftpowershellpsresourceget
+[16]: #microsoftpowershellsecurity
+[17]: #microsoftpowershellutility
+[18]: #microsoftwsmanmanagement
+[19]: #packagemanagement
+[20]: #powershellget-2x
 [21]: #psdesiredstateconfiguration-v11
 [22]: #psdesiredstateconfiguration-v205
 [23]: #psdesiredstateconfiguration-v3x---preview
@@ -683,3 +692,4 @@ This modules is only available in Windows PowerShell.
 [29]: what-s-new-in-powershell-72.md
 [30]: what-s-new-in-powershell-73.md
 [31]: what-s-new-in-powershell-74.md
+[32]: what-s-new-in-powershell-75.md

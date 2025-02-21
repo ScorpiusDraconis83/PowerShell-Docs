@@ -4,7 +4,7 @@ Locale: en-US
 ms.date: 03/13/2020
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_remote_variables?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Remote Variables
+title: about_Remote_Variables
 ---
 # about_Remote_Variables
 
@@ -77,10 +77,11 @@ $ps = "*PowerShell*"
 Invoke-Command -Session $s -ScriptBlock {Get-WinEvent -LogName $Using:ps}
 ```
 
-A variable reference such as `$using:var` expands to the value of variable `$var`
-from the caller's context. You do not get access to the caller's variable object.
-The `Using` scope modifier cannot be used to modify a local variable within the
-**PSSession**. For example, the following code does not work:
+A variable reference such as `$using:var` expands to the value of variable
+`$var` from the caller's context. You do not get access to the caller's
+variable object. The `Using` scope modifier cannot be used to modify a local
+variable within the **PSSession**. For example, the following code does not
+work:
 
 ```powershell
 $s = New-PSSession -ComputerName S1

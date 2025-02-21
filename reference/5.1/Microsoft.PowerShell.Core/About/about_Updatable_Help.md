@@ -4,11 +4,12 @@ Locale: en-US
 ms.date: 10/20/2023
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_updatable_help?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Updatable Help
+title: about_Updatable_Help
 ---
 # about_Updatable_Help
 
 ## Short description
+
 Describes the updatable help system in PowerShell.
 
 ## Long description
@@ -390,8 +391,7 @@ to specify a different filesystem location, but they can't exclude the
 > only the policy setting under **Computer Configuration** is effective. The
 > policy setting under **User Configuration** is ignored.
 
-For more information, see
-[about_Group_Policy_Settings][04].
+For more information, see [about_Group_Policy_Settings][04].
 
 ## How to update help for non-standard modules
 

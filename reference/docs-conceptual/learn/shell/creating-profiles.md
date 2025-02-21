@@ -2,7 +2,7 @@
 description: >
   This article explains how to use your profile to save preferred PowerShell settings and optimize
   your shell experience.
-ms.date: 12/01/2022
+ms.date: 09/04/2024
 title: Customizing your shell environment
 ---
 # Customizing your shell environment
@@ -63,7 +63,7 @@ C:\Program Files\PowerShell\7\profile.ps1
 ## How to create your personal profile
 
 When you first install PowerShell on a system, the profile script files and the directories they
-belong to don't exist. The following command creates the "Current User, Current Current Host"
+belong to don't exist. The following command creates the "Current User, Current Host"
 profile script file if it doesn't exist.
 
 ```powershell
@@ -109,12 +109,13 @@ function prompt {
     $principal = [Security.Principal.WindowsPrincipal] $identity
     $adminRole = [Security.Principal.WindowsBuiltInRole]::Administrator
 
-    $prefix = $(if (Test-Path variable:/PSDebugContext) { '[DBG]: ' }
-                elseif ($principal.IsInRole($adminRole)) { "[ADMIN]: " }
-                else { '' })
-    $body = 'PS ' + $(Get-Location)
+    $prefix = if (Test-Path variable:/PSDebugContext) { '[DBG]: ' } else { '' }
+    if ($principal.IsInRole($adminRole)) {
+        $prefix = "[ADMIN]:$prefix"
+    }
+    $body = 'PS ' + $PWD.path
     $suffix = $(if ($NestedPromptLevel -ge 1) { '>>' }) + '> '
-    $prefix + $body + $suffix
+    "${prefix}${body}${suffix}"
 }
 
 ## Create $PSStyle if running on a version older than 7.2

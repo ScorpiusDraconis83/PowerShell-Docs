@@ -1,10 +1,10 @@
 ---
 description: Describes the operators that compare values in PowerShell.
 Locale: en-US
-ms.date: 10/30/2023
+ms.date: 01/19/2025
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_comparison_operators?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Comparison Operators
+title: about_Comparison_Operators
 ---
 # about_Comparison_Operators
 
@@ -44,8 +44,8 @@ specified patterns. PowerShell includes the following comparison operators:
 - `-contains`, `-icontains`, `-ccontains` - collection contains a value
 - `-notcontains`, `-inotcontains`, `-cnotcontains` - collection doesn't
   contain a value
-- `-in` - value is in a collection
-- `-notin` - value isn't in a collection
+- `-in`, `-iin`, `-cin` - value is in a collection
+- `-notin`, `-inotin`, `-cnotin` - value isn't in a collection
 
 **Type**
 
@@ -65,9 +65,13 @@ case-insensitive comparisons. The comparisons are between unicode code points
 and don't use culture-specific collation ordering. The results are the same
 regardless of the current culture.
 
-When the input of an operator is a scalar value, the operator returns a
-**Boolean** value. When the input is a collection, the operator returns the
-elements of the collection that match the right-hand value of the expression.
+When the left-hand value in the comparison expression is a [scalar][15] value,
+the operator returns a **Boolean** value. When the left-hand value in the
+expression is a collection, the operator returns the elements of the collection
+that match the right-hand value of the expression. Right-hand values are always
+treated as singleton instances, even when they're collections. The comparison
+operators can't effectively compare collections to collections.
+
 If there are no matches in the collection, comparison operators return an empty
 array. For example:
 
@@ -626,8 +630,8 @@ Examples:
 More complex examples:
 
 ```powershell
-$DomainServers = "ContosoDC1","ContosoDC2","ContosoFileServer","ContosoDNS",
-                 "ContosoDHCP","ContosoWSUS"
+$DomainServers = "ContosoDC1", "ContosoDC2", "ContosoFileServer",
+                 "ContosoDNS", "ContosoDHCP", "ContosoWSUS"
 $thisComputer  = "ContosoDC2"
 
 $DomainServers -contains $thisComputer
@@ -677,8 +681,8 @@ The following examples do the same thing that the examples for `-contains` and
 More complex examples:
 
 ```powershell
-$DomainServers = "ContosoDC1","ContosoDC2","ContosoFileServer","ContosoDNS",
-                 "ContosoDHCP","ContosoWSUS"
+$DomainServers = "ContosoDC1", "ContosoDC2", "ContosoFileServer",
+                 "ContosoDNS", "ContosoDHCP", "ContosoWSUS"
 $thisComputer  = "ContosoDC2"
 
 $thisComputer -in $DomainServers
@@ -747,3 +751,4 @@ $a -isnot $b.GetType() # Output: True
 [12]: xref:Microsoft.PowerShell.Core.ForEach-Object
 [13]: xref:Microsoft.PowerShell.Core.Where-Object
 [14]: xref:Microsoft.PowerShell.Utility.Compare-Object
+[15]: /powershell/scripting/learn/glossary#scalar-value

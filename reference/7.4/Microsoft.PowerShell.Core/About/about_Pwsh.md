@@ -1,19 +1,23 @@
 ---
 description: Explains how to use the `pwsh` command-line interface. Displays the command-line parameters and describes the syntax.
 Locale: en-US
-ms.date: 11/14/2023
-no-loc: [-File, -f, -Command, -c, -ConfigurationName, -config, -CustomPipeName, -EncodedCommand, -e, -ec, -ExecutionPolicy, -ex, -ep, -InputFormat, -inp, -if, -Interactive, -i, -Login, -l, -MTA, -NoExit, -noe, -NoLogo, -nol, -NonInteractive, -noni, -NoProfile, -nop, -OutputFormat, -o, -of, -SettingsFile, -settings, -SSHServerMode, -sshs, -STA, -Version, -v, -WindowStyle, -w, -WorkingDirectory, -wd, -Help]
+ms.date: 09/24/2024
+no-loc: [-File, -f, -Command, -c, -CommandWithArgs, -cwa, -ConfigurationName, -config, -CustomPipeName, -EncodedCommand, -e, -ec, -ExecutionPolicy, -ex, -ep, -InputFormat, -inp, -if, -Interactive, -i, -Login, -l, -MTA, -NoExit, -noe, -NoLogo, -nol, -NonInteractive, -noni, -NoProfile, -nop, -OutputFormat, -o, -of, -SettingsFile, -settings, -SSHServerMode, -sshs, -STA, -Version, -v, -WindowStyle, -w, -WorkingDirectory, -wd, -Help]
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_pwsh?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Pwsh
+title: about_Pwsh
 ---
 # about_Pwsh
 
 ## Short description
+
 Explains how to use the `pwsh` command-line interface. Displays the
 command-line parameters and describes the syntax.
 
 ## Long description
+
+For information about the command-line options for Windows PowerShell 5.1, see
+[about_PowerShell_exe][01].
 
 ## Syntax
 
@@ -27,7 +31,6 @@ Usage: pwsh[.exe]
     [-ConfigurationFile <filePath>]
     [-ConfigurationName <string>]
     [-CustomPipeName <string>]
-    [-EncodedArguments <Base64EncodedArguments>]
     [-EncodedCommand <Base64EncodedCommand>]
     [-ExecutionPolicy <ExecutionPolicy>]
     [-InputFormat {Text | XML}]
@@ -55,9 +58,8 @@ All parameters are case-insensitive.
 
 ### -File | -f
 
-If the value of `File` is `-`, the command text is read from standard input.
-Running `pwsh -File -` without redirected standard input starts a regular
-session. This is the same as not specifying the `File` parameter at all.
+The value of **File** can be `-` or a filepath and optional parameters. If the
+value of **File** is `-`, then commands are read from standard input.
 
 This is the default parameter if no parameters are present but values are
 present in the command line. The specified script runs in the local scope
@@ -68,8 +70,8 @@ characters typed after the File parameter name are interpreted as the script
 filepath followed by the script parameters.
 
 Typically, the switch parameters of a script are either included or omitted.
-For example, the following command uses the All parameter of the
-Get-Script.ps1 script file: `-File .\Get-Script.ps1 -All`
+For example, the following command uses the **All** parameter of the
+`Get-Script.ps1` script file: `-File .\Get-Script.ps1 -All`
 
 In rare cases, you might need to provide a **Boolean** value for a switch
 parameter. To provide a **Boolean** value for a switch parameter in the value
@@ -91,8 +93,8 @@ because it has no special meaning to the current `cmd.exe` shell. The
 Similarly, if you want to execute the same command from a _Batch script_, you
 would use `%~dp0` instead of `.\` or `$PSScriptRoot` to represent the current
 execution directory: `pwsh -File %~dp0test.ps1 -TestParam %windir%`. If you
-instead used `.\test.ps1`, PowerShell would throw an error because it can't
-find the literal path `.\test.ps1`
+use `.\test.ps1` instead, PowerShell throws an error because it can't find the
+literal path `.\test.ps1`
 
 > [!NOTE]
 > The **File** parameter can't support scripts using a parameter that expects
@@ -101,15 +103,21 @@ find the literal path `.\test.ps1`
 > as `powershell` or `pwsh`), it doesn't know what to do with an array, so
 > it's passed as a string.
 
-When the script file terminates with an `exit` command, the process exit code
-is set to the numeric argument used with the `exit` command. With normal
-termination, the exit code is always `0`.
-
-For more information, see `$LASTEXITCODE` in [about_Automatic_Variables][01].
+If the value of **File** is `-`, then commands are read from standard input.
+Running `pwsh -File -` without redirected standard input starts a regular
+session. This is the same as not specifying the `File` parameter at all. When
+reading from standard input, the input statements are executed one statement at
+a time as though they were typed at the PowerShell command prompt. If a
+statement doesn't parse correctly, the statement isn't executed. The process
+exit code is determined by status of the last (executed) command within the
+input. With normal termination, the exit code is always `0`. When the script
+file terminates with an `exit` command, the process exit code is set to the
+numeric argument used with the `exit` command.
 
 Similar to `-Command`, when a script-terminating error occurs, the exit code is
 set to `1`. However, unlike with `-Command`, when the execution is interrupted
-with <kbd>Ctrl</kbd>+<kbd>C</kbd> the exit code is `0`.
+with <kbd>Ctrl</kbd>+<kbd>C</kbd> the exit code is `0`. For more information,
+see `$LASTEXITCODE` in [about_Automatic_Variables][02].
 
 > [!NOTE]
 > As of PowerShell 7.2, the **File** parameter only accepts `.ps1` files on
@@ -118,10 +126,6 @@ with <kbd>Ctrl</kbd>+<kbd>C</kbd> the exit code is `0`.
 > file types.
 
 ### -Command | -c
-
-Executes the specified commands (and any parameters) as though they were typed
-at the PowerShell command prompt, and then exits, unless the `NoExit`
-parameter is specified.
 
 The value of **Command** can be `-`, a script block, or a string. If the value
 of **Command** is `-`, the command text is read from standard input.
@@ -146,9 +150,9 @@ contents of the script block back out to you.
 A string passed to **Command** is still executed as PowerShell code, so the
 script block curly braces are often not required in the first place when
 running from `cmd.exe`. To execute an inline script block defined inside a
-string, the [call operator][02] `&` can be used:
+string, the [call operator][03] `&` can be used:
 
-```
+```powershell
 pwsh -Command "& {Get-WinEvent -LogName security}"
 ```
 
@@ -160,7 +164,7 @@ When called from within an existing PowerShell session, the results are
 returned to the parent shell as deserialized XML objects, not live objects. For
 other shells, the results are returned as strings.
 
-If the value of **Command** is `-`, the command text is read from standard
+If the value of **Command** is `-`, the commands are read from standard
 input. You must redirect standard input when using the **Command** parameter
 with standard input. For example:
 
@@ -172,7 +176,7 @@ with standard input. For example:
   % { "$_ there" }
 
 "out"
-'@ | powershell -NoProfile -Command -
+'@ | pwsh -NoProfile -Command -
 ```
 
 This example produces the following output:
@@ -183,18 +187,24 @@ hi there
 out
 ```
 
+When reading from standard input, the input is parsed and executed one
+statement at a time, as though they were typed at the PowerShell command
+prompt. If the input code doesn't parse correctly, the statement isn't
+executed. Unless you use the `-NoExit` parameter, the PowerShell session exits
+when there is no more input to read from standard input.
+
 The process exit code is determined by status of the last (executed) command
-within the script block. The exit code is `0` when `$?` is `$true` or `1` when
-`$?` is `$false`. If the last command is an external program or a PowerShell
-script that explicitly sets an exit code other than `0` or `1`, that exit code
-is converted to `1` for process exit code. To preserve the specific exit code,
-add `exit $LASTEXITCODE` to your command string or script block.
+within the input. The exit code is `0` when `$?` is `$true` or `1` when `$?` is
+`$false`. If the last command is an external program or a PowerShell script
+that explicitly sets an exit code other than `0` or `1`, that exit code is
+converted to `1` for process exit code. Similarly, the value 1 is returned when
+a script-terminating (runspace-terminating) error, such as a `throw` or
+`-ErrorAction Stop`, occurs or when execution is interrupted with
+<kbd>Ctrl</kbd>+<kbd>C</kbd>.
 
-For more information, see `$LASTEXITCODE` in [about_Automatic_Variables][01].
-
-Similarly, the value 1 is returned when a script-terminating
-(runspace-terminating) error, such as a `throw` or `-ErrorAction Stop`, occurs
-or when execution is interrupted with <kbd>Ctrl</kbd>+<kbd>C</kbd>.
+To preserve the specific exit code, add `exit $LASTEXITCODE` to your command
+string or script block. For more information, see `$LASTEXITCODE` in
+[about_Automatic_Variables][02].
 
 ### -CommandWithArgs | -cwa
 
@@ -217,6 +227,20 @@ This example produces the following output:
 ```Output
 arg: arg1
 arg: arg2
+```
+
+> [!NOTE]
+> [Argument parsing with quotes][05] causes the example to fail if run from
+> `cmd.exe` or `powershell.exe`. To run from those, you can use
+
+```Cmd
+REM Quoting required when run from cmd.exe
+pwsh -CommandWithArgs "$args | % { ""arg: $_"" }" arg1 arg2
+```
+
+```powershell
+# Quoting required when run from powershell.exe
+pwsh -CommandWithArgs '"$args | % { ""arg: $_"" }"' arg1 arg2
 ```
 
 ### -ConfigurationName | -config
@@ -252,12 +276,6 @@ pwsh -CustomPipeName mydebugpipe
 Enter-PSHostProcess -CustomPipeName mydebugpipe
 ```
 
-### -EncodedArguments | -encodeda | -ea
-
-Accepts a Base64-encoded string version command arguments. Use this parameter
-to submit arguments that require complex, nested quoting. The Base64
-representation must be a UTF-16LE encoded string.
-
 ### -EncodedCommand | -e | -ec
 
 Accepts a Base64-encoded string version of a command. Use this parameter to
@@ -270,7 +288,7 @@ For example:
 $command = 'dir "c:\program files" '
 $bytes = [System.Text.Encoding]::Unicode.GetBytes($command)
 $encodedCommand = [Convert]::ToBase64String($bytes)
-pwsh -encodedcommand $encodedCommand
+pwsh -EncodedCommand $encodedCommand
 ```
 
 ### -ExecutionPolicy | -ex | -ep
@@ -307,10 +325,11 @@ To set up `pwsh` as the login shell on UNIX-like operating systems:
 - Verify that the full absolute path to `pwsh` is listed under `/etc/shells`
   - This path is usually something like `/usr/bin/pwsh` on Linux or
     `/usr/local/bin/pwsh` on macOS
-  - With some installation methods, this entry will be added automatically at installation time
+  - With some installation methods, this entry will be added automatically at
+    installation time
   - If `pwsh` isn't present in `/etc/shells`, use an editor to append the path
     to `pwsh` on the last line. This requires elevated privileges to edit.
-- Use the [chsh][03] utility to set your current
+- Use the [chsh][04] utility to set your current
   user's shell to `pwsh`:
 
   ```sh
@@ -389,7 +408,8 @@ non-Windows platforms results in an error.
 
 ### -Version | -v
 
-Displays the version of PowerShell. Additional parameters are ignored.
+Displays the version of this PowerShell executable. Additional parameters are
+ignored.
 
 ### -WindowStyle | -w
 
@@ -410,6 +430,8 @@ Displays help for `pwsh`. If you are typing a pwsh command in PowerShell,
 prepend the command parameters with a hyphen (`-`), not a forward slash (`/`).
 
 <!-- link references -->
-[01]: about_Automatic_Variables.md#lastexitcode
-[02]: about_operators.md#special-operators
-[03]: https://linux.die.net/man/1/chsh
+[01]: /powershell/module/microsoft.powershell.core/about/about_powershell_exe?view=powershell-5.1&preserve-view=true
+[02]: about_Automatic_Variables.md#lastexitcode
+[03]: about_Operators.md#special-operators
+[04]: https://linux.die.net/man/1/chsh
+[05]: about_Parsing.md#passing-arguments-that-contain-quote-characters

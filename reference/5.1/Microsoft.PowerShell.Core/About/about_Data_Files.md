@@ -4,11 +4,12 @@ Locale: en-US
 ms.date: 01/19/2023
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_data_files?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Data Files
+title: about_Data_Files
 ---
 # about_Data_Files
 
 ## Short description
+
 PowerShell data files are used to store arbitrary data using PowerShell syntax.
 
 ## Long description
@@ -47,10 +48,10 @@ the commands and variables that can be used.
 
 For more information, see [about_Language_Modes][02].
 
-Originally, localized data files were meant to be used to store string data that
-could be translated into other languages. This allowed your scripts to import
-the data to provide localized string output in other languages. However, you
-aren't limited to storing string data and don't have to use the data for
+Originally, localized data files were meant to be used to store string data
+that could be translated into other languages. This allowed your scripts to
+import the data to provide localized string output in other languages. However,
+you aren't limited to storing string data and don't have to use the data for
 localized output.
 
 The data in the file isn't limited to hashtables. It can be in any format

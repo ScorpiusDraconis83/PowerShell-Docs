@@ -2,7 +2,7 @@
 external help file: Microsoft.PowerShell.Commands.Utility.dll-Help.xml
 Locale: en-US
 Module Name: Microsoft.PowerShell.Utility
-ms.date: 12/23/2022
+ms.date: 01/25/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
 title: Invoke-WebRequest
@@ -16,12 +16,13 @@ Gets content from a web page on the internet.
 ## SYNTAX
 
 ```
-Invoke-WebRequest [-UseBasicParsing] [-Uri] <Uri> [-WebSession <WebRequestSession>] [-SessionVariable <String>]
- [-Credential <PSCredential>] [-UseDefaultCredentials] [-CertificateThumbprint <String>]
- [-Certificate <X509Certificate>] [-UserAgent <String>] [-DisableKeepAlive] [-TimeoutSec <Int32>]
- [-Headers <IDictionary>] [-MaximumRedirection <Int32>] [-Method <WebRequestMethod>] [-Proxy <Uri>]
- [-ProxyCredential <PSCredential>] [-ProxyUseDefaultCredentials] [-Body <Object>] [-ContentType <String>]
- [-TransferEncoding <String>] [-InFile <String>] [-OutFile <String>] [-PassThru] [<CommonParameters>]
+Invoke-WebRequest [-UseBasicParsing] [-Uri] <Uri> [-WebSession <WebRequestSession>]
+ [-SessionVariable <String>] [-Credential <PSCredential>] [-UseDefaultCredentials]
+ [-CertificateThumbprint <String>] [-Certificate <X509Certificate>] [-UserAgent <String>]
+ [-DisableKeepAlive] [-TimeoutSec <Int32>] [-Headers <IDictionary>] [-MaximumRedirection <Int32>]
+ [-Method <WebRequestMethod>] [-Proxy <Uri>] [-ProxyCredential <PSCredential>]
+ [-ProxyUseDefaultCredentials] [-Body <Object>] [-ContentType <String>] [-TransferEncoding <String>]
+ [-InFile <String>] [-OutFile <String>] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -49,10 +50,10 @@ This cmdlet was introduced in Windows PowerShell 3.0.
 This example uses the `Invoke-WebRequest` cmdlet to send a web request to the Bing.com site.
 
 ```powershell
-$Response = Invoke-WebRequest -URI https://www.bing.com?q=how+many+feet+in+a+mile
-$Response.AllElements | Where-Object {
-    $_.name -like "* Value" -and $_.tagName -eq "INPUT"
-} | Select-Object Name, Value
+$Response = Invoke-WebRequest -UseBasicParsing -URI https://www.bing.com?q=how+many+feet+in+a+mile
+$Response.InputFields |
+    Where-Object name -like "* Value" |
+    Select-Object name, value
 ```
 
 ```Output
@@ -62,11 +63,10 @@ From Value 1
 To Value   5280
 ```
 
-The first command issues the request and saves the response in the `$Response` variable.
-
-The second command filters the objects in the **AllElements** property where the **name** property
-is like "* Value" and the **tagName** is "INPUT". The filtered results are piped to `Select-Object`
-to select the **name** and **value** properties.
+The data returned by `Invoke-WebRequest` is stored in the `$Response` variable. The **InputFields**
+property of the response contains the form fields. `Where-Object` is used to filter the form fields
+to those where the **name** property is like "* Value". The filtered results are piped to
+`Select-Object` to select the **name** and **value** properties.
 
 ### Example 2: Use a stateful web service
 
@@ -263,11 +263,11 @@ Accept wildcard characters: False
 Specifies the digital public key certificate (X509) of a user account that has permission to send
 the request. Enter the certificate thumbprint of the certificate.
 
-Certificates are used in client certificate-based authentication. They can be mapped only to local
-user accounts; they don't work with domain accounts.
+Certificates are used in client certificate-based authentication. Certificates can only be mapped
+only to local user accounts, not domain accounts.
 
-To get a certificate thumbprint, use the `Get-Item` or `Get-ChildItem` command in the PowerShell
-`Cert:` drive.
+To see the certificate thumbprint, use the `Get-Item` or `Get-ChildItem` command to find the
+certificate in `Cert:\CurrentUser\My`.
 
 ```yaml
 Type: System.String
@@ -285,9 +285,21 @@ Accept wildcard characters: False
 
 Specifies the content type of the web request.
 
-If this parameter is omitted and the request method is POST, `Invoke-WebRequest` sets the content
-type to `application/x-www-form-urlencoded`. Otherwise, the content type isn't specified in the
-call.
+If the value for **ContentType** contains the encoding format (as `charset`), the cmdlet uses that
+format to encode the body of the web request. If the **ContentType** doesn't specify an encoding
+format, the default encoding format is used instead. An example of a **ContentType** with an
+encoding format is `text/plain; charset=iso-8859-5`, which specifies the
+[Latin/Cyrillic](https://www.iso.org/standard/28249.html) alphabet.
+
+If you omit the parameter, the content type may be different based on the HTTP method you use:
+
+- For a POST method, the content type is `application/x-www-form-urlencoded`
+- For a PUT method, the content type is `application/json`
+- For other methods, the content type isn't specified in the request
+
+If you are using the **InFile** parameter to upload a file, you should set the content type.
+Usually, the type should be `application/octet-stream`. However, you need to set the content type
+based on the requirements of the endpoint.
 
 ```yaml
 Type: System.String
@@ -366,9 +378,12 @@ Accept wildcard characters: False
 
 ### -InFile
 
-Gets the content of the web request from a file.
+Gets the content of the web request body from a file. Enter a path and filename. If you omit the
+path, the default is the current location.
 
-Enter a path and file name. If you omit the path, the default is the current location.
+You also need to set the content type of the request. For example, to upload a file you should set
+the content type. Usually, the type should be `application/octet-stream`. However, you need to set
+the content type based on the requirements of the endpoint.
 
 ```yaml
 Type: System.String
@@ -434,7 +449,7 @@ Specifies the output file for which this cmdlet saves the response body. Enter a
 If you omit the path, the default is the current location.
 
 By default, `Invoke-WebRequest` returns the results to the pipeline. To send the results to a file
-and to the pipeline, use the **Passthru** parameter.
+and to the pipeline, use the **PassThru** parameter.
 
 ```yaml
 Type: System.String
@@ -452,6 +467,11 @@ Accept wildcard characters: False
 
 Indicates that the cmdlet returns the results, in addition to writing them to a file. This parameter
 is valid only when the **OutFile** parameter is also used in the command.
+
+> [!NOTE]
+> When you use the **PassThru** parameter, the output is written to the pipeline but the file is
+> empty. For more information, see
+> [PowerShell Issue #15409](https://github.com/PowerShell/PowerShell/issues/15409).
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
@@ -666,7 +686,7 @@ each operating system and platform.
 
 To test a website with the standard user agent string that is used by most Internet browsers, use
 the properties of the [PSUserAgent](/dotnet/api/microsoft.powershell.commands.psuseragent) class,
-such as Chrome, FireFox, InternetExplorer, Opera, and Safari. For example, the following command
+such as Chrome, Firefox, InternetExplorer, Opera, and Safari. For example, the following command
 uses the user agent string for Internet Explorer:
 `Invoke-WebRequest -Uri https://website.com/ -UserAgent ([Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer)`
 

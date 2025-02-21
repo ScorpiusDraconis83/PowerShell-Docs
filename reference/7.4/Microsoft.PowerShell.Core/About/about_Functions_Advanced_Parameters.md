@@ -1,10 +1,10 @@
 ---
 description: Explains how to add parameters to advanced functions.
 Locale: en-US
-ms.date: 06/22/2023
+ms.date: 01/06/2025
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_functions_advanced_parameters?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Functions Advanced Parameters
+title: about_Functions_Advanced_Parameters
 ---
 
 # about_Functions_Advanced_Parameters
@@ -19,15 +19,68 @@ You can add parameters to the advanced functions that you write, and use
 parameter attributes and arguments to limit the parameter values that function
 users submit with the parameter.
 
-The parameters that you add to your function are available to users in addition
-to the common parameters that PowerShell adds automatically to all cmdlets and
-advanced functions. For more information about the PowerShell common
-parameters, see [about_CommonParameters][06].
+When you use the `CmdletBinding` attribute, PowerShell automatically adds the
+Common Parameters. You can't create any parameters that use the same names as
+the Common Parameters. For more information, see [about_CommonParameters][06].
 
 Beginning in PowerShell 3.0, you can use splatting with `@Args` to represent
 the parameters in a command. Splatting is valid on simple and advanced
 functions. For more information, see [about_Functions][14] and
 [about_Splatting][17].
+
+## Parameter declaration
+
+Parameters are variables declared in the `param()` statement of a function or
+script block. You can use the optional `[Parameter()]` attribute alone or in
+combination with the `[Alias()]` attribute or any of the parameter validation
+attributes.
+
+Parameter names follow the rules for variable names. Parameter names consist of
+decimal digits, alphabetic characters, and underscores. For a complete list of
+naming rules, see [about_Variables][20].
+
+> [!IMPORTANT]
+> It's possible to define a parameter that starts with a decimal digit.
+> Starting parameter names with a digit isn't recommended because PowerShell
+> treats them as string values passed as positional parameters.
+
+Consider the following example:
+
+```powershell
+function TestFunction {
+    param (
+        [switch] $100,
+        [string] $200
+    )
+
+    "100: $100"
+    "200: $200"
+}
+```
+
+If you try to use the parameters, PowerShell interprets them as strings passed
+as positional parameter.
+
+```powershell
+PS> TestFunction -100 -200 Hello
+100: False
+200: -100
+$args: -200 Hello
+```
+
+The output shows that PowerShell has bound the value `-100` to the `$200`
+parameter variable. The remaining positional values are bound to `$args`. To
+work around the issue, you can use splatting to pass the parameter values.
+
+```powershell
+PS> $ht = @{100 = $true; 200 = 'Hello'}
+PS> TestFunction @ht
+100: True
+200: Hello
+$args:
+```
+
+For more information, see [about_Splatting][17].
 
 ## Type conversion of parameter values
 
@@ -82,7 +135,7 @@ function Get-Date_Func {
   }
 }
 
-[cultureinfo]::CurrentCulture = 'de-DE'
+[CultureInfo]::CurrentCulture = 'de-DE'
 
 # This German-format date string doesn't work with the invariant culture.
 # E.g., [datetime] '19-06-2018' breaks.
@@ -99,6 +152,8 @@ Get-Date_Func: Cannot process argument transformation on parameter 'Date'.
 Cannot convert value "19-06-2018" to type "System.DateTime". Error:
 "String '19-06-2018' was not recognized as a valid DateTime."
 ```
+
+For more information, see [about_Type_Conversion](about_Type_Conversion.md).
 
 ## Static parameters
 
@@ -200,7 +255,7 @@ they can be difficult for users to discover. To find a dynamic parameter, the
 user must be in the provider path, use the **ArgumentList** parameter of the
 `Get-Command` cmdlet, or use the **Path** parameter of `Get-Help`.
 
-To create a dynamic parameter for a function or script, use the `DynamicParam`
+To create a dynamic parameter for a function or script, use the `dynamicparam`
 keyword.
 
 The syntax is as follows:
@@ -222,7 +277,7 @@ function Get-Sample {
   [CmdletBinding()]
   param([string]$Name, [string]$Path)
 
-  DynamicParam
+  dynamicparam
   {
     if ($Path.StartsWith("HKLM:"))
     {
@@ -246,7 +301,8 @@ function Get-Sample {
 }
 ```
 
-For more information, see the documentation for the [RuntimeDefinedParameter][02] type.
+For more information, see the documentation for the
+[RuntimeDefinedParameter][02] type.
 
 ## Attributes of parameters
 
@@ -529,7 +585,7 @@ function Test-Remainder {
         "${i}: $($Remaining[$i])"
     }
 }
-Test-Remainder first one,two
+Test-Remainder first one, two
 ```
 
 ```Output
@@ -572,6 +628,28 @@ If there is no [comment-based help][01] for the function then this message is
 displayed in the `Get-Help -Full` output.
 
 This argument has no effect on optional parameters.
+
+#### DontShow argument
+
+The `DontShow` value is typically used to assist backwards compatibility for a
+command where an obsolete parameter cannot be removed. Setting `DontShow` to
+`True` hides the parameter from the user for tab expansion and IntelliSense.
+
+PowerShell v7 (and higher) uses `DontShow` to hide the following obsolete
+parameters:
+
+- The **NoTypeInformation** parameter of `ConvertTo-Csv` and `Export-Csv`
+- The **Raw** parameter of `Format-Hex`
+- The **UseBasicParsing** parameter of `Invoke-RestMethod` and
+  `Invoke-WebRequest`
+
+The `DontShow` argument has the following side effects:
+
+- Affects all parameter sets for the associated parameter, even if there's a
+  parameter set in which `DontShow` is unused.
+- Hides common parameters from tab completion and IntelliSense. `DontShow`
+  doesn't hide the optional common parameters: **WhatIf**, **Confirm**, or
+  **UseTransaction**.
 
 ### Alias attribute
 
@@ -739,7 +817,7 @@ For more information, see [about_Functions_Argument_Completion][11].
 
 The **ArgumentCompleter** attribute allows you to add tab completion values to
 a specific parameter. An **ArgumentCompleter** attribute must be defined for
-each parameter that needs tab completion. Like **DynamicParameters**, the
+each parameter that needs tab completion. Like **dynamicparameters**, the
 available values are calculated at runtime when the user presses <kbd>Tab</kbd>
 after the parameter name.
 
@@ -917,10 +995,10 @@ PowerShell generates an error if any value is outside that range.
 
 The **ValidateRangeKind** enum allows for the following values:
 
-- **Positive** - A number greater than zero.
-- **Negative** - A number less than zero.
-- **NonPositive** - A number less than or equal to zero.
-- **NonNegative** - A number greater than or equal to zero.
+- `Positive` - A number greater than zero.
+- `Negative` - A number less than zero.
+- `NonPositive` - A number less than or equal to zero.
+- `NonNegative` - A number greater than or equal to zero.
 
 In the following example, the value of the **Attempts** parameter must be
 between zero and ten.
@@ -1258,10 +1336,10 @@ True
 
 ### ValidateTrustedData validation attribute
 
-This attribute was added in PowerShell 6.1.1.
+This attribute is used internally by PowerShell itself and isn't intended for
+external usage.
 
-At this time, the attribute is used internally by PowerShell itself and isn't
-intended for external usage.
+This attribute was added in PowerShell 6.1.1.
 
 ## See also
 
@@ -1273,7 +1351,7 @@ intended for external usage.
 - [about_Functions_OutputTypeAttribute][13]
 
 <!-- link references -->
-[01]: ./about_comment_based_help.md
+[01]: about_Comment_Based_Help.md
 [02]: /dotnet/api/system.management.automation.runtimedefinedparameter
 [03]: /dotnet/standard/base-types/composite-formatting#composite-format-string
 [04]: /dotnet/standard/base-types/composite-formatting#format-string-component
@@ -1292,3 +1370,4 @@ intended for external usage.
 [17]: about_Splatting.md
 [18]: about_Tab_Expansion.md
 [19]: about_Wildcards.md
+[20]: about_Variables.md

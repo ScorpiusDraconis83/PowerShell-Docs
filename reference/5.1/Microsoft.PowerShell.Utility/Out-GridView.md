@@ -99,7 +99,7 @@ This example saves cmdlet output in a variable then sends it to `Out-GridView`.
 ```
 
 `Get-ChildItem` gets all the files in the PowerShell installation directory and its subdirectories
-using the the `$PSHOME` automatic variable. The parentheses in the command establish the order of
+using the `$PSHOME` automatic variable. The parentheses in the command establish the order of
 operations. As a result, the output from the `Get-ChildItem` command is saved in the `$A` variable
 before it is sent to `Out-GridView`.
 
@@ -111,7 +111,7 @@ This example displays the processes that are running on the Server01 computer in
 Get-Process -ComputerName "Server01" | ogv -Title "Processes - Server01"
 ```
 
-The examle uses `ogv`, which is the alias for the `Out-GridView` cmdlet. The **Title** parameter
+The example uses `ogv`, which is the alias for the `Out-GridView` cmdlet. The **Title** parameter
 specifies the window title.
 
 ### Example 6: Output data from remote computers to a grid view
@@ -188,7 +188,7 @@ The values of this parameter determine how many items you can send down the pipe
 - `Single`. Zero items or one item. Use this value when the next command can take only one input
   object.
 - `Multiple`. Zero, one, or many items. Use this value when the next command can take multiple input
-  objects. This value is equivalent to the **Passthru** parameter.
+  objects. This value is equivalent to the **PassThru** parameter.
 
 This parameter was introduced in Windows PowerShell 3.0.
 

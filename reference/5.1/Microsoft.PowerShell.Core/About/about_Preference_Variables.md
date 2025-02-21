@@ -1,10 +1,10 @@
 ---
 description: Variables that customize the behavior of PowerShell.
 Locale: en-US
-ms.date: 12/07/2023
+ms.date: 06/17/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_preference_variables?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Preference Variables
+title: about_Preference_Variables
 ---
 # about_Preference_Variables
 
@@ -62,13 +62,14 @@ PowerShell includes the following environment variables that store user
 preferences. For more information about these environment variables, see
 [about_Environment_Variables][30].
 
-- `env:PSExecutionPolicyPreference`
+- `$env:PSExecutionPolicyPreference`
 - `$env:PSModulePath`
 
 > [!NOTE]
-> Changes to preference variable only take effect in scripts and functions if
-> those scripts or functions are defined in the same scope as the scope in
-> which preference was used. For more information, see [about_Scopes][40].
+> Changes to preference variables apply only in the scope they are made
+> and any child scopes thereof. For example, you can limit the effects of
+> changing a preference variable to a single function or script. For more
+> information, see [about_Scopes][40].
 
 ## Working with preference variables
 
@@ -119,7 +120,8 @@ enumeration values: **High**, **Medium**, **Low**, or **None**.
 Cmdlets and functions are assigned a risk of **High**, **Medium**, or **Low**.
 When the value of the `$ConfirmPreference` variable is less than or equal to
 the risk assigned to a cmdlet or function, PowerShell automatically prompts you
-for confirmation before running the cmdlet or function.
+for confirmation before running the cmdlet or function. For more information
+about assigning a risk to cmdlets or functions, see [about_Functions_CmdletBindingAttribute][65].
 
 If the value of the `$ConfirmPreference` variable is **None**, PowerShell never
 automatically prompts you before running a cmdlet or function.
@@ -167,11 +169,11 @@ Cmdlets and functions that might pose a risk to the system have a **Confirm**
 parameter that you can use to request or suppress confirmation for a single
 command.
 
-Because most cmdlets and functions use the default risk value,
-**ConfirmImpact**, of **Medium**, and the default value of `$ConfirmPreference`
-is **High**, automatic confirmation rarely occurs. However, you can activate
-automatic confirmation by changing the value of `$ConfirmPreference` to
-**Medium** or **Low**.
+Most cmdlets and functions keep the default value of **Medium** for **ConfirmImpact**.
+`$ConfirmPreference` is set to **High** by default. Therefore, it's rare that commands
+automatically prompt for confirmation when users don't specify the **Confirm** parameter.
+To extend automatic confirmation prompting to more cmdlets and functions, set the value
+of `$ConfirmPreference` to **Medium** or **Low**.
 
 ### Examples
 
@@ -253,12 +255,14 @@ The valid values are as follows:
 - **Stop**: Displays the debug message and stops executing. Writes an error to
   the console.
 - **Inquire**: Displays the debug message and asks you whether you want to
-  continue. Adding the **Debug** common parameter to a command, when the
-  command is configured to generate a debugging message, changes the value of
-  the `$DebugPreference` variable to **Inquire**.
+  continue.
 - **Continue**: Displays the debug message and continues with execution.
 - **SilentlyContinue**: (Default) No effect. The debug message isn't displayed
   and execution continues without interruption.
+
+Adding the **Debug** common parameter to a command, when the command is
+configured to generate a debugging message, changes the value of the
+`$DebugPreference` variable to **Inquire**.
 
 ### Examples
 
@@ -468,7 +472,7 @@ the extra object generated to the `$Error` variable.
 ```powershell
 # Change the ErrorActionPreference to 'Stop'
 $ErrorActionPreference = 'Stop'
-# Error message is is generated and script stops processing
+# Error message is generated and script stops processing
 Write-Error -Message 'Test Error' ; Write-Host 'Hello World'
 
 # Show the ActionPreferenceStopException and the error generated
@@ -810,7 +814,7 @@ $Error[0]
 To display the oldest retained error, type:
 
 ```powershell
-$Error[($Error.Count -1]
+$Error[-1]
 ```
 
 The **Force** parameter overrides the special formatting of **ErrorRecord**
@@ -978,12 +982,12 @@ Remove-Variable OFS
 
 ## $OutputEncoding
 
-Determines the character encoding method that PowerShell uses when it sends
-text to other applications.
+Determines the character encoding method that PowerShell uses when piping data
+into native applications.
 
-For example, if an application returns Unicode strings to PowerShell, you might
-need to change the value to **UnicodeEncoding** to send the characters
-correctly.
+> [!NOTE]
+> In the majority of scenarios, the value for `$OutputEncoding` should align
+> to the value of `[Console]::InputEncoding`.
 
 The valid values are as follows: Objects derived from an Encoding class, such
 as [**ASCIIEncoding**][60],
@@ -996,10 +1000,6 @@ as [**ASCIIEncoding**][60],
 
 ### Examples
 
-This example shows how to make the Windows `findstr.exe` command work in
-PowerShell on a computer that's localized for a language that uses Unicode
-characters, such as Chinese.
-
 The first command finds the value of `$OutputEncoding`. Because the value is an
 encoding object, display only its **EncodingName** property.
 
@@ -1007,40 +1007,50 @@ encoding object, display only its **EncodingName** property.
 $OutputEncoding.EncodingName
 ```
 
-In this example, a `findstr.exe` command is used to search for two Chinese
-characters that are present in the `Test.txt` file. When this `findstr.exe`
-command is run in the Windows Command Prompt (`cmd.exe`), `findstr.exe` finds
-the characters in the text file. However, when you run the same `findstr.exe`
-command in PowerShell, the characters aren't found because the PowerShell sends
-them to `findstr.exe` in ASCII text, instead of in Unicode text.
+The remaining examples use the following PowerShell script saved as
+`hexdump.ps1` to illustrate the behavior of `$OutputEncoding`.
 
 ```powershell
-findstr <Unicode-characters>
+$inputStream = [Console]::OpenStandardInput()
+try {
+    $buffer = [byte[]]::new(1024)
+    $read = $inputStream.Read($buffer, 0, $buffer.Length)
+    $actual = [byte[]]::new($read)
+    [Array]::Copy($buffer, $actual, $read)
+    Format-Hex -InputObject $actual
+} finally {
+    $inputStream.Dispose()
+}
 ```
 
-To make the command work in PowerShell, set the value of `$OutputEncoding` to
-the value of the **OutputEncoding** property of the console, that's based on
-the locale selected for Windows. Because **OutputEncoding** is a static
-property of the console, use double-colons (`::`) in the command.
+The following example shows how the string value `café` is encoded to bytes
+when piped into `hexdump.ps1` created above. It demonstrates that the string
+value is encoded using the `windows-1252` encoding scheme which is the default
+encoding on the system tested in question.
 
 ```powershell
-$OutputEncoding = [console]::OutputEncoding
-$OutputEncoding.EncodingName
+'café' | powershell.exe -File .\hexdump.ps1
 ```
 
 ```Output
-OEM United States
+           00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+
+00000000   63 61 66 3F 0D 0A                                caf?..
 ```
 
-After the encoding change, the `findstr.exe` command finds the Unicode
-characters.
+The following example shows how the bytes change when changing the encoding
+to UTF-8. The `é` instead of being encoded to `0x3F` as done by `windows-1252`
+it will now become `0xC3 0xA9` due to the UTF-8 encoding being used.
 
 ```powershell
-findstr <Unicode-characters>
+$OutputEncoding = [System.Text.UTF8Encoding]::new()
+'café' | powershell.exe -File .\hexdump.ps1
 ```
 
 ```Output
-test.txt:         <Unicode-characters>
+           00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+
+00000000   63 61 66 C3 A9 0D 0A                             cafÃ©..
 ```
 
 ## $ProgressPreference
@@ -1242,8 +1252,10 @@ Used by `Start-Transcript` to specify the name and location of the transcript
 file. If you don't specify a value for the **Path** parameter,
 `Start-Transcript` uses the path in the value of the `$Transcript` global
 variable. If you haven't created this variable, `Start-Transcript` stores the
-transcripts in the `$HOME\My Documents` directory as
-`\PowerShell_transcript.<time-stamp>.txt` files.
+transcripts in the following location using the default name.
+
+- Default location: `$HOME\Documents`
+- Default filename: `PowerShell_transcript.<computername>.<random>.<timestamp>.txt`
 
 ## $VerbosePreference
 
@@ -1760,3 +1772,4 @@ At line:1 char:1
 [62]: xref:System.Text.UTF32Encoding
 [63]: xref:System.Text.UTF7Encoding
 [64]: xref:System.Text.UTF8Encoding
+[65]: about_Functions_CmdletBindingAttribute.md

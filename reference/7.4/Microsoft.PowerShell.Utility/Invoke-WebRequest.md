@@ -2,7 +2,7 @@
 external help file: Microsoft.PowerShell.Commands.Utility.dll-Help.xml
 Locale: en-US
 Module Name: Microsoft.PowerShell.Utility
-ms.date: 11/14/2023
+ms.date: 02/05/2025
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
 title: Invoke-WebRequest
@@ -487,7 +487,9 @@ Specifies the body of the request. The body is the content of the request that f
 You can also pipe a body value to `Invoke-WebRequest`.
 
 The **Body** parameter can be used to specify a list of query parameters or specify the content of
-the response.
+the response. For query parameters, the cmdlet uses the **System.Net.WebUtility.UrlEncode** method
+method to encode the key-value pairs. For more information about encoding strings for URLs, see
+[the UrlEncode() method reference](xref:System.Net.WebUtility.UrlEncode*).
 
 When the input is a POST request and the body is a **String**, the value to the left of the first
 equals sign (`=`) is set as a key in the form data and the remaining text is set as the value. To
@@ -546,11 +548,11 @@ Accept wildcard characters: False
 Specifies the digital public key certificate (X509) of a user account that has permission to send
 the request. Enter the certificate thumbprint of the certificate.
 
-Certificates are used in client certificate-based authentication. They can be mapped only to local
-user accounts; they don't work with domain accounts.
+Certificates are used in client certificate-based authentication. Certificates can only be mapped
+only to local user accounts, not domain accounts.
 
-To get a certificate thumbprint, use the `Get-Item` or `Get-ChildItem` command in the PowerShell
-`Cert:` drive.
+To see the certificate thumbprint, use the `Get-Item` or `Get-ChildItem` command to find the
+certificate in `Cert:\CurrentUser\My`.
 
 > [!NOTE]
 > This feature is only supported on Windows OS platforms.
@@ -602,11 +604,18 @@ format, the default encoding format is used instead. An example of a **ContentTy
 encoding format is `text/plain; charset=iso-8859-5`, which specifies the
 [Latin/Cyrillic](https://www.iso.org/standard/28249.html) alphabet.
 
-If this parameter is omitted and the request method is POST or PUT, `Invoke-WebRequest` sets the
-content type to `application/x-www-form-urlencoded`. Otherwise, the content type isn't specified in
-the call.
+If you omit the parameter, the content type may be different based on the HTTP method you use:
 
-**ContentType** is overridden when a **MultipartFormDataContent** object is supplied for **Body**.
+- For a POST method, the content type is `application/x-www-form-urlencoded`
+- For a PUT method, the content type is `application/json`
+- For other methods, the content type isn't specified in the request
+
+If you are using the **InFile** parameter to upload a file, you should set the content type.
+Usually, the type should be `application/octet-stream`. However, you need to set the content type
+based on the requirements of the endpoint.
+
+**ContentType** is overridden when the **Body** is a
+[MultipartFormDataContent](xref:System.Net.Http.MultipartFormDataContent) object.
 
 Starting in PowerShell 7.4, if you use this both this parameter and the **Headers** parameter to
 define the `Content-Type` header, the value specified in the **ContentType** parameter is used.
@@ -791,8 +800,12 @@ Accept wildcard characters: False
 
 ### -InFile
 
-Gets the content of the web request from a file. Enter a path and filename. If you omit the path,
-the default is the current location.
+Gets the content of the web request body from a file. Enter a path and filename. If you omit the
+path, the default is the current location.
+
+You also need to set the content type of the request. For example, to upload a file you should set
+the content type. Usually, the type should be `application/octet-stream`. However, you need to set
+the content type based on the requirements of the endpoint.
 
 ```yaml
 Type: System.String
@@ -827,8 +840,8 @@ Accept wildcard characters: False
 ### -MaximumRetryCount
 
 Specifies how many times PowerShell retries a connection when a failure code between 400 and 599,
-inclusive or 304 is received. Also see **RetryIntervalSec** parameter for specifying number of
-retries.
+inclusive or 304 is received. Also see **RetryIntervalSec** parameter for specifying the interval
+between retries.
 
 ```yaml
 Type: System.Int32
@@ -913,18 +926,17 @@ Accept wildcard characters: False
 
 ### -OutFile
 
-Specifies the output file for which this cmdlet saves the response body. Enter a path and filename.
+By default, `Invoke-WebRequest` returns the results to the pipeline. When you use the **OutFile**
+parameter, the results are saved to the specified file and not returned to the pipeline. Enter a
+path and filename. To send the results to a file and to the pipeline, add the **PassThru**
+parameter.
+
 If you omit the path, the default is the current location. The name is treated as a literal path.
 Names that contain brackets (`[]`) must be enclosed in single quotes (`'`).
 
-By default, `Invoke-WebRequest` returns the results to the pipeline. To send the results to a file
-and to the pipeline, use the **Passthru** parameter.
-
 Starting in PowerShell 7.4, you can specify a folder path without the filename. When you do, the
-file's name is the taken from either the
-[Content-Disposition](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition)
-of the response or the last segment of the resolved URI after any redirections. When you specify a
-folder path for **OutFile**, you can't use the **Resume** parameter.
+command uses the filename from the last segment of the resolved URI after any redirections. When
+you specify a folder path for **OutFile**, you can't use the **Resume** parameter.
 
 ```yaml
 Type: System.String
@@ -942,6 +954,11 @@ Accept wildcard characters: False
 
 Indicates that the cmdlet returns the results, in addition to writing them to a file. This parameter
 is valid only when the **OutFile** parameter is also used in the command.
+
+> [!NOTE]
+> When you use the **PassThru** parameter, the output is written to the pipeline but the file isn't
+> created. This is fixed in PowerShell 7.5-preview.4. For more information, see
+> [PowerShell Issue #15409](https://github.com/PowerShell/PowerShell/issues/15409).
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
@@ -1390,7 +1407,7 @@ variations for each operating system and platform.
 
 To test a website with the standard user agent string that's used by most internet browsers, use the
 properties of the [PSUserAgent](/dotnet/api/microsoft.powershell.commands.psuseragent) class, such
-as Chrome, FireFox, InternetExplorer, Opera, and Safari.
+as Chrome, Firefox, InternetExplorer, Opera, and Safari.
 
 For example, the following command uses the user agent string for Internet Explorer:
 `Invoke-WebRequest -Uri https://website.com/ -UserAgent ([Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer)`
@@ -1469,11 +1486,11 @@ PowerShell includes the following aliases for `Invoke-WebRequest`:
 Beginning with PowerShell 6.0.0 `Invoke-WebRequest` supports basic parsing only.
 
 For more information, see
-[BasicHtmlWebResponseObject](/dotnet/api/microsoft.powershell.commands.basichtmlwebresponseobject).
+[BasicHtmlWebResponseObject](xref:Microsoft.PowerShell.Commands.BasicHtmlWebResponseObject).
 
 Because of changes in .NET Core 3.1, PowerShell 7.0 and higher use the
-[HttpClient.DefaultProxy](/dotnet/api/system.net.http.httpclient.defaultproxy?view=netcore-3.1)
-Property to determine the proxy configuration.
+[HttpClient.DefaultProxy](xref:System.Net.Http.HttpClient.DefaultProxy*)
+property to determine the proxy configuration.
 
 The value of this property is determined by your platform:
 

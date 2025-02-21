@@ -2,7 +2,7 @@
 external help file: Microsoft.PowerShell.Commands.Management.dll-Help.xml
 Locale: en-US
 Module Name: Microsoft.PowerShell.Management
-ms.date: 11/13/2023
+ms.date: 08/09/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.management/get-childitem?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
 title: Get-ChildItem
@@ -153,7 +153,7 @@ This example displays `.txt` files that are located in the current directory and
 subdirectories.
 
 ```powershell
-Get-ChildItem -Path C:\Test\*.txt -Recurse -Force
+Get-ChildItem -Path .\*.txt -Recurse -Force
 ```
 
 ```Output
@@ -192,7 +192,7 @@ Mode                LastWriteTime         Length Name
 
 The `Get-ChildItem` cmdlet uses the **Path** parameter to specify `C:\Test\*.txt`. **Path** uses the
 asterisk (`*`) wildcard to specify all files with the filename extension `.txt`. The **Recurse**
-parameter searches the **Path** directory its subdirectories, as shown in the **Directory:**
+parameter searches the **Path** directory and its subdirectories, as shown in the **Directory:**
 headings. The **Force** parameter displays hidden files such as `hiddenfile.txt` that have a mode of
 **h**.
 
@@ -521,6 +521,10 @@ and second level of subdirectories. By default directory names and filenames are
 output.
 
 > [!NOTE]
+> The **Depth** parameter has no effect when used with the **Include** parameter. To work around
+> this issue, use the **Filter** parameter instead. This is fixed in PowerShell 6 and higher.
+
+> [!NOTE]
 > On a Windows computer from PowerShell or **cmd.exe**, you can display a graphical view of a
 > directory structure with the **tree.com** command.
 
@@ -801,6 +805,10 @@ after the inclusions, which can affect the final output.
 > [!NOTE]
 > The **Include** and **Exclude** parameters have no effect when used with the **LiteralPath**
 > parameter. This is fixed in PowerShell 7.
+
+> [!NOTE]
+> The **Depth** parameter has no effect when used with the **Include** parameter. To work around
+> this issue, use the **Filter** parameter instead. This is fixed in PowerShell 6.
 
 ```yaml
 Type: System.String[]

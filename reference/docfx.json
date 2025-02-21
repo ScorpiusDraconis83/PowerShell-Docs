@@ -13,14 +13,14 @@
       { "dest": "module/psdocs", "files": [ "toc.yml" ], "group": "powershell-5.1", "src": "5.1" },
       { "dest": "module", "exclude": [ "docs-conceptual/**" ], "files": [ "**/*.yml", "**/About/*.md" ], "group": "powershell-5.1", "src": "5.1" },
 
-      { "dest": "module/psdocs", "files": [ "toc.yml" ], "group": "powershell-7.2", "src": "7.2" },
-      { "dest": "module", "exclude": [ "docs-conceptual/**" ], "files": [ "**/*.yml", "**/About/*.md" ], "group": "powershell-7.2", "src": "7.2" },
-
-      { "dest": "module/psdocs", "files": [ "toc.yml" ], "group": "powershell-7.3", "src": "7.3" },
-      { "dest": "module", "exclude": [ "docs-conceptual/**" ], "files": [ "**/*.yml", "**/About/*.md" ], "group": "powershell-7.3", "src": "7.3" },
-
       { "dest": "module/psdocs", "files": [ "toc.yml" ], "group": "powershell-7.4", "src": "7.4" },
       { "dest": "module", "exclude": [ "docs-conceptual/**" ], "files": [ "**/*.yml", "**/About/*.md" ], "group": "powershell-7.4", "src": "7.4" },
+
+      { "dest": "module/psdocs", "files": [ "toc.yml" ], "group": "powershell-7.5", "src": "7.5" },
+      { "dest": "module", "exclude": [ "docs-conceptual/**" ], "files": [ "**/*.yml", "**/About/*.md" ], "group": "powershell-7.5", "src": "7.5" },
+
+      { "dest": "module/psdocs", "files": [ "toc.yml" ], "group": "powershell-7.6", "src": "7.6" },
+      { "dest": "module", "exclude": [ "docs-conceptual/**" ], "files": [ "**/*.yml", "**/About/*.md" ], "group": "powershell-7.6", "src": "7.6" },
 
       { "dest": "scripting", "files": [ "**/*.md" ], "src": "virtual-directory" },
       { "dest": "module", "files": [ "**/*.md" ], "src": "virtual-directory-module" }
@@ -34,31 +34,28 @@
         "docs-conceptual/learn/remoting/jea/*.md": "https://github.com/powershell/jea/issues/new",
         "docs-conceptual/windows-powershell/*.md": "https://support.microsoft.com/windows/send-feedback-to-microsoft-with-the-feedback-hub-app-f59187f8-8739-22d6-ba93-f66612949332"
       },
-      "ms.technology": {
-        "5.1/*.md": "powershell-conceptual",
-        "5.1/*.yml": "powershell-cmdlets",
-        "7.2/*.md": "powershell-conceptual",
-        "7.2/*.yml": "powershell-cmdlets",
-        "7.3/*.md": "powershell-conceptual",
-        "7.3/*.yml": "powershell-cmdlets",
-        "7.4/*.md": "powershell-conceptual",
-        "7.4/*.yml": "powershell-cmdlets",
-        "docs-conceptual/**/*.md": "powershell-conceptual"
+      "ms.subservice": {
+        "5.1/*.md": "conceptual",
+        "5.1/*.yml": "cmdlets",
+        "7*/*.md": "conceptual",
+        "docs-conceptual/**/*.md": "conceptual"
       },
       "ms.topic": {
-        "5.1/**/*": "managed-reference",
-        "7.2/**/*": "managed-reference",
-        "7.3/**/*": "managed-reference",
-        "7.4/**/*": "managed-reference",
+        "5.1/**/*": "reference",
+        "7*/**/*": "reference",
+        "docs-conceptual/community/contributing/**/*.md": "contributor-guide",
         "docs-conceptual/**/*.md": "conceptual",
-        "docs-conceptual/dev-cross-plat/**/*.md": "reference",
-        "docs-conceptual/developer/**/*.md": "reference",
-        "docs-conceptual/lang-spec/**/*.md": "reference",
+        "docs-conceptual/dev-cross-plat/**/*.md": "conceptual",
+        "docs-conceptual/developer/**/*.md": "conceptual",
+        "docs-conceptual/lang-spec/**/*.md": "language-reference",
         "docs-conceptual/learn/*.md": "tutorial",
         "docs-conceptual/learn/deep-dives/*.md": "tutorial",
         "docs-conceptual/learn/ps101/*.md": "conceptual",
         "docs-conceptual/learn/remoting/*.md": "tutorial",
-        "docs-conceptual/samples/**/*.md": "sample"
+        "docs-conceptual/samples/**/*.md": "sample",
+        "docs-conceptual/whats-new/**/*.md": "whats-new",
+        "docs-conceptual/windows-powershell/ise/*.md": "ui-reference",
+        "docs-conceptual/windows-powershell/ise/object-model/*.md": "reference"
       },
       "products": {
         "5.1/**/*": [
@@ -69,11 +66,15 @@
           "https://authoring-docs-microsoft.poolparty.biz/devrel/2bdae855-045f-4535-b365-7b2e23824328",
           "https://authoring-docs-microsoft.poolparty.biz/devrel/8bce367e-2e90-4b56-9ed5-5e4e9f3a2dc3"
         ],
-        "7.3/**/*": [
+        "7.4/**/*": [
           "https://authoring-docs-microsoft.poolparty.biz/devrel/2bdae855-045f-4535-b365-7b2e23824328",
           "https://authoring-docs-microsoft.poolparty.biz/devrel/8bce367e-2e90-4b56-9ed5-5e4e9f3a2dc3"
         ],
-        "7.4/**/*": [
+        "7.5/**/*": [
+          "https://authoring-docs-microsoft.poolparty.biz/devrel/2bdae855-045f-4535-b365-7b2e23824328",
+          "https://authoring-docs-microsoft.poolparty.biz/devrel/8bce367e-2e90-4b56-9ed5-5e4e9f3a2dc3"
+        ],
+        "7.6/**/*": [
           "https://authoring-docs-microsoft.poolparty.biz/devrel/2bdae855-045f-4535-b365-7b2e23824328",
           "https://authoring-docs-microsoft.poolparty.biz/devrel/8bce367e-2e90-4b56-9ed5-5e4e9f3a2dc3"
         ],
@@ -108,7 +109,7 @@
       "ms.author": "sewhee",
       "manager": "jasongroce",
       "ms.devlang": "powershell",
-      "ms.prod": "powershell",
+      "ms.service": "powershell",
       "ms.tgt_pltfr": "windows, macos, linux",
       "searchScope": [
         "PowerShell"
@@ -121,9 +122,9 @@
     "groups": {
       "conceptual": { "moniker_range": ">=powershell-5.1" },
       "powershell-5.1": { "moniker_range": "powershell-5.1" },
-      "powershell-7.2": { "moniker_range": "powershell-7.2" },
-      "powershell-7.3": { "moniker_range": "powershell-7.3" },
-      "powershell-7.4": { "moniker_range": "powershell-7.4" }
+      "powershell-7.4": { "moniker_range": "powershell-7.4" },
+      "powershell-7.5": { "moniker_range": "powershell-7.5" },
+      "powershell-7.6": { "moniker_range": "powershell-7.6" }
     },
     "markdownEngineName": "markdig",
     "overwrite": [],
