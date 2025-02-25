@@ -4,7 +4,7 @@ Locale: en-US
 ms.date: 07/10/2023
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_filesystem_provider?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about FileSystem Provider
+title: about_FileSystem_Provider
 ---
 # about_FileSystem_Provider
 
@@ -547,9 +547,10 @@ non-hidden items.
 
 The **Hidden** parameter was introduced in Windows PowerShell 3.0.
 
-To get only hidden items, use the **Hidden** parameter, its `h` or `ah` aliases,
-or the **Hidden** value of the **Attributes** parameter. To exclude hidden
-items, omit the **Hidden** parameter or use the **Attributes** parameter.
+To get only hidden items, use the **Hidden** parameter, its `h` or `ah`
+aliases, or the **Hidden** value of the **Attributes** parameter. To exclude
+hidden items, omit the **Hidden** parameter or use the **Attributes**
+parameter.
 
 #### Cmdlets supported
 
@@ -585,8 +586,8 @@ system files and folders, use the **Attributes** parameter.
 
 ### NewerThan \<DateTime\>
 
-Returns `$True` when the `LastWriteTime` value of a file is greater than the
-specified date. Otherwise, it returns `$False`.
+Returns `$true` when the `LastWriteTime` value of a file is greater than the
+specified date. Otherwise, it returns `$false`.
 
 Enter a [DateTime][01] object, such as one that the [Get-Date][37] cmdlet
 returns, or a string that can be converted to a **DateTime** object, such as
@@ -598,8 +599,8 @@ returns, or a string that can be converted to a **DateTime** object, such as
 
 ### OlderThan \<DateTime\>
 
-Returns `$True` when the `LastWriteTime` value of a file is less than the
-specified date. Otherwise, it returns `$False`.
+Returns `$true` when the `LastWriteTime` value of a file is less than the
+specified date. Otherwise, it returns `$false`.
 
 Enter a **DateTime** object, such as one that the `Get-Date` cmdlet
 returns, or a string that can be converted to a [DateTime][01] object, such as
@@ -681,7 +682,7 @@ Get-Help Get-ChildItem -Path c:
 
 - [about_Providers][08]
 
-<!-- updated link references -->
+<!-- link references -->
 [01]: /dotnet/api/system.datetime
 [02]: /dotnet/api/system.io.directoryinfo
 [03]: /dotnet/api/system.io.fileattributes

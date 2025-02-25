@@ -106,7 +106,7 @@ function  Enable-ProcessCreationEvent {
         EventName = 'EventArrived'
         SourceIdentifier = 'WMI.ProcessCreated'
         MessageData = 'Test'
-        Forward = $True
+        Forward = $true
     }
     Register-ObjectEvent @objectEventArgs
 }
@@ -128,7 +128,7 @@ Finally, we run the `Enable-ProcessCreationEvent` function in the remote session
 ### Example 4: Use the dynamic module in the PSEventJob object
 
 This example shows how to use the dynamic module in the **PSEventJob** object that is created when
-you include an **Action** in an event registration. First we createand and enable a timer object,
+you include an **Action** in an event registration. First we create and enable a timer object,
 then set the interval of the timer to 500 (milliseconds). The `Register-ObjectEvent` cmdlet
 registers the **Elapsed** event of the timer object. The **PSEventJob** object is saved in the
 `$Job` variable and is also available in the **Action** property of the event subscriber. For more
@@ -141,7 +141,7 @@ variable.
 ```powershell
 $Timer = New-Object Timers.Timer
 $Timer.Interval = 500
-$Timer.Enabled = $True
+$Timer.Enabled = $true
 $objectEventArgs = @{
     InputObject = $Timer
     EventName = 'Elapsed'
@@ -196,7 +196,7 @@ raised, instead of sending the event to the event queue. Enclose the commands in
 create a script block.
 
 The value of the **Action** parameter can include the `$Event`, `$EventSubscriber`, `$Sender`,
-`$EventArgs`, and `$Args` automatic variables. These variables provide information about the event
+`$EventArgs`, and `$args` automatic variables. These variables provide information about the event
 to the **Action** script block. For more information, see [about_Automatic_Variables](../Microsoft.PowerShell.Core/About/about_Automatic_Variables.md).
 
 When you specify an action, `Register-ObjectEvent` returns an event job object that represents

@@ -2,10 +2,10 @@
 description: Describes the operators that work with Microsoft .NET types.
 Locale: en-US
 ms.date: 08/29/2022
-online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_type_operators?view=powershell-5.1&WT.mc_id=ps-gethelp
 no-loc: [-as]
+online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_type_operators?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Type Operators
+title: about_Type_Operators
 ---
 # about_Type_Operators
 
@@ -73,7 +73,7 @@ The **Boolean** type operators (`-is` and `-isnot`) always return a **Boolean**
 value, even if the input is a collection of objects.
 
 If `<input>` is a type that is the same as or is _derived_ from the .NET Type,
-the `-is` operator returns `$True`.
+the `-is` operator returns `$true`.
 
 For example, the **DirectoryInfo** type is derived from the **FileSystemInfo**
 type. Therefore, both of these examples return **True**.

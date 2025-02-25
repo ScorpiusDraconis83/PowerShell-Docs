@@ -4,7 +4,7 @@ Locale: en-US
 ms.date: 12/05/2023
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_pipelines?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Pipelines
+title: about_Pipelines
 ---
 # about_Pipelines
 
@@ -272,8 +272,8 @@ pipeline to display a table of service objects.
 Get-Service | Format-Table -Property Name, DependentServices
 ```
 
-Functionally, this is like using the **InputObject** parameter of `Format-Table`
-to submit the object collection.
+Functionally, this is like using the **InputObject** parameter of
+`Format-Table` to submit the object collection.
 
 For example, we can save the collection of services to a variable that's
 passed using the **InputObject** parameter.
@@ -568,9 +568,9 @@ enhances readability.
 
 <!-- link references -->
 [02]: #investigating-pipeline-errors
-[03]: about_command_syntax.md
-[04]: about_foreach.md
-[05]: about_objects.md
-[06]: about_parameters.md
+[03]: about_Command_Syntax.md
+[04]: about_Foreach.md
+[05]: about_Objects.md
+[06]: about_Parameters.md
 [07]: about_Redirection.md
 [08]: xref:System.Data.DataTable.Rows

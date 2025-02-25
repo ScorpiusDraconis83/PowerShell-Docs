@@ -17,31 +17,33 @@ Removes a CIM instance from a computer.
 ### CimInstanceComputerSet (Default)
 
 ```
-Remove-CimInstance [-ResourceUri <Uri>] [-ComputerName <String[]>] [-OperationTimeoutSec <UInt32>]
- [-InputObject] <CimInstance> [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-CimInstance [-ResourceUri <Uri>] [-ComputerName <String[]>]
+ [-OperationTimeoutSec <UInt32>] [-InputObject] <CimInstance> [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ### CimInstanceSessionSet
 
 ```
-Remove-CimInstance -CimSession <CimSession[]> [-ResourceUri <Uri>] [-OperationTimeoutSec <UInt32>]
- [-InputObject] <CimInstance> [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-CimInstance -CimSession <CimSession[]> [-ResourceUri <Uri>]
+ [-OperationTimeoutSec <UInt32>] [-InputObject] <CimInstance> [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ### QuerySessionSet
 
 ```
 Remove-CimInstance -CimSession <CimSession[]> [[-Namespace] <String>]
- [-OperationTimeoutSec <UInt32>] [-Query] <String> [-QueryDialect <String>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-OperationTimeoutSec <UInt32>] [-Query] <String> [-QueryDialect <String>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ### QueryComputerSet
 
 ```
 Remove-CimInstance [-ComputerName <String[]>] [[-Namespace] <String>]
- [-OperationTimeoutSec <UInt32>] [-Query] <String> [-QueryDialect <String>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-OperationTimeoutSec <UInt32>] [-Query] <String> [-QueryDialect <String>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -329,6 +331,6 @@ This cmdlet is only available on Windows platforms.
 
 [New-CimInstance](New-CimInstance.md)
 
-[Get-CimInstance](get-ciminstance.md)
+[Get-CimInstance](Get-CimInstance.md)
 
 [Set-CimInstance](Set-CimInstance.md)

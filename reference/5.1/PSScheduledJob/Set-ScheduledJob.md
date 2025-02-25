@@ -88,7 +88,7 @@ Id         Name            Triggers        Command                              
 ```
 
 ```powershell
-Get-ScheduledJob -Name "Inventory" | Set-ScheduledJob -FilePath "C:\Scripts\Get-FullInventory.ps1" -Passthru
+Get-ScheduledJob -Name "Inventory" | Set-ScheduledJob -FilePath "C:\Scripts\Get-FullInventory.ps1" -PassThru
 ```
 
 ```Output
@@ -103,7 +103,7 @@ shows that the job runs the Get-Inventory.ps1 script.
 The second command uses the `Get-ScheduledJob` cmdlet to get the Inventory scheduled job. A pipeline
 operator (`|`) sends the scheduled job to the `Set-ScheduledJob` cmdlet. The `Set-ScheduledJob`
 cmdlet uses the **Script** parameter to specify a new script, `Get-FullInventory.ps1`. The command
-uses the **Passthru** parameter to return the scheduled job after the change.
+uses the **PassThru** parameter to return the scheduled job after the change.
 
 This command is not required; it is included only to show the effect of the script change.
 
@@ -443,7 +443,7 @@ options, including the default values, see `New-ScheduledJobOption`.
 To submit a hash table, use the following keys.
 In the following hash table, the keys are shown with their default values.
 
-`@{# Power SettingsStartIfOnBattery=$False;StopIfGoingOnBattery=$True; WakeToRun=$False; # Idle SettingsStartIfNotIdle=$False; IdleDuration="00:10:00"; IdleTimeout="01:00:00"; StopIfGoingOffIdle=$True; RestartOnIdleResume=$False;# Security settingsShowInTaskScheduler=$TrueRunElevated=$False;# MiscRunWithoutNetwork=$False;DoNotAllowDemandStart=$False;MultipleInstancePolicy=IgnoreNew# Can be IgnoreNew, Parallel, Queue, StopExisting}`
+`@{# Power SettingsStartIfOnBattery=$false;StopIfGoingOnBattery=$true; WakeToRun=$false; # Idle SettingsStartIfNotIdle=$false; IdleDuration="00:10:00"; IdleTimeout="01:00:00"; StopIfGoingOffIdle=$true; RestartOnIdleResume=$false;# Security settingsShowInTaskScheduler=$trueRunElevated=$false;# MiscRunWithoutNetwork=$false;DoNotAllowDemandStart=$false;MultipleInstancePolicy=IgnoreNew# Can be IgnoreNew, Parallel, Queue, StopExisting}`
 
 ```yaml
 Type: Microsoft.PowerShell.ScheduledJob.ScheduledJobOptions

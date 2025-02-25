@@ -1,10 +1,10 @@
 ---
 description: Describes how to create and use functions in PowerShell.
 Locale: en-US
-ms.date: 01/20/2023
+ms.date: 06/26/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_functions?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Functions
+title: about_Functions
 ---
 
 # about_Functions
@@ -25,6 +25,19 @@ Functions can be as simple as:
 function Get-PowerShellProcess { Get-Process PowerShell }
 ```
 
+Once a function is defined, you can use it like the built-in cmdlets. For
+example, to call the newly defined `Get-PowerShellProcess` function:
+
+```powershell
+Get-PowerShellProcess
+```
+
+```Output
+ NPM(K)    PM(M)      WS(M)     CPU(s)      Id  SI ProcessName
+ ------    -----      -----     ------      --  -- -----------
+    110    78.72     172.39      10.62   10936   1 powershell
+```
+
 A function can also be as complex as a cmdlet or an application.
 
 Like cmdlets, functions can have parameters. The parameters can be named,
@@ -38,8 +51,8 @@ output returned from your function. However, the `return` keyword exits the
 function at that line. For more information, see [about_Return][16].
 
 The function's statement list can contain different types of statement lists
-with the keywords `begin`, `process`, `end`, and `clean`. These statement lists
-handle input from the pipeline differently.
+with the keywords `begin`, `process`, and `end`. These statement lists handle
+input from the pipeline differently.
 
 The [filter][04] keyword is used to create a type of function that runs on each
 object in the pipeline. A filter resembles a function with all its statements
@@ -85,8 +98,70 @@ A function includes the following items:
 - Any number of named parameters (optional)
 - One or more PowerShell commands enclosed in braces `{}`
 
-For more information about the `Dynamicparam` keyword and dynamic parameters in
+For more information about the `dynamicparam` keyword and dynamic parameters in
 functions, see [about_Functions_Advanced_Parameters][10].
+
+## Input processing methods
+
+The methods described in this section are referred to as the input processing
+methods. For functions, these three methods are represented by the `begin`,
+`process`, and `end` blocks of the function.
+
+You aren't required to use any of these blocks in your functions. If you don't
+use a named block, then PowerShell puts the code in the `end` block of the
+function. However, if you use any of these named blocks, or define a
+`dynamicparam` block, you must put all code in a named block.
+
+The following example shows the outline of a function that contains a `begin`
+block for one-time preprocessing, a `process` block for multiple record
+processing, and an `end` block for one-time post-processing.
+
+```powershell
+Function Test-ScriptCmdlet
+{
+[CmdletBinding(SupportsShouldProcess=$true)]
+    Param ($Parameter1)
+    begin{}
+    process{}
+    end{}
+}
+```
+
+### `begin`
+
+This block is used to provide optional one-time preprocessing for the function.
+The PowerShell runtime uses the code in this block once for each instance of
+the function in the pipeline.
+
+### `process`
+
+This block is used to provide record-by-record processing for the function. You
+can use a `process` block without defining the other blocks. The number of
+`process` block executions depends on how you use the function and what input
+the function receives.
+
+The automatic variable `$_` or `$PSItem` contains the current object in the
+pipeline for use in the `process` block. The `$input` automatic variable
+contains an enumerator that's only available to functions and script blocks.
+For more information, see [about_Automatic_Variables][05].
+
+- Calling the function at the beginning, or outside of a pipeline, executes the
+  `process` block once.
+- Within a pipeline, the `process` block executes once for each input object
+  that reaches the function.
+- If the pipeline input that reaches the function is empty, the `process` block
+  **does not** execute.
+  - The `begin` and `end` blocks still execute.
+
+> [!IMPORTANT]
+> If a function parameter is set to accept pipeline input, and a `process`
+> block isn't defined, record-by-record processing will fail. In this case,
+> your function will only execute once, regardless of the input.
+
+### `end`
+
+This block is used to provide optional one-time post-processing for the
+function.
 
 ## Simple functions
 
@@ -246,6 +321,9 @@ function Get-SmallFiles {
       [PSDefaultValue(Help = '100')]
       $Size = 100
   )
+  Get-ChildItem $HOME | Where-Object {
+    $_.Length -lt $Size -and !$_.PSIsContainer
+  }
 }
 ```
 
@@ -345,15 +423,15 @@ need to declare or enumerate the command parameters, or change the function
 when command parameters change.
 
 The following sample function calls the `Get-Command` cmdlet. The command uses
-`@Args` to represent the parameters of `Get-Command`.
+`@args` to represent the parameters of `Get-Command`.
 
 ```powershell
-function Get-MyCommand { Get-Command @Args }
+function Get-MyCommand { Get-Command @args }
 ```
 
 You can use all the parameters of `Get-Command` when you call the
 `Get-MyCommand` function. The parameters and parameter values are passed to the
-command using `@Args`.
+command using `@args`.
 
 ```powershell
 Get-MyCommand -Name Get-ChildItem
@@ -365,7 +443,7 @@ CommandType     Name                ModuleName
 Cmdlet          Get-ChildItem       Microsoft.PowerShell.Management
 ```
 
-The `@Args` feature uses the `$Args` automatic parameter, which represents
+The `@args` feature uses the `$args` automatic parameter, which represents
 undeclared cmdlet parameters and values from remaining arguments.
 
 For more information, see [about_Splatting][19].
@@ -376,29 +454,9 @@ Any function can take input from the pipeline. You can control how a function
 processes input from the pipeline using `begin`, `process`, and `end`
 keywords. The following sample syntax shows these keywords:
 
-```Syntax
-function <name> {
-  begin {<statement list>}
-  process {<statement list>}
-  end {<statement list>}
-}
-```
-
-> [!IMPORTANT]
-> If your function defines any one of these named statement lists, all your
-> code must be inside one of those blocks. Any code outside the blocks isn't
-> recognized. If your function doesn't use any of these blocks, all the
-> statements are treated like an `end` statement list.
-
-The `begin` statement list runs one time only, at the beginning of the
-function.
-
 The `process` statement list runs one time for each object in the pipeline.
 While the `process` block is running, each pipeline object is assigned to the
 `$_` automatic variable, one pipeline object at a time.
-
-After the function receives all the objects in the pipeline, the `end`
-statement list runs one time.
 
 The following function uses the `process` keyword. The function displays
 values from the pipeline:
@@ -409,13 +467,43 @@ function Get-Pipeline
   process {"The value is: $_"}
 }
 
-1,2,4 | Get-Pipeline
+1, 2, 4 | Get-Pipeline
 ```
 
 ```Output
 The value is: 1
 The value is: 2
 The value is: 4
+```
+
+If you want a function that can take pipeline input or input from a parameter,
+then the `process` block needs to handle both cases. For example:
+
+```powershell
+function Get-SumOfNumbers {
+    param (
+        [int[]]$Numbers
+    )
+
+    begin { $retValue = 0 }
+
+    process {
+        if ($null -ne $Numbers) {
+           foreach ($n in $Numbers) {
+               $retValue += $n
+           }
+        } else {
+           $retValue += $_
+        }
+    }
+
+    end { $retValue }
+}
+
+PS> 1, 2, 3, 4 | Get-SumOfNumbers
+10
+PS> Get-SumOfNumbers 1, 2, 3, 4
+10
 ```
 
 When you use a function in a pipeline, the objects piped to the function are
@@ -428,10 +516,9 @@ The following example shows the `$input` automatic variable with `begin` and
 `end` keywords.
 
 ```powershell
-function Get-PipelineBeginEnd
-{
-    begin {"Begin: The input is $input"}
-    end   {"End:   The input is $input" }
+function Get-PipelineBeginEnd {
+    begin   { "Begin: The input is $input" }
+    end     { "End:   The input is $input" }
 }
 ```
 
@@ -439,7 +526,7 @@ If this function is run using the pipeline, it displays the following
 results:
 
 ```powershell
-1,2,4 | Get-PipelineBeginEnd
+1, 2, 4 | Get-PipelineBeginEnd
 ```
 
 ```Output
@@ -468,7 +555,7 @@ object at a time. The `$input` automatic variable is empty when the function
 reaches the `end` keyword.
 
 ```powershell
-1,2,4 | Get-PipelineInput
+1, 2, 4 | Get-PipelineInput
 ```
 
 ```Output
@@ -638,7 +725,7 @@ You can write help for a function using either of the two following methods:
 [05]: about_Automatic_Variables.md
 [06]: about_Automatic_Variables.md#using-enumerators
 [07]: about_Comment_Based_Help.md
-[08]: about_Function_provider.md
+[08]: about_Function_Provider.md
 [09]: about_Functions_Advanced_Methods.md
 [10]: about_Functions_Advanced_Parameters.md
 [11]: about_Functions_Advanced.md

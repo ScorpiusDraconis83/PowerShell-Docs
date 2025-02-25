@@ -4,7 +4,7 @@ Locale: en-US
 ms.date: 08/21/2023
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_prompts?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Prompts
+title: about_Prompts
 ---
 # about_Prompts
 
@@ -73,7 +73,7 @@ For example:
 ```
 
 ```Output
-"PS $($executionContext.SessionState.Path.CurrentLocation)$('>' * ($nestedPromptLevel + 1)) "
+"PS $($ExecutionContext.SessionState.Path.CurrentLocation)$('>' * ($NestedPromptLevel + 1)) "
 # .Link
 # https://go.microsoft.com/fwlink/?LinkID=225750
 # .ExternalHelp System.Management.Automation.dll-help.xml
@@ -114,7 +114,7 @@ PowerShell includes a built-in `Prompt` function.
 
 ```powershell
 function prompt {
-  "PS $($executionContext.SessionState.Path.CurrentLocation)$('>' * ($nestedPromptLevel + 1)) ";
+  "PS $($ExecutionContext.SessionState.Path.CurrentLocation)$('>' * ($NestedPromptLevel + 1)) ";
   # .Link
   # https://go.microsoft.com/fwlink/?LinkID=225750
   # .ExternalHelp System.Management.Automation.dll-help.xml

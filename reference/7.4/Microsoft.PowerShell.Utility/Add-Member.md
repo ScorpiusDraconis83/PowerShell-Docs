@@ -2,7 +2,7 @@
 external help file: Microsoft.PowerShell.Commands.Utility.dll-Help.xml
 Locale: en-US
 Module Name: Microsoft.PowerShell.Utility
-ms.date: 11/15/2023
+ms.date: 03/06/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.utility/add-member?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
 title: Add-Member
@@ -144,8 +144,8 @@ This example adds the **SizeInMB** script method to a **FileInfo** object that c
 size to the nearest MegaByte. The second command creates a **ScriptBlock** that uses the **Round**
 static method from the `[math]` type to round the file size to the second decimal place.
 
-The **Value** parameter also uses the `$This` automatic variable, which represents the current
-object. The `$This` variable is valid only in script blocks that define new properties and methods.
+The **Value** parameter also uses the `$this` automatic variable, which represents the current
+object. The `$this` variable is valid only in script blocks that define new properties and methods.
 
 The last command uses dot notation to call the new **SizeInMB** script method on the object in the
 `$A` variable.
@@ -308,7 +308,8 @@ value of the **Role** property in the **Position** property.
 
 ### -Force
 
-Indicates that this cmdlet adds a new member even the object has a custom member with the same name.
+By default, `Add-Member` can't add a new member if the object already has a member with the same.
+When you use the **Force** parameter, `Add-Member` replaces the existing member with the new member.
 You can't use the **Force** parameter to replace a standard member of a type.
 
 ```yaml

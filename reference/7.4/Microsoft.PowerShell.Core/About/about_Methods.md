@@ -4,11 +4,12 @@ Locale: en-US
 ms.date: 03/16/2022
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_methods?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Methods
+title: about_Methods
 ---
 # about_Methods
 
 ## Short description
+
 Describes how to use methods to perform actions on objects in PowerShell.
 
 ## Long description
@@ -114,8 +115,8 @@ two method signatures:
 ```
 
 The first method signature takes the destination file name (and a path). The
-following example uses the first `CopyTo` method to copy the `Final.txt` file to
-the `C:\Bin` directory.
+following example uses the first `CopyTo` method to copy the `Final.txt` file
+to the `C:\Bin` directory.
 
 ```powershell
 (Get-ChildItem c:\final.txt).CopyTo("c:\bin\final.txt")
@@ -125,7 +126,7 @@ the `C:\Bin` directory.
 > Unlike PowerShell's _argument_ mode, object methods execute in _expression_
 > mode, which is a pass-through to the .NET framework that PowerShell is built
 > on. In _expression_ mode **bareword** arguments (unquoted strings) are not
-> allowed. You can see this difference when using a the path as a parameter,
+> allowed. You can see this difference when using the path as a parameter,
 > versus the path as an argument. You can read more about parsing modes in
 > [about_Parsing](about_Parsing.md)
 

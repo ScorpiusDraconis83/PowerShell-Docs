@@ -1,15 +1,16 @@
 ---
 description: Explains how to use the Tab Expansion feature in PowerShell.
 Locale: en-US
-ms.date: 12/05/2023
+ms.date: 06/13/2024
 no-loc: [<kbd>Tab</kbd>, <kbd>Ctrl</kbd>, <kbd>Space</kbd>]
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_tab_expansion?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: About tab expansion
+title: About_tab_expansion
 ---
 # about_Tab_Expansion
 
 ## Short description
+
 PowerShell provides completions on input to provide hints, enable discovery,
 and speed up input entry. Command names, parameter names, argument values and
 file paths can all be completed by pressing the <kbd>Tab</kbd> key.
@@ -42,6 +43,8 @@ To fill in a filename or path from the available choices automatically, type
 part of the name and press the <kbd>Tab</kbd> key. PowerShell automatically
 expands the name to the first match that it finds. Pressing the <kbd>Tab</kbd>
 key repeatedly cycles through all the available choices.
+
+## Cmdlet name completion
 
 The tab expansion of cmdlet names is slightly different. To use tab expansion
 on a cmdlet name, type the entire first part of the name (the verb) and the
@@ -109,8 +112,9 @@ keys to select the value you want.
 
 Tab completion can also work to complete parameter arguments. You can use the
 <kbd>Tab</kbd> key to cycle through a list of possible values that are valid
-for some parameter. For more information, see
-[about_Functions_Argument_Completion][04].
+for some parameter.
+
+For more information, see [about_Functions_Argument_Completion][04].
 
 ## Enumerated value completion
 
@@ -203,6 +207,7 @@ EXAMPLE        FORWARDHELPTARGETNAME  LINK              PARAMETER     SYNOPSIS
 
 ## See also
 
+- [TabExpansion2][06]
 - [about_Comment_Based_Help][03]
 - [about_Functions_Argument_Completion][04]
 - [about_Requires][05]
@@ -213,3 +218,4 @@ EXAMPLE        FORWARDHELPTARGETNAME  LINK              PARAMETER     SYNOPSIS
 [03]: about_Comment_Based_Help.md
 [04]: about_Functions_Argument_Completion.md
 [05]: about_Requires.md
+[06]: xref:Microsoft.PowerShell.Core.TabExpansion2

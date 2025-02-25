@@ -1,11 +1,11 @@
 ---
 description: Describes the parameters that can be used with any cmdlet.
 Locale: en-US
-ms.date: 01/21/2022
+ms.date: 07/02/2024
 no-loc: [Debug, Verbose, Confirm]
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_commonparameters?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about CommonParameters
+title: about_CommonParameters
 ---
 # about_CommonParameters
 
@@ -24,7 +24,9 @@ effect on all cmdlets. For example, if a cmdlet doesn't generate any verbose
 output, using the **Verbose** common parameter has no effect.
 
 The common parameters are also available on advanced functions that use the
-**CmdletBinding** attribute or the **Parameter** attribute.
+`CmdletBinding` attribute or the `Parameter` attribute. When you use these
+attributes, PowerShell automatically adds the Common Parameters. You can't
+create any parameters that use the same names as the Common Parameters.
 
 Several common parameters override system defaults or preferences that you set
 using the PowerShell preference variables. Unlike the preference variables, the
@@ -43,6 +45,7 @@ parentheses.
 - **OutVariable** (ov)
 - **OutBuffer** (ob)
 - **PipelineVariable** (pv)
+- **ProgressAction** (proga)
 - **Verbose** (vb)
 - **WarningAction** (wa)
 - **WarningVariable** (wv)
@@ -81,7 +84,6 @@ example, this parameter works when a command contains the `Write-Debug` cmdlet.
 ```yaml
 Type: SwitchParameter
 Aliases: db
-
 Required: False
 Position: Named
 Default value: False
@@ -132,27 +134,22 @@ The **ErrorAction** parameter has no effect on terminating errors (such as
 missing data, parameters that aren't valid, or insufficient permissions) that
 prevent a command from completing successfully.
 
-`-ErrorAction:Break` Enters the debugger when an error occurs or an exception
-is raised.
-
-`-ErrorAction:Continue` displays the error message and continues executing the
-command. `Continue` is the default.
-
-`-ErrorAction:Ignore` suppresses the error message and continues executing the
-command. Unlike **SilentlyContinue**, **Ignore** doesn't add the error message
-to the `$Error` automatic variable. The **Ignore** value is introduced in
-PowerShell 3.0.
-
-`-ErrorAction:Inquire` displays the error message and prompts you for
-confirmation before continuing execution. This value is rarely used.
-
-`-ErrorAction:SilentlyContinue` suppresses the error message and continues
-executing the command.
-
-`-ErrorAction:Stop` displays the error message and stops executing the command.
-
-`-ErrorAction:Suspend` is only available for workflows which aren't supported
-in PowerShell 6 and beyond.
+- `-ErrorAction:Break` Enters the debugger when an error occurs or an exception
+  is raised.
+- `-ErrorAction:Continue` displays the error message and continues executing
+  the command. `Continue` is the default.
+- `-ErrorAction:Ignore` suppresses the error message and continues executing
+  the command. Unlike **SilentlyContinue**, **Ignore** doesn't add the error
+  message to the `$Error` automatic variable. The **Ignore** value is
+  introduced in PowerShell 3.0.
+- `-ErrorAction:Inquire` displays the error message and prompts you for
+  confirmation before continuing execution. This value is rarely used.
+- `-ErrorAction:SilentlyContinue` suppresses the error message and continues
+  executing the command.
+- `-ErrorAction:Stop` displays the error message and stops executing the
+  command.
+- `-ErrorAction:Suspend` is only available for workflows which aren't supported
+  in PowerShell 6 and beyond.
 
 > [!NOTE]
 > The **ErrorAction** parameter overrides, but doesn't replace the value of the
@@ -161,14 +158,16 @@ in PowerShell 6 and beyond.
 
 ### -ErrorVariable
 
-**ErrorVariable** stores error messages about the command in the specified
-variable and in the `$Error` automatic variable. For more information, see
-[about_Automatic_Variables][02]
+Error records are automatically store in the `$Error` automatic variable. For
+more information, see [about_Automatic_Variables][02].
+
+When you use the **ErrorVariable** parameter on a command, PowerShell also
+stores the error records emitted by the command in the variable specified by
+the parameter.
 
 ```yaml
 Type: String
 Aliases: ev
-
 Required: False
 Position: Named
 Default value: None
@@ -177,7 +176,7 @@ Accept wildcard characters: False
 ```
 
 By default, new error messages overwrite error messages that are already stored
-in the variable. To append the error message to the variable content, type a
+in the variable. To append the error message to the variable content, put a
 plus sign (`+`) before the variable name.
 
 For example, the following command creates the `$a` variable and then stores any
@@ -203,7 +202,7 @@ You can use this parameter to create a variable that contains only error
 messages from specific commands and doesn't affect the behavior of the `$Error`
 automatic variable. The `$Error` automatic variable contains error messages
 from all the commands in the session. You can use array notation, such as
-`$a[0]` or `$error[1,2]` to refer to specific errors stored in the variables.
+`$a[0]` or `$Error[1,2]` to refer to specific errors stored in the variables.
 
 > [!NOTE]
 > The custom error variable contains all errors generated by the command,
@@ -231,25 +230,23 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-`-InformationAction:Stop` stops a command or script at an occurrence of the
-`Write-Information` command.
-
-`-InformationAction:Ignore` suppresses the informational message and continues
-running the command. Unlike **SilentlyContinue**, **Ignore** completely forgets the
-informational message; it doesn't add the informational message to the
-information stream.
-
-`-InformationAction:Inquire` displays the informational message that you specify
-in a `Write-Information` command, then asks whether you want to continue.
-
-`-InformationAction:Continue` displays the informational message, and continues
-running.
-
-`-InformationAction:Suspend` isn't supported on PowerShell 6 and higher as it
-is only available for workflows.
-
-`-InformationAction:SilentlyContinue` no effect as the informational message
-aren't (Default) displayed, and the script continues without interruption.
+- `-InformationAction:Break` Enters the debugger at an occurrence of the
+  `Write-Information` command.
+- `-InformationAction:Stop` stops a command or script at an occurrence of the
+  `Write-Information` command.
+- `-InformationAction:Ignore` suppresses the informational message and
+  continues running the command. Unlike **SilentlyContinue**, **Ignore**
+  completely forgets the informational message; it doesn't add the
+  informational message to the information stream.
+- `-InformationAction:Inquire` displays the informational message that you
+  specify in a `Write-Information` command, then asks whether you want to
+  continue.
+- `-InformationAction:Continue` displays the informational message, and
+  continues running.
+- `-InformationAction:Suspend` isn't supported on PowerShell 6 and higher as it
+  is only available for workflows.
+- `-InformationAction:SilentlyContinue` no effect as the informational message
+  aren't (Default) displayed, and the script continues without interruption.
 
 > [!NOTE]
 > The **InformationAction** parameter overrides, but doesn't replace the
@@ -258,13 +255,16 @@ aren't (Default) displayed, and the script continues without interruption.
 
 ### -InformationVariable
 
-Introduced in PowerShell 5.0. Within the command or script in which it's used,
-the **InformationVariable** common parameter stores in a variable a string that
-you specify by adding the `Write-Information` command. `Write-Information`
-values are shown depending on the value of the **InformationAction** common
-parameter; if you don't add the **InformationAction** common parameter,
-`Write-Information` strings are shown depending on the value of the
-`$InformationPreference` preference variable. For more information about
+Introduced in PowerShell 5.0. When you use the **InformationVariable** common
+parameter, information records are stored in the variable specified by the
+parameter. And PowerShell cmdlet can write information records to the
+**Information** stream. You can also use the `Write-Information` cmdlet to
+write information records.
+
+Information records are displayed as messages in the console by default. You
+can control the display of information record by using the
+**InformationAction** common parameter. You can also change the behavior using
+the `$InformationPreference` preference variable. For more information about
 `$InformationPreference`, see [about_Preference_Variables][03].
 
 > [!NOTE]
@@ -275,13 +275,16 @@ parameter; if you don't add the **InformationAction** common parameter,
 ```yaml
 Type: String
 Aliases: iv
-
 Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
+
+By default, new information record overwrite values that are already stored in
+the variable. To append the error message to the variable content, put a plus
+sign (`+`) before the variable name.
 
 ### -OutBuffer
 
@@ -292,7 +295,6 @@ they're generated.
 ```yaml
 Type: Int32
 Aliases: ob
-
 Required: False
 Position: Named
 Default value: None
@@ -334,7 +336,6 @@ to sending the output along the pipeline.
 ```yaml
 Type: String
 Aliases: ov
-
 Required: False
 Position: Named
 Default value: None
@@ -393,7 +394,6 @@ allows a command to _feed back_ its output to a previous command (or itself).
 ```yaml
 Type: String
 Aliases: pv
-
 Required: False
 Position: Named
 Default value: None
@@ -471,6 +471,40 @@ At line:1 char:1
     + FullyQualifiedErrorId : VariableNotFound,Microsoft.PowerShell.Commands.GetVariableCommand
 ```
 
+### -ProgressAction
+
+Determines how PowerShell responds to progress updates generated by a script,
+cmdlet, or provider, such as the progress bars generated by the
+[Write-Progress][06] cmdlet. The `Write-Progress` cmdlet creates progress bars
+that show a command's status. The **ProgressAction** parameter was added in
+PowerShell 7.4.
+
+The **ProgressAction** parameter takes one of the [`ActionPreference`][07]
+enumeration values: `SilentlyContinue`, `Stop`, `Continue`, `Inquire`,
+`Ignore`, `Suspend`, or `Break`.
+
+The valid values are as follows:
+
+- `Break` Enters the debugger at an occurrence of the `Write-Progress` command.
+- `Stop`: Doesn't display the progress bar. Instead, it displays an error
+  message and stops executing.
+- `Inquire`: Doesn't display the progress bar. Prompts for permission to
+  continue. If you reply with `Y` or `A`, it displays the progress bar.
+- `Continue`: (Default) Displays the progress bar and continues with execution.
+- `SilentlyContinue`: Executes the command, but doesn't display the progress
+  bar.
+
+```yaml
+Type: ActionPreference
+Aliases: proga
+Accepted values: Break, Suspend, Ignore, Inquire, Continue, Stop, SilentlyContinue
+Required: False
+Position: Named
+Default value: Depends on preference variable
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Verbose
 
 Displays detailed information about the operation done by the command. This
@@ -481,7 +515,6 @@ this parameter works when a command contains the `Write-Verbose` cmdlet.
 ```yaml
 Type: SwitchParameter
 Aliases: vb
-
 Required: False
 Position: Named
 Default value: False
@@ -494,11 +527,10 @@ variable for the current command. Because the default value of the
 `$VerbosePreference` variable is **SilentlyContinue**, verbose messages aren't
 displayed by default.
 
-`-Verbose:$true` has the same effect as `-Verbose`
-
-`-Verbose:$false` suppresses the display of verbose messages. Use this
-parameter when the value of `$VerbosePreference` isn't **SilentlyContinue**
-(the default).
+- `-Verbose:$true` has the same effect as `-Verbose`
+- `-Verbose:$false` suppresses the display of verbose messages. Use this
+  parameter when the value of `$VerbosePreference` isn't **SilentlyContinue**
+  (the default).
 
 ### -WarningAction
 
@@ -524,17 +556,15 @@ variable for the current command. Because the default value of the
 `$WarningPreference` variable is **Continue**, warnings are displayed and
 execution continues unless you use the **WarningAction** parameter.
 
-`-WarningAction:Continue` displays the warning messages and continues executing
-the command. `Continue` is the default.
-
-`-WarningAction:Inquire` displays the warning message and prompts you for
-confirmation before continuing execution. This value is rarely used.
-
-`-WarningAction:SilentlyContinue` suppresses the warning message and continues
-executing the command.
-
-`-WarningAction:Stop` displays the warning message and stops executing the
-command.
+- `-WarningAction:Break` enters the debugger when a warning occurs.
+- `-WarningAction:Continue` displays the warning messages and continues
+  executing the command. `Continue` is the default.
+- `-WarningAction:Inquire` displays the warning message and prompts you for
+  confirmation before continuing execution. This value is rarely used.
+- `-WarningAction:SilentlyContinue` suppresses the warning message and
+  continues executing the command.
+- `-WarningAction:Stop` displays the warning message and stops executing the
+  command.
 
 > [!NOTE]
 > The **WarningAction** parameter overrides, but doesn't replace the value of
@@ -543,12 +573,11 @@ command.
 
 ### -WarningVariable
 
-Stores warnings about the command in the specified variable.
+Stores warning records about the command in the specified variable.
 
 ```yaml
 Type: String
 Aliases: wv
-
 Required: False
 Position: Named
 Default value: None
@@ -600,7 +629,6 @@ executing the command.
 ```yaml
 Type: SwitchParameter
 Aliases: wi
-
 Required: False
 Position: Named
 Default value: False
@@ -614,10 +642,9 @@ variable for the current command. Because the default value of the
 without the **WhatIf** parameter. For more information, see
 [about_Preference_Variables][03].
 
-`-WhatIf:$true` has the same effect as `-WhatIf`.
-
-`-WhatIf:$false` suppresses the automatic WhatIf behavior that results when the
-value of the `$WhatIfPreference` variable is 1.
+- `-WhatIf:$true` has the same effect as `-WhatIf`.
+- `-WhatIf:$false` suppresses the automatic WhatIf behavior that results when
+  the value of the `$WhatIfPreference` variable is 1.
 
 For example, the following command uses the `-WhatIf` parameter in a
 `Remove-Item` command:
@@ -629,7 +656,7 @@ Remove-Item Date.csv -WhatIf
 Instead of removing the item, PowerShell lists the operations it would do and
 the items that would be affected. This command produces the following output:
 
-```output
+```Output
 What if: Performing operation "Remove File" on
 Target "C:\ps-test\date.csv".
 ```
@@ -641,7 +668,6 @@ Prompts you for confirmation before executing the command.
 ```yaml
 Type: SwitchParameter
 Aliases: cf
-
 Required: False
 Position: Named
 Default value: Depends on preference variable
@@ -653,18 +679,17 @@ The **Confirm** parameter overrides the value of the `$ConfirmPreference`
 variable for the current command. The default value is true. For more
 information, see [about_Preference_Variables][03].
 
-`-Confirm:$true` has the same effect as `-Confirm`.
-
-`-Confirm:$false` suppresses automatic confirmation, which occurs when the
-value of `$ConfirmPreference` is less than or equal to the estimated risk of
-the cmdlet.
+- `-Confirm:$true` has the same effect as `-Confirm`.
+- `-Confirm:$false` suppresses automatic confirmation, which occurs when the
+  value of `$ConfirmPreference` is less than or equal to the estimated risk of
+  the cmdlet.
 
 For example, the following command uses the **Confirm** parameter with a
 `Remove-Item` command. Before removing the item, PowerShell lists the
 operations it would do and the items that would be affected, and asks for
 approval.
 
-```
+```powershell
 PS C:\ps-test> Remove-Item tmp*.txt -Confirm
 
 Confirm
@@ -699,7 +724,7 @@ temporarily while the user checks the help for a command parameter. After
 obtaining the needed information, the user types "exit" to end the nested
 prompt and then selects the Yes (y) response to the Confirm query.
 
-```
+```powershell
 PS C:\ps-test> New-Item -ItemType File -Name Test.txt -Confirm
 
 Confirm
@@ -737,10 +762,6 @@ Mode                LastWriteTime     Length Name
 -a---         8/27/2010   2:41 PM          0 test.txt
 ```
 
-## Keywords
-
-about_Common_Parameters
-
 ## See also
 
 - [about_Preference_Variables][03]
@@ -752,7 +773,7 @@ about_Common_Parameters
 <!-- link references -->
 [02]: about_Automatic_Variables.md
 [03]: about_Preference_Variables.md
-[05]: about_functions_advanced.md
+[05]: about_Functions_Advanced.md
 [06]: xref:Microsoft.PowerShell.Utility.Write-Progress
 [07]: xref:System.Management.Automation.ActionPreference
 [11]: xref:Microsoft.PowerShell.Utility.Write-Debug

@@ -1,15 +1,16 @@
 ---
 description: PowerShell logs internal operations from the engine, providers, and cmdlets.
 Locale: en-US
-ms.date: 12/08/2023
+ms.date: 08/29/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_logging_non-windows?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Logging Non-Windows
+title: about_Logging_Non-Windows
 ---
 
 # about_Logging_Non-Windows
 
 ## Short description
+
 PowerShell logs internal operations from the engine, providers, and cmdlets.
 
 ## Long description
@@ -18,20 +19,23 @@ PowerShell logs details of PowerShell operations, such as starting and stopping
 the engine and starting and stopping providers. It also logs details about
 PowerShell commands.
 
+For information about logging in Windows PowerShell 5.1, see
+[about_Logging][02].
+
 The location of PowerShell logs is dependent on the target platform.
 
 - On Linux, PowerShell logs to the **systemd journal** that can forward to a
   **syslog** server. For more information, see the `man` pages for your Linux
   distribution.
 - On macOS, Apple's unified logging system is used. For more information, see
-  [Apple's developer documentation on logging][01].
+  [Apple's developer documentation on logging][07].
 
 PowerShell supports configuring two categories of logging:
 
 - Module logging - Record the pipeline execution events for members of
   specified modules. Module logging must be enabled for both the session and
   specific modules. For more information about configuring this logging, see
-  [about_PowerShell_Config][02].
+  [about_PowerShell_Config][05].
 
   If module logging is enabled through configuration, you can enable and
   disable logging for specific modules in a session by setting the value of the
@@ -42,7 +46,7 @@ PowerShell supports configuring two categories of logging:
   ```powershell
   $psrl = Get-Module PSReadLine
   $psrl.LogPipelineExecutionDetails = $true
-  Get-Module PSReadline | Select-Object Name, LogPipelineExecutionDetails
+  Get-Module PSReadLine | Select-Object Name, LogPipelineExecutionDetails
   ```
 
   ```Output
@@ -61,7 +65,7 @@ PowerShell supports configuring two categories of logging:
   > [!NOTE]
   > It's recommended to enable Protected Event Logging, when using Script Block
   > Logging for anything other than diagnostics purposes. For more information,
-  > see [about_PowerShell_Config][03].
+  > see [about_PowerShell_Config][06].
 
 ## Configuring logging on Linux or macOS
 
@@ -276,62 +280,59 @@ log file named `powershell.log`.
 ## Viewing PowerShell log data on macOS
 
 PowerShell logs to Apple's unified logging system, a feature of macOS that
-allows for the collection and storage of system and application logs in a single
-centralized location.
+allows for the collection and storage of system and application logs in a
+single centralized location.
 
-Apple's unified logging system stores log messages in binary format. Use the
-Console app or log tool to query the unified logging system for PowerShell
-entries.
-
-### Viewing PowerShell log data in the Console application on macOS
-
-The **Console** application on macOS is a utility that provides a graphical user
-interface for viewing log data. The **Console** application is included with
-macOS by default and can be accessed by opening the **Utilities** folder in the
-**Applications** folder.
-
-Use the following steps to view PowerShell log data in the Console application
-on macOS:
-
-1. Search for the **Console** application and launch it.
-1. Select the Machine name under **Devices**.
-1. In the **Search** field, enter `pwsh` for the PowerShell main binary and
-   press <kbd>return</kbd>.
-1. Change the search filter from `Any` to `Process`.
-1. Click **Start**.
-1. Run `pwsh` to generate PowerShell information to log.
-
-The process ID for a running instance of PowerShell is stored in the `$PID`
-variable. Use the following steps to filter on a specific process instance of
-PowerShell in the **Console** application.
-
-1. Run an instance of `pwsh`.
-1. Run `$PID` in the instance of PowerShell started in the previous step to
-   determine its process ID.
-1. Enter the process ID for `pwsh` in the **Search** field and press
-   <kbd>return</kbd>.
-1. Change the search filter from `Any` to `PID`.
-1. Click **Start**.
-1. Generate PowerShell information to log from the instance of PowerShell
-   started in the first step.
-
-For more information, see [view log messages in Console on Mac][05].
+Apple's unified logging system stores log messages in binary format. You must
+use the `log` tool to query the unified logging system for PowerShell log
+events. The PowerShell log events don't appear in the **Console** application
+on macOS. Console app is designed for the older _syslog-based_ logging that
+predates the unified logging system.
 
 ### Viewing PowerShell log data from the command line on macOS
 
 To view PowerShell log data from a command line on macOS, use the `log` command
 in the **Terminal** or other shell host application. These commands can be run
-from **PowerShell**, **Z shell** (**Zsh**), or **Bash**.
+from **PowerShell**, **Z Shell**, or **Bash**.
 
-In the following example, the `log` command is used to show the log data on your
-system as it's occurring in realtime. The **process** parameter filters the log
-data for only the `pwsh` process. If you have more than one instance of `pwsh`
-running, the **process** parameter also accepts a process ID as its value. The
-**level** parameter shows messages at the specified level and below.
+In the following example, the `log` command is used to show the log data on
+your system as it's occurring in realtime. The **process** parameter filters
+the log data for only the `pwsh` process. If you have more than one instance of
+`pwsh` running, the **process** parameter also accepts a process ID as its
+value. The **level** parameter shows messages at the specified level and below.
 
 ```powershell
-log stream --process pwsh --level info
+log stream --predicate "subsystem == 'com.microsoft.powershell'" --level info
 ```
+
+The `log show` command can be used to export log items. The `log show` command
+provides options for exporting the last `N` items, items since a given time, or
+items within a given time span.
+
+For example, the following command exports items since
+`9am on April 5, 2022`:
+
+```powershell
+log show --start "2022-04-05 09:00:00" --predicate "subsystem == 'com.microsoft.powershell'"
+```
+
+For more information, run `log show --help` to view the help for the `log show`
+command.
+
+You can also output the log data in JSON format, which allows you to convert
+the event data to PowerShell objects. The following example outputs the events
+in JSON format. The `ConvertFrom-Json` cmdlet is used to convert the JSON data
+to PowerShell objects are get stored in the `$logRecord` variable.
+
+```powershell
+log show --predicate "subsystem == 'com.microsoft.powershell'" --style json |
+    ConvertFrom-Json | Set-Variable logRecord
+```
+
+You may also want to consider saving the logs to a more secure location such as
+[Security Information and Event Management (SIEM)][08] aggregator. Using
+Microsoft Defender for Cloud Apps, you can set up SIEM in Azure. For more
+information, see [Generic SIEM integration][01].
 
 ### Modes and levels of PowerShell log data on macOS
 
@@ -354,40 +355,21 @@ PowerShell subsystem:
 sudo log config --subsystem com.microsoft.powershell --reset
 ```
 
-The `log show` command can be used to export log items. The `log show` command
-provides options for exporting the last `N` items, items since a given time, or
-items within a given time span.
-
-For example, the following command exports items since
-`9am on April 5 of 2022`:
-
-```powershell
-log show --info --start "2022-04-05 09:00:00" --process pwsh
-```
-
-For more information, run `log show --help` to view the help for the `log show`
-command.
-
-You may also want to consider saving the logs to a more secure location such as
-[Security Information and Event Management (SIEM)][06] aggregator. Using
-Microsoft Defender for Cloud Apps, you can set up SIEM in Azure. For more
-information, see [Generic SIEM integration][07].
-
 ## See also
 
 - For Linux **syslog** and **rsyslog.conf** information, refer to the Linux
   computer's local `man` pages
 - For macOS **logging** information, see
-  [Apple's developer documentation on logging][01]
-- For Windows, see [about_Logging_Windows][08]
-- [Generic SIEM integration][07]
+  [Apple's developer documentation on logging][07]
+- For Windows, see [about_Logging_Windows][03]
+- [Generic SIEM integration][01]
 
 <!-- link references -->
-[01]: https://developer.apple.com/documentation/os/logging
-[02]: about_PowerShell_Config.md#modulelogging
-[03]: about_PowerShell_Config.md#protectedeventlogging
+[01]: /defender-cloud-apps/siem
+[02]: /powershell/module/microsoft.powershell.core/about/about_logging?view=powershell-5.1&preserve-view=true
+[03]: about_Logging_Windows.md
 [04]: about_PowerShell_Config.md#common-configuration-settings
-[05]: https://support.apple.com/guide/console/log-messages-cnsl1012/mac
-[06]: https://wikipedia.org/wiki/Security_information_and_event_management
-[07]: /defender-cloud-apps/siem
-[08]: about_Logging_Windows.md
+[05]: about_PowerShell_Config.md#modulelogging
+[06]: about_PowerShell_Config.md#protectedeventlogging
+[07]: https://developer.apple.com/documentation/os/logging
+[08]: https://wikipedia.org/wiki/Security_information_and_event_management

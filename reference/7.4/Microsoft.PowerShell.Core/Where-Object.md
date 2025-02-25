@@ -2,7 +2,7 @@
 external help file: System.Management.Automation.dll-Help.xml
 Locale: en-US
 Module Name: Microsoft.PowerShell.Core
-ms.date: 11/16/2023
+ms.date: 04/26/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/where-object?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
 title: Where-Object
@@ -364,7 +364,7 @@ Get-Command | Where-Object { $_.OutputType }
 
 ```powershell
 # Use Where-Object to get objects that are containers. This gets objects that
-# have the **PSIsContainer** property with a value of $True and excludes all
+# have the **PSIsContainer** property with a value of $true and excludes all
 # others.
 Get-ChildItem | Where-Object PSIsContainer
 Get-ChildItem | Where-Object { $_.PSIsContainer }
@@ -373,7 +373,7 @@ Get-ChildItem | Where-Object { $_.PSIsContainer }
 ```powershell
 # Finally, use the -not operator (!) to get objects that are not containers.
 # This gets objects that do have the **PSIsContainer** property and those
-# that have a value of $False for the **PSIsContainer** property.
+# that have a value of $false for the **PSIsContainer** property.
 Get-ChildItem | Where-Object -Not PSIsContainer
 Get-ChildItem | Where-Object { !$_.PSIsContainer }
 ```
@@ -1117,7 +1117,8 @@ Accept wildcard characters: False
 
 ### -Property
 
-Specifies the name of an object property. The parameter name, **Property**, is optional.
+Specifies the name of a property of the input object. The property must be an instance property, not
+a static property. This is a positional parameter, so the name, **Property**, is optional.
 
 This parameter was introduced in Windows PowerShell 3.0.
 

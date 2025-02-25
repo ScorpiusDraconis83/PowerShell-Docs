@@ -1,13 +1,14 @@
 ---
 description: Describes how to define and use parameter sets in advanced functions.
 Locale: en-US
-ms.date: 10/02/2023
+ms.date: 03/27/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_parameter_sets?view=powershell-5.1&WT.mc_id=ps-gethelp
-title: about Parameter Sets
+title: about_Parameter_Sets
 ---
 # about_Parameter_Sets
 
 ## Short description
+
 Describes how to define and use parameter sets in advanced functions.
 
 ## Long description
@@ -63,7 +64,7 @@ one unique parameter.
 Parameters that don't have an assigned parameter set name belong to all
 parameter sets.
 
-### Example
+## Examples
 
 The following example function counts the number lines, characters, and words
 in a text file. Using parameters, you can specify which values you want
@@ -125,9 +126,9 @@ function Measure-Lines {
         }
         foreach ($file in $Files) {
             $result = [ordered]@{ }
-            $result.Add('File', $file.fullname)
+            $result.Add('File', $file.FullName)
 
-            $content = Get-Content -LiteralPath $file.fullname
+            $content = Get-Content -LiteralPath $file.FullName
 
             if ($Lines) { $result.Add('Lines', $content.Length) }
 
@@ -162,7 +163,7 @@ which parameters can be used in each parameter set.
 
 ```powershell
 (Get-Command Measure-Lines).ParameterSets |
-  Select-Object -Property @{n='ParameterSetName';e={$_.name}},
+  Select-Object -Property @{n='ParameterSetName';e={$_.Name}},
     @{n='Parameters';e={$_.ToString()}}
 ```
 
@@ -214,5 +215,64 @@ sets of the `Get-ChildItem` cmdlet. When the parameters are run together in the
 same cmdlet, an error is thrown. Only one parameter set can be used per cmdlet
 call at a time.
 
+### How to know which parameter set is used
+
+The automatic variable `$PSCmdlet` provides the **ParameterSetName** property.
+This property contains the name of the parameter set being used. You can use
+this property in your function to determine which parameter set is being used
+to select parameter set-specific behavior.
+
+```powershell
+function Get-ParameterSetName {
+
+    [CmdletBinding(DefaultParameterSetName = 'Set1')]
+    param (
+        [Parameter(ParameterSetName = 'Set1', Position = 0)]
+        $Var1,
+
+        [Parameter(ParameterSetName = 'Set2', Position = 0)]
+        $Var2,
+
+        [Parameter(ParameterSetName = 'Set1', Position = 1)]
+        [Parameter(ParameterSetName = 'Set2', Position = 1)]
+        $Var3,
+
+        [Parameter(Position = 2)]
+        $Var4
+    )
+
+    "Using Parameter set named '$($PSCmdlet.ParameterSetName)'"
+
+    switch ($PSCmdlet.ParameterSetName) {
+        'Set1' {
+            "`$Var1 = $Var1"
+            "`$Var3 = $Var3"
+            "`$Var4 = $Var4"
+            break
+        }
+        'Set2' {
+            "`$Var2 = $Var2"
+            "`$Var3 = $Var3"
+            "`$Var4 = $Var4"
+            break
+        }
+    }
+}
+
+PS> Get-ParameterSetName 1 2 3
+
+Using Parameter set named 'Set1'
+$Var1 = 1
+$Var3 = 2
+$Var4 = 3
+
+PS> Get-ParameterSetName -Var2 1 2 3
+
+Using Parameter set named 'Set2'
+$Var2 = 1
+$Var3 = 2
+$Var4 = 3
+```
+
 <!-- link references -->
-[01]: about_functions_cmdletbindingattribute.md
+[01]: about_Functions_CmdletBindingAttribute.md

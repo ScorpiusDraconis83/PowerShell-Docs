@@ -1,6 +1,6 @@
 ---
 description: PowerShell on Arm-based systems
-ms.date: 01/09/2023
+ms.date: 08/28/2024
 title: PowerShell on Arm-based systems
 ---
 
@@ -13,31 +13,19 @@ the versions that have been tested.
 It may be possible to use Arm-based versions of PowerShell on other Linux distributions and
 versions, but we don't officially support it.
 
-## PowerShell 7.3
+## PowerShell 7.4
 
-PowerShell 7.3 is based on the [.NET 7.0 Supported OS Lifecycle Policy][02] and supports the
-following platforms:
-
-|                OS                | Architectures |               Lifecycle                |
-| -------------------------------- | ------------- | -------------------------------------- |
-| Windows 11 Client Version 22000+ | Arm64         | [Windows][04]                          |
-| Windows 10 Client Version 1607+  | Arm64         | [Windows][04]                          |
-| macOS 10.15+                     | Arm64         | [macOS][03]                            |
-| Raspberry Pi OS (Debian 10)      | Arm32         | [Raspberry Pi OS][07] and [Debian][05] |
-| Ubuntu 22.04, 20.04, 18.04       | Arm32         | [Ubuntu][06]                           |
-
-## PowerShell 7.2
-
-PowerShell 7.2 is based on the [.NET 6.0 Supported OS Lifecycle Policy][01] and supports the
-following platforms:
+Arm versions of PowerShell 7.4 can be installed on the following platforms:
 
 |                OS                | Architectures |               Lifecycle                |
 | -------------------------------- | ------------- | -------------------------------------- |
-| Windows 11 Client Version 22000+ | Arm64         | [Windows][04]                          |
-| Windows 10 Client Version 1607+  | Arm64         | [Windows][04]                          |
-| macOS 10.14+                     | Arm64         | [macOS][03]                            |
-| Raspberry Pi OS (Debian 10)      | Arm32         | [Raspberry Pi OS][07] and [Debian][05] |
-| Ubuntu 22.04, 20.04, 18.04       | Arm32         | [Ubuntu][06]                           |
+| Windows 11 Client Version 22000+ | Arm64         | [Windows][05]                          |
+| Windows 10 Client Version 1607+  | Arm64         | [Windows][05]                          |
+| macOS                            | Arm64         | [macOS][04]                            |
+| Raspberry Pi OS (Debian 12)      | Arm32         | [Raspberry Pi OS][08] and [Debian][06] |
+| Ubuntu 22.04, 20.04              | Arm32         | [Ubuntu][07]                           |
+
+Support is based on the [.NET 8.0 Supported OS Lifecycle Policy][03].
 
 ## Installing PowerShell on Arm-based systems
 
@@ -51,26 +39,25 @@ Windows
 
 Linux - install from the binary archives
 
-- [Alternate ways to install PowerShell on Linux][08]
+- [Alternate ways to install PowerShell on Linux][09]
 
 macOS
 
 - [Installing PowerShell on macOS][10]
 
-Raspbery Pi
+Raspberry Pi
 
-- [Raspberry Pi OS][09]
+- [Raspberry Pi OS][01]
 
 <!-- link references -->
-[01]: https://github.com/dotnet/core/blob/main/release-notes/6.0/supported-os.md
-[02]: https://github.com/dotnet/core/blob/main/release-notes/7.0/supported-os.md
-[03]: https://support.apple.com/macos
-[04]: https://support.microsoft.com/help/13853/windows-lifecycle-fact-sheet
-[05]: https://wiki.debian.org/DebianReleases
-[06]: https://wiki.ubuntu.com/Releases
-[07]: https://www.raspberrypi.com/software/operating-systems/
-[08]: install-other-linux.md#binary-archives
-[09]: install-raspbian.md
+[01]: community-support.md#raspberry-pi-os
+[03]: https://github.com/dotnet/core/blob/main/release-notes/8.0/supported-os.md
+[04]: https://support.apple.com/macos
+[05]: https://support.microsoft.com/help/13853/windows-lifecycle-fact-sheet
+[06]: https://wiki.debian.org/DebianReleases
+[07]: https://wiki.ubuntu.com/Releases
+[08]: https://www.raspberrypi.com/software/operating-systems/
+[09]: install-other-linux.md#binary-archives
 [10]: installing-powershell-on-macos.md
 [11]: installing-powershell-on-windows.md#deploying-on-windows-10-iot-core
 [12]: installing-powershell-on-windows.md#deploying-on-windows-10-iot-enterprise

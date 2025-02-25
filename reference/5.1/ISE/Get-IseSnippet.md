@@ -45,10 +45,13 @@ Get-IseSnippet
 
 ### Example 2: Copy all user-defined snippets from remote computers to a shared directory
 
-This example copies all of the user-created snippets from a group of remote computers to a shared Snippets directory.
+This example copies all of the user-created snippets from a group of remote computers to a shared
+Snippets directory.
 
 ```powershell
-Invoke-Command -Computer (Get-Content Servers.txt) {Get-IseSnippet | Copy-Item -Destination \\Server01\Share01\Snippets}
+Invoke-Command -Computer (Get-Content Servers.txt) -ScriptBlock {
+    Get-IseSnippet | Copy-Item -Destination \\Server01\Share01\Snippets
+}
 ```
 
 `Invoke-Command` runs `Get-IseSnippet` on the computers in the `Servers.txt` file. A pipeline
@@ -57,8 +60,8 @@ that is specified by the **Destination** parameter.
 
 ### Example 3: Display the title and text of each snippet on a local computer
 
-This example uses the `Get-IseSnippet` and `Select-Xml` cmdlets to display the title and text of each
-snippet on the local computer.
+This example uses the `Get-IseSnippet` and `Select-Xml` cmdlets to display the title and text of
+each snippet on the local computer.
 
 ```powershell
 #Parse-Snippet Function
@@ -93,17 +96,18 @@ Text:  (c) Fabrikam, Inc. 2012
 
 ### Example 4: Display the title and description of all snippets in the session
 
-This example displays the title and description of all snippets in the session, including built-in snippets, user-defined snippets, and imported snippets.
+This example displays the title and description of all snippets in the session, including built-in
+snippets, user-defined snippets, and imported snippets.
 
 ```powershell
-$PSISE.CurrentPowerShellTab.Snippets | Format-Table DisplayTitle, Description
+$psISE.CurrentPowerShellTab.Snippets | Format-Table DisplayTitle, Description
 ```
 
-The `$PSISE` variable represents the Windows PowerShell ISE host program. The
-**CurrentPowerShellTab** property of the `$PSISE` variable represent the current session. The
+The `$psISE` variable represents the Windows PowerShell ISE host program. The
+**CurrentPowerShellTab** property of the `$psISE` variable represent the current session. The
 **Snippets** property represents snippets in the current session.
 
-The `$PSISE.CurrentPowerShellTab.Snippets` command returns a
+The `$psISE.CurrentPowerShellTab.Snippets` command returns a
 **Microsoft.PowerShell.Host.ISE.ISESnippet** object that represents a snippet, unlike the
 `Get-IseSnippet` cmdlet. `Get-IseSnippet` returns a file object (System.Io.FileInfo) that represents
 a snippet file.

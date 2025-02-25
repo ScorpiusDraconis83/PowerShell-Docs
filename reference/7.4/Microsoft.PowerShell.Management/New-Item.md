@@ -2,7 +2,7 @@
 external help file: Microsoft.PowerShell.Commands.Management.dll-Help.xml
 Locale: en-US
 Module Name: Microsoft.PowerShell.Management
-ms.date: 06/30/2023
+ms.date: 02/23/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.management/new-item?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
 title: New-Item
@@ -95,13 +95,13 @@ New-Item -Path "c:\" -Name "logfiles" -ItemType "directory"
 
 ### Example 3: Create a profile
 
-This command creates a PowerShell profile in the path that is specified by the `$profile` variable.
+This command creates a PowerShell profile in the path that is specified by the `$PROFILE` variable.
 
-You can use profiles to customize PowerShell. `$profile` is an automatic (built-in) variable that
+You can use profiles to customize PowerShell. `$PROFILE` is an automatic (built-in) variable that
 stores the path and file name of the "CurrentUser/CurrentHost" profile. By default, the profile does
 not exist, even though PowerShell stores a path and file name for it.
 
-In this command, the `$profile` variable represents the path of the file. **ItemType** parameter
+In this command, the `$PROFILE` variable represents the path of the file. **ItemType** parameter
 specifies that the command creates a file. The **Force** parameter lets you create a file in the
 profile path, even when the directories in the path do not exist.
 
@@ -112,7 +112,7 @@ For more information, see [about_Automatic_Variables](../Microsoft.PowerShell.Co
 and [about_Profiles](../Microsoft.PowerShell.Core/About/about_Profiles.md).
 
 ```powershell
-New-Item -Path $profile -ItemType "file" -Force
+New-Item -Path $PROFILE -ItemType "file" -Force
 ```
 
 ### Example 4: Create a directory in a different directory
@@ -221,7 +221,7 @@ Mode                LastWriteTime         Length Name
 ### Example 9: Use the -Force parameter to overwrite existing files
 
 This example creates a file with a value and then recreates the file using `-Force`. This overwrites
-The existing file and it will lose it's content as you can see by the length property
+the existing file, as you can see by the length property.
 
 ```powershell
 PS> New-Item ./TestFile.txt -ItemType File -Value 'This is just a test file'
@@ -264,7 +264,7 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: ByValue (False), ByName (False)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -285,7 +285,7 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: ByValue (False), ByName (False)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -307,7 +307,7 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: ByValue (False), ByName (False)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -328,7 +328,7 @@ Aliases:
 Required: True
 Position: Named
 Default value: None
-Accept pipeline input: ByValue (False), ByName (False)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -378,11 +378,11 @@ on the current provider you are using.
 
 If your location is in a `FileSystem` drive, the following values are allowed:
 
-- File
-- Directory
-- SymbolicLink
-- Junction
-- HardLink
+- `File`
+- `Directory`
+- `SymbolicLink`
+- `Junction`
+- `HardLink`
 
 > [!NOTE]
 > Creating a `SymbolicLink` type on Windows requires elevation as administrator. However, Windows 10
@@ -391,10 +391,10 @@ If your location is in a `FileSystem` drive, the following values are allowed:
 
 In a `Certificate` drive, these are the values you can specify:
 
-- Certificate Provider
-- Certificate
-- Store
-- StoreLocation
+- `Certificate Provider`
+- `Certificate`
+- `Store`
+- `StoreLocation`
 
 For more information see [about_Providers](../Microsoft.PowerShell.Core/About/about_Providers.md).
 
@@ -453,7 +453,7 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: ByValue (False), ByName (False)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -474,7 +474,7 @@ Aliases: OS
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: ByValue (False), ByName (False)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -519,7 +519,7 @@ Aliases:
 Required: False False
 Position: Named
 Default value: None
-Accept pipeline input: ByValue (System.Object[]), ByName (System.Object[])
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -540,7 +540,7 @@ Aliases: SO
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: ByValue (False), ByName (False)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -562,7 +562,7 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
-Accept pipeline input: ByValue (False), ByName (False)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -629,9 +629,29 @@ You can pipe a value for the new item to this cmdlet.
 
 ## OUTPUTS
 
-### System.Object
+### System.Collections.DictionaryEntry
 
-This cmdlet returns the item that it creates.
+The cmdlet returns a **DictionaryEntry** object when creating a new environment variable.
+
+### System.IO.DirectoryInfo
+
+The cmdlet returns a **DirectoryInfo** object when creating a new directory in the filesystem.
+
+### System.IO.FileInfo
+
+The cmdlet returns a **FileInfo** object when creating a new file in the filesystem.
+
+### System.Management.Automation.AliasInfo
+
+The cmdlet returns an **AliasInfo** object when creating a new alias.
+
+### System.Management.Automation.FunctionInfo
+
+The cmdlet returns a **FunctionInfo** object when creating a new function.
+
+### System.Management.Automation.PSVariable
+
+The cmdlet returns a **PSVariable** object when creating a new variable.
 
 ## NOTES
 

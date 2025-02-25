@@ -2,7 +2,7 @@
 external help file: System.Management.Automation.dll-Help.xml
 Locale: en-US
 Module Name: Microsoft.PowerShell.Core
-ms.date: 06/28/2023
+ms.date: 10/02/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/new-pssessionconfigurationfile?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
 title: New-PSSessionConfigurationFile
@@ -169,7 +169,7 @@ True
 ```
 
 Use the **Verbose** parameter with `Test-PSSessionConfigurationFile` to display any errors that are
-detected. The cmdlet returns `$True` if no errors are detected in the file.
+detected. The cmdlet returns `$true` if no errors are detected in the file.
 
 ### Example 5: Create a sample configuration file
 
@@ -583,7 +583,7 @@ The acceptable values for this parameter are:
   elements, such as script blocks, variables, or operators.
 - RestrictedLanguage - Users may run cmdlets and functions, but are not permitted to use script
   blocks or variables except for the following permitted variables: `$PSCulture`, `$PSUICulture`,
-  `$True`, `$False`, and `$Null`. Users may use only the basic comparison operators (`-eq`, `-gt`,
+  `$true`, `$false`, and `$null`. Users may use only the basic comparison operators (`-eq`, `-gt`,
   `-lt`). Assignment statements, property references, and method calls are not permitted.
 
 The default value of the **LanguageMode** parameter depends on the value of the **SessionType**
@@ -910,10 +910,8 @@ the following keys:
 
 - Name - Name of the variable. This key is required.
 - Value - Variable value. This key is required.
-- Options - Variable options. This key is optional. The default value is **None**. The acceptable
-  values for this parameter are: None, ReadOnly, Constant, Private, or AllScope.
 
-For example: `@{Name='WarningPreference';Value='SilentlyContinue';Options='AllScope'}`
+For example: `@{Name='WarningPreference';Value='SilentlyContinue'}`
 
 ```yaml
 Type: System.Object
@@ -973,7 +971,7 @@ Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
-Accept wildcard characters: False
+Accept wildcard characters: True
 ```
 
 ### -VisibleExternalCommands

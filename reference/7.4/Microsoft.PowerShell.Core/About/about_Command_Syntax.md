@@ -4,11 +4,12 @@ Locale: en-US
 ms.date: 10/31/2023
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_command_syntax?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Command Syntax
+title: about_Command_Syntax
 ---
 # about_Command_Syntax
 
 ## Short description
+
 Describes the syntax diagrams that are used in PowerShell.
 
 ## Long description
@@ -165,7 +166,7 @@ The syntax diagrams use the following symbols:
 
   The placeholder inside the angle brackets identifies the .NET type of the
   value that a parameter takes. For example, to use the **Name** parameter of
-  the `Get-Command ` cmdlet, you replace the `<string[]>` with one or more
+  the `Get-Command` cmdlet, you replace the `<string[]>` with one or more
   strings separated by commas (`,`).
 
 <!-- `[]` - also known as binkies -->

@@ -1,7 +1,6 @@
 ---
 description: This article outlines the steps required to contribute to the PowerShell documentation.
 ms.date: 07/25/2022
-ms.topic: conceptual
 title: Contributing to PowerShell documentation
 ---
 # Contributing to PowerShell documentation
@@ -97,7 +96,7 @@ Additional resources
 [7]: https://www.powershellgallery.com/packages/posh-git
 [8]: /contribute/get-started-setup-local
 [9]: /contribute/git-github-fundamentals
-[10]: /contribute/#quick-edits-to-existing-documents
+[10]: /contribute/content/how-to-write-quick-edits
 [11]: /contribute/how-to-write-workflows-major
 [12]: /contribute/style-quick-start
 [13]: /style-guide/welcome/

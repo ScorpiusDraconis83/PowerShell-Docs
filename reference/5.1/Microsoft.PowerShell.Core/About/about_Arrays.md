@@ -1,15 +1,16 @@
 ---
 description: Describes arrays, which are data structures designed to store collections of items.
 Locale: en-US
-ms.date: 01/17/2023
+ms.date: 01/03/2025
 no-loc: [Count, Length, LongLength, Rank, ForEach, Clear, Default, First, Last, SkipUntil, Until, Split, Tuple]
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_arrays?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Arrays
+title: about_Arrays
 ---
 # about_Arrays
 
 ## Short description
+
 Describes arrays, which are data structures designed to store collections of
 items.
 
@@ -67,7 +68,7 @@ values of a particular type, cast the variable as an array type, such as
 variable name with an array type enclosed in brackets. For example:
 
 ```powershell
-[int32[]]$ia = 1500, 2230, 3350, 4000
+[Int32[]]$ia = 1500, 2230, 3350, 4000
 ```
 
 As a result, the `$ia` array can contain only integers.
@@ -341,9 +342,25 @@ while($i -lt 4) {
 
 ### Count or Length or LongLength
 
-To determine how many items are in an array, use the **Length** property or its
-**Count** alias. **Longlength** is useful if the array contains more than
-2,147,483,647 elements.
+In PowerShell, arrays have three properties that indicate the number of items
+contained in the array.
+
+- **Count** - This property is the most commonly used property to determine the
+  number of items in any collection, not just an array. It's an `[Int32]` type
+  value. In Windows PowerShell 5.1 (and older) **Count** alias property for
+  **Length**.
+
+- **Length** - This property is an `[Int32]` type value. This contains the same
+  value as **Count**.
+
+  > [!NOTE]
+  > While **Count** and **Length** are equivalent for arrays, **Length** can
+  > have a different meaning for other types. For example, **Length** for a
+  > string is the number of characters in the string. But the **Count**
+  > property is always `1`.
+
+- **Longlength** - This property is an `[Int64]` type value. Use this property
+  for arrays containing more than 2,147,483,647 elements.
 
 ```powershell
 $a = 0..9
@@ -470,7 +487,7 @@ True
 In this example, `$intA` is explicitly typed to contain integers.
 
 ```powershell
-[int[]] $intA = 1, 2, 3
+[Int[]] $intA = 1, 2, 3
 $intA.Clear()
 $intA
 ```
@@ -488,7 +505,7 @@ for each element of the array.
 
 The `ForEach()` method has several overloads that perform different operations.
 
-```
+```Syntax
 ForEach(scriptblock expression)
 ForEach(scriptblock expression, object[] arguments)
 ForEach(type convertToType)
@@ -622,8 +639,8 @@ The value of `mode` must be a [WhereOperatorSelectionMode][02] enum value:
 - `Default` (`0`) - Return all items
 - `First` (`1`) - Return the first item
 - `Last` (`2`) - Return the last item
-- `SkipUntil` (`3`) - Skip items until condition is true, return all the remaining
-  items (including the first item for which the condition is true)
+- `SkipUntil` (`3`) - Skip items until condition is true, return all the
+  remaining items (including the first item for which the condition is true)
 - `Until` (`4`) - Return all items until condition is true
 - `Split` (`5`) - Return an array of two elements
   - The first element contains matching items
@@ -643,10 +660,10 @@ The following example shows how to select all odd numbers from the array.
 9
 ```
 
-This example show how to select the strings that aren't empty.
+The next example shows how to select all non-empty strings.
 
 ```powershell
-('hi', '', 'there').Where({$_.Length})
+('hi', '', 'there').Where{ $_ }
 ```
 
 ```Output
@@ -784,7 +801,7 @@ Stopped  AppIDSvc           Application Identity
 
 > [!NOTE]
 > Both `ForEach()` and `Where()` methods are intrinsic members. For more
-> information about intrinsic members, see [about_Instrinsic_Members][08].
+> information about intrinsic members, see [about_Intrinsic_Members][08].
 
 ## Get the members of an array
 
@@ -884,47 +901,88 @@ faster, especially for large arrays.
 
 ## Arrays of zero or one
 
-Beginning in Windows PowerShell 3.0, a collection of zero or one object has the
-**Count** and **Length** properties. Also, you can index into an array of one
-object. This feature helps you to avoid scripting errors that occur when a
-command that expects a collection gets fewer than two items.
+Beginning in Windows PowerShell 3.0, a scalar types and collection of zero or
+one objects has the **Count** and **Length** properties. Also, you can use
+array index notation to access the value of a singleton scalar object. This
+feature helps you to avoid scripting errors that occur when a command that
+expects a collection gets fewer than two items.
 
 > [!NOTE]
 In Windows PowerShell, objects created by casting a **Hashtable** to
 `[pscustomobject]` do not have the **Length** or **Count** properties.
 Attempting to access these members returns `$null`.
 
-The following examples demonstrate this feature.
-
-### Zero objects
+The following example shows that a variable that contains no objects has a
+**Count** and **Length** of 0.
 
 ```powershell
-$a = $null
-$a.Count
-$a.Length
-```
-
-```Output
+PS> $a = $null
+PS> $a.Count
 0
+PS> $a.Length
 0
 ```
 
-### One object
+The following example shows that a variable that contains one object has a
+**Count** and **Length** of 1. You can also use array indexing to access the
+value of the object.
 
 ```powershell
-$a = 4
-$a.Count
-$a.Length
-$a[0]
-$a[-1]
+PS> $a = 4
+PS> $a.Count
+1
+PS> $a.Length
+1
+PS> $a[0]
+4
+PS> $a[-1]
+4
 ```
 
-```Output
+When you run a command that could return a collection or a single object, you
+can use array indexing to access the value of the object without having to test
+the **Count** or **Length** properties. However, if the result is a single
+object (singleton), and that object has a **Count** or **Length** property, the
+value of those properties belong to the singleton object and don't represent
+the number of items in the collection.
+
+In the following example, the command returns a single string object. The
+**Length** of that string is `4`.
+
+```powershell
+PS> $result = 'one','two','three','four' | Where-Object {$_ -like 'f*'}
+PS> $result.GetType().FullName
+System.String
+PS> $result
+four
+PS> $result.Count
 1
-1
-4
+PS❯ $result.Length
 4
 ```
+
+If you want `$result` to be an array of strings, you need to declare the
+variable as an array.
+
+In this example, `$result` is an array of strings. The **Count** and **Length**
+of the array is `1`, and the **Length** of the first element is `4`.
+
+```powershell
+PS> [string[]]$result = 'one','two','three','four' |
+    Where-Object {$_ -like 'f*'}
+PS> $result.GetType().FullName
+System.String[]
+PS> $result
+four
+PS> $result.Count
+1
+PS> $result.Length
+1
+PS> $result[0].Length
+4
+```
+
+
 
 ## Indexing .NET types that implement `IDictionary<TKey, TValue>`
 
@@ -1007,11 +1065,10 @@ Thursday, June 24, 2021 1:23:30 PM
 ```
 
 The `set_LastWriteTime()` method is a _hidden_ member of the **FileInfo**
-object. The following example shows how to find members that have a _hidden_
-`set` method.
+object. The following example shows how to find _hidden_ `set` methods.
 
 ```powershell
-$files | Get-Member | Where-Object Definition -like '*set;*'
+$files | Get-Member -Force -Name set_*
 ```
 
 ```Output

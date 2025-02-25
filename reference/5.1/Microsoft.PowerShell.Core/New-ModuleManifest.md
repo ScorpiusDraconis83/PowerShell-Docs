@@ -579,7 +579,7 @@ Specifies the functions that the module exports. Wildcards are permitted.
 You can use this parameter to restrict the functions that are exported by the module. It can remove
 functions from the list of exported aliases, but it can't add functions to the list.
 
-If you omit this parameter, `New-ModuleManifest` creates an **FunctionsToExport** key with a value
+If you omit this parameter, `New-ModuleManifest` creates a **FunctionsToExport** key with a value
 of `*` (all), meaning that all functions defined in the module are exported by the manifest.
 
 ```yaml
@@ -772,7 +772,7 @@ Accept wildcard characters: False
 ### -Path
 
 Specifies the path and file name of the new module manifest. Enter a path and file name with a
-`.psd1` file name extension, such as `$pshome\Modules\MyModule\MyModule.psd1`. The **Path**
+`.psd1` file name extension, such as `$PSHOME\Modules\MyModule\MyModule.psd1`. The **Path**
 parameter is required.
 
 If you specify the path to an existing file, `New-ModuleManifest` replaces the file without warning
@@ -1136,7 +1136,7 @@ manifest.
 Module manifests are usually optional. However, a module manifest is required to export an assembly
 that is installed in the global assembly cache.
 
-To add or change files in the `$pshome\Modules` directory, start PowerShell with the **Run as
+To add or change files in the `$PSHOME\Modules` directory, start PowerShell with the **Run as
 administrator** option.
 
 In PowerShell 2.0, many parameters of `New-ModuleManifest` were mandatory, even though they weren't

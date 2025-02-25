@@ -4,7 +4,7 @@ Locale: en-US
 ms.date: 12/05/2022
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_object_creation?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Object Creation
+title: about_Object_Creation
 ---
 # about_Object_Creation
 
@@ -251,7 +251,7 @@ For example, the following command creates a session option object.
 ```powershell
 [System.Management.Automation.Remoting.PSSessionOption]@{
   IdleTimeout=43200000
-  SkipCnCheck=$True
+  SkipCnCheck=$true
 }
 ```
 
@@ -291,9 +291,9 @@ cmdlet can be a hash table.
 ```powershell
 New-PSSession -ComputerName Server01 -SessionOption @{
   IdleTimeout=43200000
-  SkipCnCheck=$True
+  SkipCnCheck=$true
 }
-Register-ScheduledJob Name Test -FilePath .\Get-Inventory.ps1 -Trigger @{
+Register-ScheduledJob -Name Test -FilePath .\Get-Inventory.ps1 -Trigger @{
   Frequency="Daily"
   At="15:00"
 }

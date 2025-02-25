@@ -4,7 +4,7 @@ Locale: en-US
 ms.date: 11/13/2023
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_classes_methods?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Classes Methods
+title: about_Classes_Methods
 ---
 
 # about_Classes_Methods
@@ -800,7 +800,7 @@ PowerShell class methods have the following limitations:
 [01]: about_Preference_Variables.md
 [02]: #hidden-methods
 [03]: #static-methods
-[04]: about_functions_advanced_parameters.md#parameter-and-variable-validation-attributes
+[04]: about_Functions_Advanced_Parameters.md#parameter-and-variable-validation-attributes
 [05]: #example-4---static-method-with-overloads
 [06]: #defining-instance-methods-with-update-typedata
 [07]: about_Automatic_Variables.md

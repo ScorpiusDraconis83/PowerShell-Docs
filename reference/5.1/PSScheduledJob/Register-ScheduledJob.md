@@ -118,7 +118,7 @@ starts a job every other Monday at 9:00 PM.
 
 The `$path` variable stores the path to the `UpdateVersion.ps1` script file.
 
-`Register-ScheduledJob` uses the **Name** paramter to create the **UpdateVersion** scheduled job.
+`Register-ScheduledJob` uses the **Name** parameter to create the **UpdateVersion** scheduled job.
 The **FilePath** parameter uses `$path` to specify the script that the job runs. The
 **ScheduledJobOption** parameter uses the job options stored in `$O`. The **Trigger** parameter uses
 the job triggers stored in `$T`.
@@ -464,7 +464,7 @@ options, including the default values, see `New-ScheduledJobOption`.
 To submit a hash table, use the following keys. In the following hash table, the keys are shown with
 their default values.
 
-`@{StartIfOnBattery=$False; StopIfGoingOnBattery=$True; WakeToRun=$False; StartIfNotIdle=$False; IdleDuration="00:10:00"; IdleTimeout="01:00:00"; StopIfGoingOffIdle=$True; RestartOnIdleResume=$False; ShowInTaskScheduler=$True; RunElevated=$False; RunWithoutNetwork=$False; DoNotAllowDemandStart=$False; MultipleInstancePolicy="IgnoreNew"}`
+`@{StartIfOnBattery=$false; StopIfGoingOnBattery=$true; WakeToRun=$false; StartIfNotIdle=$false; IdleDuration="00:10:00"; IdleTimeout="01:00:00"; StopIfGoingOffIdle=$true; RestartOnIdleResume=$false; ShowInTaskScheduler=$true; RunElevated=$false; RunWithoutNetwork=$false; DoNotAllowDemandStart=$false; MultipleInstancePolicy="IgnoreNew"}`
 
 ```yaml
 Type: Microsoft.PowerShell.ScheduledJob.ScheduledJobOptions

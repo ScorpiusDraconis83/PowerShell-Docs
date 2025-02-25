@@ -10,7 +10,6 @@ title: New-CimSession
 # New-CimSession
 
 ## SYNOPSIS
-
 Creates a CIM session.
 
 ## SYNTAX
@@ -18,16 +17,17 @@ Creates a CIM session.
 ### CredentialParameterSet (Default)
 
 ```
-New-CimSession [-Authentication <PasswordAuthenticationMechanism>] [[-Credential] <PSCredential>]
- [[-ComputerName] <String[]>] [-Name <String>] [-OperationTimeoutSec <UInt32>] [-SkipTestConnection]
- [-Port <UInt32>] [-SessionOption <CimSessionOptions>] [<CommonParameters>]
+New-CimSession [-Authentication <PasswordAuthenticationMechanism>]
+ [[-Credential] <PSCredential>] [[-ComputerName] <String[]>] [-Name <String>]
+ [-OperationTimeoutSec <UInt32>] [-SkipTestConnection] [-Port <UInt32>]
+ [-SessionOption <CimSessionOptions>] [<CommonParameters>]
 ```
 
 ### CertificateParameterSet
 
 ```
-New-CimSession [-CertificateThumbprint <String>] [[-ComputerName] <String[]>] [-Name <String>]
- [-OperationTimeoutSec <UInt32>] [-SkipTestConnection] [-Port <UInt32>]
+New-CimSession [-CertificateThumbprint <String>] [[-ComputerName] <String[]>]
+ [-Name <String>] [-OperationTimeoutSec <UInt32>] [-SkipTestConnection] [-Port <UInt32>]
  [-SessionOption <CimSessionOptions>] [<CommonParameters>]
 ```
 
@@ -68,7 +68,7 @@ This example creates a CIM session to each of the computers specified by **Compu
 comma separated list.
 
 ```powershell
-New-CimSession -ComputerName Server01,Server02,Server03
+New-CimSession -ComputerName Server01, Server02, Server03
 ```
 
 ### Example 4: Create a CIM session with a friendly name
@@ -77,7 +77,7 @@ This example creates a remote CIM session to each of the computers specified by 
 the comma separated list, and assigns a friendly name to the new sessions, by specifying **Name**.
 
 ```powershell
-New-CimSession -ComputerName Server01,Server02 -Name FileServers
+New-CimSession -ComputerName Server01, Server02 -Name FileServers
 Get-CimSession -Name File*
 ```
 
@@ -130,9 +130,9 @@ parameter are:
 - NtlmDomain
 - CredSsp
 
-You cannot use the **NtlmDomain** authentication type for connection to the local computer. **CredSSP**
-authentication is available only in Windows Vista, Windows Server 2008, and later versions of
-Windows.
+You cannot use the **NtlmDomain** authentication type for connection to the local computer.
+**CredSSP** authentication is available only in Windows Vista, Windows Server 2008, and later
+versions of Windows.
 
 > [!CAUTION]
 > Credential Security Service Provider (CredSSP) authentication is designed for commands that
@@ -166,7 +166,8 @@ To get a certificate thumbprint, use the
 [`Get-ChildItem`](../Microsoft.Powershell.Management/Get-ChildItem.md) cmdlets in the PowerShell
 Certificate Provider.
 
-For more information, see [about_Certificate_Provider](../Microsoft.PowerShell.Security/About/about_Certificate_Provider.md).
+For more information, see
+[about_Certificate_Provider](../Microsoft.PowerShell.Security/About/about_Certificate_Provider.md).
 
 ```yaml
 Type: System.String
@@ -217,7 +218,8 @@ Specify the value for **Credential** using one of the following formats:
 - A user name: "User01"
 - A domain name and a user name: "Domain01\User01"
 - A user principal name: "User@Domain.com"
-- A PSCredential object, such as one returned by the [`Get-Credential`](../Microsoft.PowerShell.Security/Get-Credential.md) cmdlet.
+- A PSCredential object, such as one returned by the
+  [`Get-Credential`](../Microsoft.PowerShell.Security/Get-Credential.md) cmdlet.
 
 When you type a user name, you are prompted for a password.
 
@@ -237,8 +239,9 @@ Accept wildcard characters: False
 
 Specifies a friendly name for the CIM session.
 
-You can use the name to refer to the CIM session when using other cmdlets, such as the [Get-CimSession](Get-CimSession.md) cmdlet.
-The name is not required to be unique to the computer or the current session.
+You can use the name to refer to the CIM session when using other cmdlets, such as the
+[Get-CimSession](Get-CimSession.md) cmdlet. The name is not required to be unique to the computer
+or the current session.
 
 ```yaml
 Type: System.String
@@ -348,7 +351,7 @@ Accept wildcard characters: False
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
 -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose,
 -WarningAction, and -WarningVariable. For more information, see
-[about_CommonParameters](../Microsoft.PowerShell.Core/About/about_CommonParameters.md).
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

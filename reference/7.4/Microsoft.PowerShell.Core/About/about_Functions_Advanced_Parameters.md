@@ -1,10 +1,10 @@
 ---
 description: Explains how to add parameters to advanced functions.
 Locale: en-US
-ms.date: 06/22/2023
+ms.date: 02/25/2025
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_functions_advanced_parameters?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Functions Advanced Parameters
+title: about_Functions_Advanced_Parameters
 ---
 
 # about_Functions_Advanced_Parameters
@@ -19,15 +19,68 @@ You can add parameters to the advanced functions that you write, and use
 parameter attributes and arguments to limit the parameter values that function
 users submit with the parameter.
 
-The parameters that you add to your function are available to users in addition
-to the common parameters that PowerShell adds automatically to all cmdlets and
-advanced functions. For more information about the PowerShell common
-parameters, see [about_CommonParameters][06].
+When you use the `CmdletBinding` attribute, PowerShell automatically adds the
+Common Parameters. You can't create any parameters that use the same names as
+the Common Parameters. For more information, see [about_CommonParameters][06].
 
-Beginning in PowerShell 3.0, you can use splatting with `@Args` to represent
+Beginning in PowerShell 3.0, you can use splatting with `@args` to represent
 the parameters in a command. Splatting is valid on simple and advanced
 functions. For more information, see [about_Functions][14] and
 [about_Splatting][17].
+
+## Parameter declaration
+
+Parameters are variables declared in the `param()` statement of a function or
+script block. You can use the optional `[Parameter()]` attribute alone or in
+combination with the `[Alias()]` attribute or any of the parameter validation
+attributes.
+
+Parameter names follow the rules for variable names. Parameter names consist of
+decimal digits, alphabetical characters, and underscores. For a complete list
+of naming rules, see [about_Variables][20].
+
+> [!IMPORTANT]
+> It's possible to define a parameter that starts with a decimal digit.
+> Starting parameter names with a digit isn't recommended because PowerShell
+> treats them as string values passed as positional parameters.
+
+Consider the following example:
+
+```powershell
+function TestFunction {
+    param (
+        [switch] $100,
+        [string] $200
+    )
+
+    "100: $100"
+    "200: $200"
+}
+```
+
+If you try to use the parameters, PowerShell interprets them as strings passed
+as positional parameter.
+
+```powershell
+PS> TestFunction -100 -200 Hello
+100: False
+200: -100
+$args: -200 Hello
+```
+
+The output shows that PowerShell has bound the value `-100` to the `$200`
+parameter variable. The remaining positional values are bound to `$args`. To
+work around the issue, you can use splatting to pass the parameter values.
+
+```powershell
+PS> $ht = @{100 = $true; 200 = 'Hello'}
+PS> TestFunction @ht
+100: True
+200: Hello
+$args:
+```
+
+For more information, see [about_Splatting][17].
 
 ## Type conversion of parameter values
 
@@ -82,7 +135,7 @@ function Get-Date_Func {
   }
 }
 
-[cultureinfo]::CurrentCulture = 'de-DE'
+[CultureInfo]::CurrentCulture = 'de-DE'
 
 # This German-format date string doesn't work with the invariant culture.
 # E.g., [datetime] '19-06-2018' breaks.
@@ -99,6 +152,8 @@ Get-Date_Func: Cannot process argument transformation on parameter 'Date'.
 Cannot convert value "19-06-2018" to type "System.DateTime". Error:
 "String '19-06-2018' was not recognized as a valid DateTime."
 ```
+
+For more information, see [about_Type_Conversion](about_Type_Conversion.md).
 
 ## Static parameters
 
@@ -129,24 +184,23 @@ has a **false** value.
 For example, the **Recurse** parameter of `Get-ChildItem` is a switch
 parameter.
 
-To create a switch parameter in a function, specify the `switch` type in the
-parameter definition.
-
-For example, your function may have an option to output data as a byte array:
+To create a switch parameter in a function, specify the `[switch]` type in the
+parameter definition. The following example shows the definition of a switch
+parameter that could be used to provide an option to output data as a byte
+array:
 
 ```powershell
 param([switch]$AsByteArray)
 ```
 
-Switch parameters are easy to use and are preferred over Boolean parameters,
-which have a less natural syntax for PowerShell.
+Switch parameters are easy to use and are preferred over Boolean parameters
+that have a less natural syntax for PowerShell.
 
-For example, to use a switch parameter, the user types the parameter in the
-command.
+To use a switch parameter, include the parameter in the command. For example:
 
 `-IncludeAll`
 
-To use a Boolean parameter, the user types the parameter and a Boolean value.
+To use a Boolean parameter, you must provide the parameter and a Boolean value.
 
 `-IncludeAll $true`
 
@@ -157,29 +211,37 @@ value is required.
 
 ### Switch parameter design considerations
 
-- Switch parameters shouldn't be given default values. They should always
+- Don't set a default value for a switch parameter. Switch parameter always
   default to false.
-- Switch parameters are excluded from positional parameters by default. Even
-  when other parameters are implicitly positional, switch parameters aren't.
-  You _can_ override that in the Parameter attribute, but it will confuse
-  users.
-- Switch parameters should be designed so that setting them moves a command
-  from its default behavior to a less common or more complicated mode. The
-  simplest behavior of a command should be the default behavior that doesn't
-  require the use of switch parameters.
-- Switch parameters shouldn't be mandatory. The only case where it's necessary
-  to make a switch parameter mandatory is when it's needed to differentiate a
+- Don't make switch parameters positional. By default, switch parameters are
+  excluded from positional parameters. You _can_ override that in the
+  **Parameter** attribute, but it can confuse users.
+- Design switch parameters so that using parameter changes the default behavior
+  of the command to a less common or more complicated mode. The simplest
+  behavior of a command should be the default behavior that doesn't require the
+  use of switch parameters.
+- Don't make switch parameters mandatory. The only case where it's helpful to
+  make a switch parameter mandatory is when it's needed to differentiate a
   parameter set.
-- Explicitly setting a switch from a boolean can be done with
-  `-MySwitch:$boolValue` and in splatting with
-  `$params = @{ MySwitch = $boolValue }`.
-- Switch parameters are of type `SwitchParameter`, which implicitly converts to
-  Boolean. The parameter variable can be used directly in a conditional
-  expression. For example:
+- Use the switch parameter variable directly in a conditional expression. The
+  `SwitchParameter` type implicitly converts to Boolean. For example:
 
-  `if ($MySwitch) { ... }`
+  ```powershell
+  if ($MySwitch) { ... }
+  ```
 
-  There's no need to write `if ($MySwitch.IsPresent) { ... }`
+- Always base the behavior controlled by the switch on the value of the switch,
+  not the presence of the parameter. There are several ways to test for the
+  presence of a switch parameters:
+
+  - `$PSBoundParameters` contains the switch parameter name as a key
+  - `$MyInvocation.BoundParameters` contains the switch parameter name as a key
+  - `$PSCmdlet.ParameterSetName` when the switch defines a unique parameter set
+
+  For example, it's possible to provide an explicit value for the switch using
+  `-MySwitch:$false` or splatting. If you only test for the presence of the
+  parameter, the command behaves as if the switch value is `$true` instead of
+  `$false`.
 
 ## Dynamic parameters
 
@@ -200,7 +262,7 @@ they can be difficult for users to discover. To find a dynamic parameter, the
 user must be in the provider path, use the **ArgumentList** parameter of the
 `Get-Command` cmdlet, or use the **Path** parameter of `Get-Help`.
 
-To create a dynamic parameter for a function or script, use the `DynamicParam`
+To create a dynamic parameter for a function or script, use the `dynamicparam`
 keyword.
 
 The syntax is as follows:
@@ -222,7 +284,7 @@ function Get-Sample {
   [CmdletBinding()]
   param([string]$Name, [string]$Path)
 
-  DynamicParam
+  dynamicparam
   {
     if ($Path.StartsWith("HKLM:"))
     {
@@ -246,7 +308,8 @@ function Get-Sample {
 }
 ```
 
-For more information, see the documentation for the [RuntimeDefinedParameter][02] type.
+For more information, see the documentation for the
+[RuntimeDefinedParameter][02] type.
 
 ## Attributes of parameters
 
@@ -352,7 +415,7 @@ parameter is used in a command.
 By default, all function parameters are positional. PowerShell assigns position
 numbers to parameters in the order the parameters are declared in the function.
 To disable this feature, set the value of the `PositionalBinding` argument of
-the **CmdletBinding** attribute to `$False`. The `Position` argument takes
+the **CmdletBinding** attribute to `$false`. The `Position` argument takes
 precedence over the value of the `PositionalBinding` argument of the
 **CmdletBinding** attribute. For more information, see `PositionalBinding` in
 [about_Functions_CmdletBindingAttribute][12].
@@ -529,7 +592,7 @@ function Test-Remainder {
         "${i}: $($Remaining[$i])"
     }
 }
-Test-Remainder first one,two
+Test-Remainder first one, two
 ```
 
 ```Output
@@ -572,6 +635,28 @@ If there is no [comment-based help][01] for the function then this message is
 displayed in the `Get-Help -Full` output.
 
 This argument has no effect on optional parameters.
+
+#### DontShow argument
+
+The `DontShow` value is typically used to assist backwards compatibility for a
+command where an obsolete parameter cannot be removed. Setting `DontShow` to
+`True` hides the parameter from the user for tab expansion and IntelliSense.
+
+PowerShell v7 (and higher) uses `DontShow` to hide the following obsolete
+parameters:
+
+- The **NoTypeInformation** parameter of `ConvertTo-Csv` and `Export-Csv`
+- The **Raw** parameter of `Format-Hex`
+- The **UseBasicParsing** parameter of `Invoke-RestMethod` and
+  `Invoke-WebRequest`
+
+The `DontShow` argument has the following side effects:
+
+- Affects all parameter sets for the associated parameter, even if there's a
+  parameter set in which `DontShow` is unused.
+- Hides common parameters from tab completion and IntelliSense. `DontShow`
+  doesn't hide the optional common parameters: **WhatIf**, **Confirm**, or
+  **UseTransaction**.
 
 ### Alias attribute
 
@@ -739,7 +824,7 @@ For more information, see [about_Functions_Argument_Completion][11].
 
 The **ArgumentCompleter** attribute allows you to add tab completion values to
 a specific parameter. An **ArgumentCompleter** attribute must be defined for
-each parameter that needs tab completion. Like **DynamicParameters**, the
+each parameter that needs tab completion. Like **dynamicparameters**, the
 available values are calculated at runtime when the user presses <kbd>Tab</kbd>
 after the parameter name.
 
@@ -917,10 +1002,10 @@ PowerShell generates an error if any value is outside that range.
 
 The **ValidateRangeKind** enum allows for the following values:
 
-- **Positive** - A number greater than zero.
-- **Negative** - A number less than zero.
-- **NonPositive** - A number less than or equal to zero.
-- **NonNegative** - A number greater than or equal to zero.
+- `Positive` - A number greater than zero.
+- `Negative` - A number less than zero.
+- `NonPositive` - A number less than or equal to zero.
+- `NonNegative` - A number greater than or equal to zero.
 
 In the following example, the value of the **Attempts** parameter must be
 between zero and ten.
@@ -1214,7 +1299,7 @@ function Test-UserDrivePath{
         [ValidateUserDrive()]
         [string]$Path
     )
-    $True
+    $true
 }
 
 Test-UserDrivePath -Path C:\
@@ -1258,10 +1343,10 @@ True
 
 ### ValidateTrustedData validation attribute
 
-This attribute was added in PowerShell 6.1.1.
+This attribute is used internally by PowerShell itself and isn't intended for
+external usage.
 
-At this time, the attribute is used internally by PowerShell itself and isn't
-intended for external usage.
+This attribute was added in PowerShell 6.1.1.
 
 ## See also
 
@@ -1273,7 +1358,7 @@ intended for external usage.
 - [about_Functions_OutputTypeAttribute][13]
 
 <!-- link references -->
-[01]: ./about_comment_based_help.md
+[01]: about_Comment_Based_Help.md
 [02]: /dotnet/api/system.management.automation.runtimedefinedparameter
 [03]: /dotnet/standard/base-types/composite-formatting#composite-format-string
 [04]: /dotnet/standard/base-types/composite-formatting#format-string-component
@@ -1292,3 +1377,4 @@ intended for external usage.
 [17]: about_Splatting.md
 [18]: about_Tab_Expansion.md
 [19]: about_Wildcards.md
+[20]: about_Variables.md

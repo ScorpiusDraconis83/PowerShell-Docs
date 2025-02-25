@@ -2,7 +2,7 @@
 external help file: Microsoft.PowerShell.Commands.Utility.dll-Help.xml
 Locale: en-US
 Module Name: Microsoft.PowerShell.Utility
-ms.date: 03/15/2023
+ms.date: 06/07/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.utility/select-string?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
 title: Select-String
@@ -192,7 +192,8 @@ in the PowerShell console.
 ### Example 5: Search for a string in a Windows event log
 
 This example searches for a string in a Windows event log. The variable `$_` represents the current
-object in the pipeline. For more information, see [about_Automatic_Variables](../Microsoft.PowerShell.Core/About/about_Automatic_Variables.md).
+object in the pipeline. For more information, see
+[about_Automatic_Variables](../Microsoft.PowerShell.Core/About/about_Automatic_Variables.md).
 
 ```powershell
 $Events = Get-WinEvent -LogName Application -MaxEvents 50
@@ -205,7 +206,7 @@ the variable named `$Events`.
 
 The `$Events` variable is sent down the pipeline to the `Select-String` cmdlet. `Select-String` uses
 the **InputObject** parameter. The `$_` variable represents the current object and `message` is a
-property of the event. The **Pattern** parameter species the string **Failed** and searches for
+property of the event. The **Pattern** parameter specifies the string **Failed** and searches for
 matches in `$_.message`. `Select-String` displays the output in the PowerShell console.
 
 ### Example 6: Find a string in subdirectories
@@ -213,7 +214,8 @@ matches in `$_.message`. `Select-String` displays the output in the PowerShell c
 This example searches a directory and all of its subdirectories for a specific text string.
 
 ```powershell
-Get-ChildItem -Path C:\Windows\System32\*.txt -Recurse | Select-String -Pattern 'Microsoft' -CaseSensitive
+Get-ChildItem -Path C:\Windows\System32\*.txt -Recurse |
+    Select-String -Pattern 'Microsoft' -CaseSensitive
 ```
 
 `Get-ChildItem` uses the **Path** parameter to specify **C:\Windows\System32\*.txt**. The
@@ -721,8 +723,9 @@ Accept wildcard characters: False
 
 ### -Quiet
 
-Indicates that the cmdlet returns a Boolean value (True or False), instead of a **MatchInfo**
-object. The value is True if the pattern is found; otherwise the value is False.
+Indicates that the cmdlet returns a simple response instead of a **MatchInfo**
+object. The returned value is `$true` if the pattern is found or `$null` if the
+pattern is not found.
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter

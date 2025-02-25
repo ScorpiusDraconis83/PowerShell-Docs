@@ -4,7 +4,7 @@ Locale: en-US
 ms.date: 06/09/2017
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_join?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Join
+title: about_Join
 ---
 
 # about_Join
@@ -25,8 +25,8 @@ in the command.
 The following diagram shows the syntax for the join operator.
 
 ```powershell
--Join <String[]>
-<String[]> -Join <Delimiter>
+-join <String[]>
+<String[]> -join <Delimiter>
 ```
 
 #### Parameters

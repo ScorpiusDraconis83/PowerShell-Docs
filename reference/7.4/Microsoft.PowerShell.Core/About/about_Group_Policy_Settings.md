@@ -4,7 +4,7 @@ Locale: en-US
 ms.date: 08/17/2023
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_group_policy_settings?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Group Policy Settings
+title: about_Group_Policy_Settings
 ---
 # about_Group_Policy_Settings
 
@@ -93,7 +93,8 @@ User Configuration\
 > These **PowerShell Core Administrative Templates** don't include settings
 > for Windows PowerShell. For more information about acquiring other templates
 > and configuring Group policy, see
-> [How to create and manage the Central Store for Group Policy Administrative Templates in Windows][gpstore].
+> [How to create and manage the Central Store for Group Policy Administrative
+> Templates in Windows][gpstore].
 
 ## Console session configuration
 
@@ -118,7 +119,7 @@ any PowerShell modules.
 If this policy setting isn't configured, the **LogPipelineExecutionDetails**
 property of each module determines whether PowerShell logs the execution events
 of that module. By default, the **LogPipelineExecutionDetails** property of all
-modules is set to `$False`.
+modules is set to `$false`.
 
 To turn on module logging for a module, use the following command format. The
 module must be imported into the session and the setting is effective only in
@@ -131,7 +132,7 @@ Import-Module <Module-Name>
 
 To turn on module logging for all sessions on a particular computer, add the
 previous commands to the 'All Users' PowerShell profile
-(`$Profile.AllUsersAllHosts`).
+(`$PROFILE.AllUsersAllHosts`).
 
 For more information about module logging, see
 [about_Modules](about_Modules.md).

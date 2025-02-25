@@ -1,10 +1,10 @@
 ---
 description: Explains how to use the Run with PowerShell feature to run a script from a file system drive.
 Locale: en-US
-ms.date: 10/23/2023
+ms.date: 03/06/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_run_with_powershell?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Run With PowerShell
+title: about_Run_With_PowerShell
 ---
 
 # about_Run_With_PowerShell
@@ -18,24 +18,23 @@ file system drive.
 
 Beginning in Windows PowerShell 3.0, you can use the **Run with PowerShell**
 feature to run scripts from File Explorer. The **Run with PowerShell** feature
-is designed to run scripts that don't have required parameters and don't return
-output to the command prompt.
-
-When you use the **Run with PowerShell** feature, the Windows PowerShell
-console window appears only briefly, if at all. You can't interact with it.
+is intended to run scripts that don't have required parameters, don't return
+output to console, and don't prompt for user input. When you use the **Run with
+PowerShell** feature, the PowerShell console window appears only briefly, if at
+all.
 
 To use the **Run with PowerShell** feature:
 
 In File Explorer (or Windows Explorer), right-click the script filename and
 then select **Run with PowerShell**.
 
-The **Run with PowerShell** feature starts a Windows PowerShell session that has
-an execution policy of Bypass, runs the script, and closes the session.
+The **Run with PowerShell** feature starts a Windows PowerShell session that
+has an execution policy of Bypass, runs the script, and closes the session.
 
 It runs a command that has the following format:
 
 ```
-PowerShell.exe -File <FileName> -ExecutionPolicy Bypass
+pwsh.exe -File <FileName> -ExecutionPolicy Bypass
 ```
 
 **Run with PowerShell** sets the Bypass execution policy only for the session

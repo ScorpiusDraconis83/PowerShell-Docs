@@ -4,11 +4,12 @@ Locale: en-US
 ms.date: 10/22/2021
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_functions_argument_completion?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: About functions argument completion
+title: About_functions_argument_completion
 ---
 # about_Functions_Argument_Completion
 
 ## Short description
+
 Argument completion is a feature of PowerShell that provide hints, enables
 discovery, and speeds up input entry of argument values.
 
@@ -39,8 +40,7 @@ example, the value of the **Fruit** parameter can only be **Apple**,
 Param(
     [Parameter(Mandatory=$true)]
     [ValidateSet('Apple', 'Banana', 'Pear')]
-    [string[]]
-    $Fruit
+    [string[]]$Fruit
 )
 ```
 
@@ -50,7 +50,7 @@ be used on any variable, not just parameters.
 
 ```powershell
 [ValidateSet('Chocolate', 'Strawberry', 'Vanilla')]
-[string]$flavor = 'Strawberry'
+[string]$Flavor = 'Strawberry'
 ```
 
 The validation occurs whenever that variable is assigned even within the
@@ -262,7 +262,7 @@ By deriving from `ArgumentCompleterAttribute`, it's possible to create generic
 completers that can be reused, for example:
 
 ```powershell
-[DirectoryCompleter(ContainingFile="pswh.exe", Depth=2)]
+[DirectoryCompleter(ContainingFile="pwsh.exe", Depth=2)]
 
 [DateCompleter(WeekDay='Monday', From="LastYear")]
 

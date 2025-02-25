@@ -4,11 +4,12 @@ Locale: en-US
 ms.date: 09/28/2021
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_parameters?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Parameters
+title: about_Parameters
 ---
 # about_Parameters
 
 ## Short description
+
 Describes how to work with command parameters in PowerShell.
 
 ## Long description
@@ -30,8 +31,8 @@ a value, but do not require the parameter name in the command.
 
 The type of parameters and the requirements for those parameters vary. To find
 information about the parameters of a command, use the `Get-Help` cmdlet. For
-example, to find information about the parameters of the `Get-ChildItem` cmdlet,
-type:
+example, to find information about the parameters of the `Get-ChildItem`
+cmdlet, type:
 
 ```powershell
 Get-Help Get-ChildItem
@@ -178,8 +179,8 @@ Get-Service -Name $s
 
 #### Accepts Pipeline Input
 
-This setting indicates whether you can use the pipeline operator (`|`) to send a
-value to the parameter.
+This setting indicates whether you can use the pipeline operator (`|`) to send
+a value to the parameter.
 
 ```
 Value                    Description

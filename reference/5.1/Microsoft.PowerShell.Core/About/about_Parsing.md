@@ -1,10 +1,10 @@
 ---
 description: Describes how PowerShell parses commands.
 Locale: en-US
-ms.date: 02/27/2023
+ms.date: 05/06/2024
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_parsing?view=powershell-5.1&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Parsing
+title: about_Parsing
 ---
 # about_Parsing
 
@@ -128,13 +128,13 @@ uses one of the following syntaxes:
     literal `@` with `()` starting a new argument that's an expression.
 
 - Everything else is treated as an expandable string, except metacharacters
-  that still need escaping. See [Handling special characters][02].
+  that still need escaping. See [Handling special characters][03].
   - The argument-mode metacharacters (characters with special syntactic
     meaning) are: ``<space> ' " ` , ; ( ) { } | & < > @ #``. Of these,
     `< > @ #` are only special at the start of a token.
 
 - The stop-parsing token (`--%`) changes the interpretation of all remaining
-  arguments. For more information, see the [stop-parsing token][03] section
+  arguments. For more information, see the [stop-parsing token][04] section
   below.
 
 ### Examples
@@ -272,7 +272,8 @@ Beginning in PowerShell 3.0, you can use the _stop-parsing_ (`--%`) token to
 stop PowerShell from interpreting input as PowerShell commands or expressions.
 
 > [!NOTE]
-> The stop-parsing token is only intended for use on Windows platforms.
+> The stop-parsing token is only intended for use native commands on Windows
+> platforms.
 
 When calling a native command, place the stop-parsing token before the program
 arguments. This technique is much easier than using escape characters to
@@ -317,8 +318,9 @@ PS> cmd /c --% echo "a|b"
 ```
 
 > [!NOTE]
-> Some commands on Windows systems are implemented as a Windows batch file. For
-> example, that `az` command for Azure CLI is a Windows batch file.
+> The stop-parsing token isn't needed when using PowerShell cmdlets. However,
+> it could be useful to pass arguments to a PowerShell function that is
+> designed to call a native command with those arguments.
 
 ### Passing arguments that contain quote characters
 
@@ -339,7 +341,7 @@ For more information about the escape requirements, see the documentation for
 
 > [!NOTE]
 > The following examples use the `TestExe.exe` tool. You can build `TestExe`
-> from the source code. See [TestExe][05] in the PowerShell source repository.
+> from the source code. See [TestExe][06] in the PowerShell source repository.
 
 The goal of these examples is to pass the directory path
 `"C:\Program Files (x86)\Microsoft\"` to a native command so that it received
@@ -413,13 +415,81 @@ Arg 2 is <-->
 Arg 3 is <-c>
 ```
 
+## Tilde (~)
+
+The tilde character (`~`) has special meaning in PowerShell. When it's used
+with PowerShell commands at the beginning of a path, the tilde character is
+expanded to the user's home directory. If the tilde character is used anywhere
+else in a path, it's treated as a literal character.
+
+```powershell
+PS D:\temp> $PWD
+
+Path
+----
+D:\temp
+
+PS D:\temp> Set-Location ~
+PS C:\Users\user2> $PWD
+
+Path
+----
+C:\Users\user2
+```
+
+In this example, the **Name** parameter of the `New-Item` expects a string. The
+tilde character is treated as a literal character. To change to the newly
+created directory, you must qualify the path with the tilde character.
+
+```powershell
+PS D:\temp> Set-Location ~
+PS C:\Users\user2> New-Item -Type Directory -Name ~
+
+    Directory: C:\Users\user2
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----            5/6/2024  2:08 PM                ~
+
+PS C:\Users\user2> Set-Location ~
+PS C:\Users\user2> Set-Location .\~
+PS C:\Users\user2\~> $PWD
+
+Path
+----
+C:\Users\user2\~
+```
+
+When you use the tilde character with native commands, PowerShell passes the
+tilde as a literal character. Using the tilde in a path causes errors for
+native commands on Windows that don't support the tilde character.
+
+```powershell
+PS D:\temp> $PWD
+
+Path
+----
+D:\temp
+
+PS D:\temp> Get-Item ~\repocache.clixml
+
+    Directory: C:\Users\user2
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---           4/29/2024  3:42 PM          88177 repocache.clixml
+
+PS D:\temp> more.com ~\repocache.clixml
+Cannot access file D:\temp\~\repocache.clixml
+```
+
 ## See also
 
-- [about_Command_Syntax][04]
+- [about_Command_Syntax][05]
 
 <!-- link references -->
 [01]: /dotnet/api/system.diagnostics.processstartinfo.arguments
-[02]: #handling-special-characters
-[03]: #the-stop-parsing-token
-[04]: about_Command_Syntax.md
-[05]: https://github.com/PowerShell/PowerShell/blob/master/test/tools/TestExe/TestExe.cs
+[03]: #handling-special-characters
+[04]: #the-stop-parsing-token
+[05]: about_Command_Syntax.md
+[06]: https://github.com/PowerShell/PowerShell/blob/master/test/tools/TestExe/TestExe.cs

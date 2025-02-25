@@ -4,11 +4,12 @@ Locale: en-US
 ms.date: 10/20/2023
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_updatable_help?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Updatable Help
+title: about_Updatable_Help
 ---
 # about_Updatable_Help
 
 ## Short description
+
 Describes the updatable help system in PowerShell.
 
 ## Long description
@@ -132,7 +133,7 @@ Update-Help -Module Microsoft.PowerShell.Security
 
 ## Permissions for updatable help
 
-To update help for the modules in the directory `$pshome/Modules`, you must be
+To update help for the modules in the directory `$PSHOME/Modules`, you must be
 member of the Administrators group on the computer.
 
 If you aren't a member of the Administrators group, you can't update help for
@@ -382,8 +383,7 @@ to specify a different filesystem location, but they can't exclude the
 > only the policy setting under **Computer Configuration** is effective. The
 > policy setting under **User Configuration** is ignored.
 
-For more information, see
-[about_Group_Policy_Settings][04].
+For more information, see [about_Group_Policy_Settings][04].
 
 ## How to update help for non-standard modules
 

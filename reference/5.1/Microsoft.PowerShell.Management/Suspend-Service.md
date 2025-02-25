@@ -40,7 +40,7 @@ Suspend-Service [-PassThru] -DisplayName <String[]> [-Include <String[]>] [-Excl
 
 The `Suspend-Service` cmdlet sends a suspend message to the Windows Service Controller for each of
 the specified services. While suspended, the service is still running, but its action is stopped
-until resumed, such as by usingthe `Resume-Service` cmdlet. You can specify the services by their
+until resumed, such as by using the `Resume-Service` cmdlet. You can specify the services by their
 service names or display names, or you can use the **InputObject** parameter to pass a service
 object that represents the services that you want to suspend.
 
@@ -82,7 +82,7 @@ PS C:\> Get-Service | Where-Object {$_.CanPauseAndContinue -eq "True"} | Suspend
 This command suspends all of the services on the computer that can be suspended. It uses
 `Get-Service` to get objects that represent the services on the computer. The pipeline operator
 passes the results to the `Where-Object` cmdlet, which selects only the services that have a value
-of `$True` for the **CanPauseAndContinue** property. Another pipeline operator passes the results to
+of `$true` for the **CanPauseAndContinue** property. Another pipeline operator passes the results to
 `Suspend-Service`. The **Confirm** parameter prompts you for confirmation before suspending each of
 the services.
 

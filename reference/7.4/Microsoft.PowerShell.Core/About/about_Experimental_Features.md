@@ -4,7 +4,7 @@ Locale: en-US
 ms.date: 12/04/2023
 online version: https://learn.microsoft.com/powershell/module/microsoft.powershell.core/about/about_experimental_features?view=powershell-7.4&WT.mc_id=ps-gethelp
 schema: 2.0.0
-title: about Experimental Features
+title: about_Experimental_Features
 ---
 # about_Experimental_Features
 
@@ -125,8 +125,8 @@ public class InvokeWebRequestCommandV2 : WebCmdletBaseV2 { ... }
 public class InvokeWebRequestCommand : WebCmdletBase { ... }
 ```
 
-When the `MyWebCmdlets.PSWebCmdletV2` experimental feature is enabled, the existing
-`InvokeWebRequestCommand` implementation is hidden and the
+When the `MyWebCmdlets.PSWebCmdletV2` experimental feature is enabled, the
+existing `InvokeWebRequestCommand` implementation is hidden and the
 `InvokeWebRequestCommandV2` provides the implementation of
 `Invoke-WebRequest`.
 
